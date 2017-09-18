@@ -1,0 +1,22 @@
+{
+  "name": "stuff_share",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "pretest": "node initDB.js",
+    "test": "env TZ='Asia/Singapore' node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "express": "^4.15.4",
+    "fs": "0.0.1-security",
+    "pg-promise": "^6.7.0"
+  }
+}
