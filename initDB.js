@@ -20,8 +20,14 @@ db.any(dropQuery)
     db.any(createQuery)
       .then(result => {
         console.log('result', result) // print how many records were deleted
-        // closes connection
-        pgp.end()
+        db.any("INSERT INTO app_user (accesstoken) VALUES ('asdf')")
+          .then(result => {
+            console.log('result', result) // print how many records were deleted
+            pgp.end()
+          })
+          .catch(error => {
+            console.log('ERROR:', error)
+          })
       })
       .catch(error => {
         console.log('ERROR:', error)
