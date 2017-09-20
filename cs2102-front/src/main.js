@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+//import NewsApp from './NewsApp'
 import router from './router'
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
@@ -14,3 +15,11 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
+
+/*
+new NewsVue({
+  el: '#newsapp',
+  router,
+  template: '<NewsApp/>',
+  components: { NewsApp }
+})*/

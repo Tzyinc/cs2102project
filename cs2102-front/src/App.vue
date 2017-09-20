@@ -1,13 +1,32 @@
 <template>
   <div class="container" id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+    <!-- <img src="./assets/logo.png"> 
+	<UserSelection v-on:sourceChanged="sourceChanged"></UserSelection>
+  <Userlist v-bind:source="source"></Userlist>-->
+  <UserList></UserList>
+    <!--<router-view></router-view>-->
   </div>
 </template>
 
 <script>
+import UserList from './components/UserList'
+
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    UserList,
+  },
+  data () {
+    /* {
+      source: ""
+    }*/
+  },
+  methods: {
+    /*sourceChanged: function (source) {
+      this.source = source;
+    }*/
+  }
 }
 </script>
 
