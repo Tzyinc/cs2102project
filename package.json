@@ -6,7 +6,7 @@
   "scripts": {
     "precommit": "lint-staged",
     "pretest": "node initDB.js",
-    "test": "env TZ='Asia/Singapore' node index.js"
+    "test": "node index.js"
   },
   "lint-staged": {
     "*.js": [
