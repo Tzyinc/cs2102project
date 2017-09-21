@@ -1,8 +1,8 @@
 var express = require('express')
 var router = express.Router()
 
-router.get('/', function (req, res) {
-  res.json({message: 'API entry point is /api/<object>'})
+router.get('/', function(req, res) {
+  res.json({ message: 'API entry point is /api/<object>' })
 })
 
 // for every new schema, write routes for them

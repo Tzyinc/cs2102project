@@ -12,7 +12,7 @@ app.use(bodyParser.json())
 var port = process.env.PORT || 8080
 
 // API routes
-var projectRoutes = require('./app/routes/routes.js')
+var projectRoutes = require('./backend/routes/routes.js')
 
 app.use('/api', projectRoutes)
 
