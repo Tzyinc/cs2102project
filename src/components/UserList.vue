@@ -53,7 +53,7 @@ export default {
     this.$http.get('http://localhost:8080/api/example')
       .then(response => {
         this.users = response.data;
-        alert(response);
+        // alert(response);
         msg = response;
         document.write(response);
         console.log(this.users);
