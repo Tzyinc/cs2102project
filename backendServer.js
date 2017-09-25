@@ -6,8 +6,6 @@ var cors = require('cors')
 
 app.use(cors())
 
-// TODO: connect to database here.
-
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 

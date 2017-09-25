@@ -1,10 +1,4 @@
-var fs = require('fs')
-var cred = JSON.parse(
-  fs.readFileSync(__dirname + '/../../credentials.json', 'utf8')
-)
-const pgp = require('pg-promise')()
-const cn = cred.dbcred
-const db = pgp(cn)
+var db = require('../dbcon/database.js')
 
 function someExample(req, res) {
   db

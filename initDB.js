@@ -4,7 +4,6 @@ const pgp = require('pg-promise')()
 const cn = cred.dbcred
 const db = pgp(cn)
 
-console.log(cn)
 const dropQuery = 'DROP TABLE IF EXISTS app_user, app_item;'
 const createUserQuery =
   'CREATE TABLE app_user ' +
