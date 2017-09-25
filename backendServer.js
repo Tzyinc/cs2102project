@@ -2,8 +2,9 @@
 var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
+var cors = require('cors')
 
-// TODO: connect to database here.
+app.use(cors())
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -12,7 +13,7 @@ app.use(bodyParser.json())
 var port = process.env.PORT || 8080
 
 // API routes
-var projectRoutes = require('./app/routes/routes.js')
+var projectRoutes = require('./backend/routes/routes.js')
 
 app.use('/api', projectRoutes)
 
