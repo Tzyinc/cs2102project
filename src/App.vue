@@ -17,6 +17,9 @@ export default {
 	LoginHeader,
   },
   data () {
+    return{
+
+    }
     /* {
       source: ""
     }*/
