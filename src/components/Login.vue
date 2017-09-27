@@ -49,6 +49,5 @@
         auth.login(this, credentials, 'secretquote')
       }
     }
-
   }
   </script>

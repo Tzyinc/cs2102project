@@ -16,7 +16,11 @@
 
 <script>
 export default {
+  name: 'LoginHeader',
   data () {
+      return{
+        
+      }
     /* {
       source: ""
     }*/
