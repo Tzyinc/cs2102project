@@ -11,7 +11,7 @@ router.get('/', function(req, res){
 var exampleController = require('../controllers/example.controller.js')
 var userController = require('../controllers/user.controller.js')
 var itemController = require('../controllers/item.controller.js')
-// routes for each function
+
 /* http accepts get, post, put, head, delete, options,
 trace, copy, lock, mkcol, move, purge, unlock, report,
 mkactivity, checkout, merge, m-search, notify, subscribe,
