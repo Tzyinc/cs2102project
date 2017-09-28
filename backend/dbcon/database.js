@@ -7,4 +7,6 @@ const pgp = require('pg-promise')()
 const cn = cred.dbcred
 const db = pgp(cn)
 
-module.exports = db
+module.exports = {
+  db: db
+}

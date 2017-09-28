@@ -12,7 +12,7 @@ const createUserQuery =
   'imagesrc       TEXT,' +
   'username       TEXT          NOT NULL,' +
   'password       TEXT          NOT NULL,' +
-  'isadmin        BOOLEAN       NOT NULL,' +
+  'isadmin        BOOLEAN       NOT NULL      DEFAULT false,' +
   'userRating     NUMERIC,' +
   'PRIMARY KEY (uid)' +
   ');'
@@ -68,7 +68,7 @@ const createNotiQuery =
   'FOREIGN KEY (uid) REFERENCES app_user(uid)' +
   ');'
 
-const insertUserQuery = `INSERT INTO app_user VALUES (DEFAULT, 'asdimg', 'asdname', 'pw', TRUE, 100)`
+const insertUserQuery = `INSERT INTO app_user VALUES (DEFAULT, 'asdimg', 'asdname', 'pw', DEFAULT, 100)`
 db
   .tx(t => {
     // creating a sequence of transaction queries:

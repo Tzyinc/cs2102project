@@ -1,7 +1,7 @@
 var db = require('../dbcon/database.js')
 
-function someExample(req, res) {
-  db
+function someExample (req, res){
+  db.db
     .any('SELECT * FROM app_user')
     .then(result => {
       console.log('result', result) // print
