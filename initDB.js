@@ -13,7 +13,7 @@ const createUserQuery =
   'username       TEXT          NOT NULL,' +
   'password       TEXT          NOT NULL,' +
   'isadmin        BOOLEAN       NOT NULL      DEFAULT false,' +
-  'userRating     NUMERIC,' +
+  'userRating     NUMERIC       NOT NULL      DEFAULT 0,' +
   'PRIMARY KEY (uid)' +
   ');'
 

@@ -6,7 +6,9 @@ var cred = JSON.parse(
 const pgp = require('pg-promise')()
 const cn = cred.dbcred
 const db = pgp(cn)
+const ps = require('pg-promise').PreparedStatement
 
 module.exports = {
-  db: db
+  db: db,
+  PS: ps
 }
