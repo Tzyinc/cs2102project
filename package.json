@@ -10,7 +10,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "node_modules/.bin/prettier --single-quote --no-semi --write --space-before-function-paren --no-space-empty-fn false",
+      "node_modules/.bin/prettier --single-quote --no-semi --write --space-before-function-paren --no-space-empty-fn",
       "git add"
     ]
   },
