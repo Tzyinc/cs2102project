@@ -2,8 +2,8 @@ import router from '@/router'
 
 // URL and endpoint constants
 const API_URL = 'http://localhost:8080/'
-const LOGIN_URL = API_URL + 'api/login'
-const SIGNUP_URL = API_URL + 'api/signup'
+const LOGIN_URL = API_URL + 'api/user'
+const SIGNUP_URL = API_URL + 'api/user'
 
 export default {
 
@@ -14,10 +14,11 @@ export default {
 
   // Send a request to the login URL and save the returned credentials
   login(context, creds, redirect) {
-    context.$http.post(LOGIN_URL, creds, (data) => {
-      if(data.login_result == true) {
-		localStorage.setItem('id_token', data.id_token)
-		localStorage.setItem('access_token', data.access_token)
+    context.$http.post(LOGIN_URL, creds)
+	  .then(response => {
+      if(response.login_result == true) {
+		localStorage.setItem('id_token', response.id_token)
+		localStorage.setItem('access_token', response.access_token)
 
 	  
 	  this.user.authenticated = true
@@ -36,8 +37,13 @@ export default {
   },
 
   signup(context, creds, redirect) {
-    context.$http.post(SIGNUP_URL, creds, (data) => {
-      localStorage.setItem('id_token', data.id_token)
+	  $.ajax({ url: SIGNUP_URL, //Your api url 
+	  type: 'PUT', //type is any HTTP method 
+	  data: { data: creds }, //Data as js object 
+	  success: function () { console.log('test'); return data;} }) ;
+  //console.log('Signed up');
+    /*context.$http.put(SIGNUP_URL, creds, (data) => {
+      /*localStorage.setItem('id_token', data.id_token)
       localStorage.setItem('access_token', data.access_token)
 
       this.user.authenticated = true
@@ -45,10 +51,9 @@ export default {
       if(redirect) {
         router.go(redirect)        
       }
-
-    }).error((err) => {
-      context.error = err
-    })
+		console.log('Signed up');
+		return JSON.parse(data);
+    })*/
   },
 
   // To log out, we just need to remove the token
