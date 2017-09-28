@@ -18,5 +18,6 @@ unsubscribe, patch and search. */
 
 router.route('/example').get(exampleController.example)
 router.route('/user').put(userController.createUser)
+router.route('/user').post(userController.authUser)
 
 module.exports = router

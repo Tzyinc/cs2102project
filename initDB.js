@@ -8,19 +8,18 @@ const dropQuery =
   'DROP TABLE IF EXISTS app_user, app_item, app_bidding, app_loan, app_notification;'
 const createUserQuery =
   'CREATE TABLE app_user ' +
-  '(uid           SERIAL,' +
+  '(username      TEXT,' +
   'imagesrc       TEXT,' +
-  'username       TEXT          NOT NULL,' +
   'password       TEXT          NOT NULL,' +
   'isadmin        BOOLEAN       NOT NULL      DEFAULT false,' +
   'userRating     NUMERIC       NOT NULL      DEFAULT 0,' +
-  'PRIMARY KEY (uid)' +
+  'PRIMARY KEY (username)' +
   ');'
 
 const createItemQuery =
   'CREATE TABLE app_item ' +
   '(iid           SERIAL,' +
-  'owner_uid      INTEGER       NOT NULL,' +
+  'owner_username TEXT       NOT NULL,' +
   'name           TEXT          NOT NULL,' +
   'imagesrc       TEXT          NOT NULL,' +
   'description    TEXT,' +
@@ -32,43 +31,43 @@ const createItemQuery =
   'startDate      TIMESTAMP,' +
   'endDate        TIMESTAMP,' +
   'PRIMARY KEY (iid),' +
-  'FOREIGN KEY (owner_uid) REFERENCES app_user(uid)' +
+  'FOREIGN KEY (owner_username) REFERENCES app_user(username)' +
   ');'
 
 const createBiddingQuery =
   'CREATE TABLE app_bidding ' +
-  '(bidder_uid    INTEGER,' +
-  'iid            INTEGER,' +
-  'price          INTEGER       NOT NULL,' +
+  '(bidder_username    TEXT,' +
+  'iid                 INTEGER,' +
+  'price               INTEGER       NOT NULL,' +
   'time           TIMESTAMP,' +
-  'PRIMARY KEY (bidder_uid, iid),' +
+  'PRIMARY KEY (bidder_username, iid),' +
   'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
-  'FOREIGN KEY (bidder_uid) REFERENCES app_user(uid)' +
+  'FOREIGN KEY (bidder_username) REFERENCES app_user(username)' +
   ');'
 
 const createLoanQuery =
   'CREATE TABLE app_loan ' +
-  '(borrower_uid    INTEGER,' +
-  'iid              INTEGER,' +
-  'price            INTEGER       NOT NULL,' +
-  'PRIMARY KEY (borrower_uid, iid),' +
+  '(borrower_username    TEXT,' +
+  'iid                   INTEGER,' +
+  'price                 INTEGER       NOT NULL,' +
+  'PRIMARY KEY (borrower_username, iid),' +
   'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
-  'FOREIGN KEY (borrower_uid) REFERENCES app_user(uid)' +
+  'FOREIGN KEY (borrower_username) REFERENCES app_user(username)' +
   ');'
 
 const createNotiQuery =
   'CREATE TABLE app_notification ' +
-  '(uid           INTEGER,' +
+  '(username      TEXT,' +
   'iid            INTEGER,' +
   'timeCreated    TIMESTAMP       NOT NULL,' +
   'type           TEXT            NOT NULL,' +
   'isRead         BOOLEAN         NOT NULL,' +
-  'PRIMARY KEY (uid, iid),' +
+  'PRIMARY KEY (username, iid),' +
   'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
-  'FOREIGN KEY (uid) REFERENCES app_user(uid)' +
+  'FOREIGN KEY (username) REFERENCES app_user(username)' +
   ');'
 
-const insertUserQuery = `INSERT INTO app_user VALUES (DEFAULT, 'asdimg', 'asdname', 'pw', DEFAULT, 100)`
+const insertUserQuery = `INSERT INTO app_user VALUES ('asdname', 'asdimg', 'pw', DEFAULT, 100)`
 db
   .tx(t => {
     // creating a sequence of transaction queries:
