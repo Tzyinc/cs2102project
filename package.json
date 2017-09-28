@@ -10,7 +10,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "node_modules/.bin/prettier --single-quote --no-semi --write --space-before-function-paren",
+      "node_modules/.bin/prettier --single-quote --no-semi --write",
       "git add"
     ]
   },
@@ -26,7 +26,6 @@
     "express": "^4.15.4",
     "fs": "0.0.1-security",
     "pg-promise": "^6.7.0",
-    "prettier-miscellaneous": "file:node_modules/prettier-miscellaneous",
     "vue": "^2.4.4",
     "vue-resource": "^1.3.4",
     "vue-router": "^2.7.0"

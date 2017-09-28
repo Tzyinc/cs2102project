@@ -67,7 +67,7 @@ const createNotiQuery =
   'FOREIGN KEY (username) REFERENCES app_user(username)' +
   ');'
 
-const insertUserQuery = `INSERT INTO app_user VALUES ('asdname', 'asdimg', 'pw', DEFAULT, 100)`
+const insertUserQuery = `INSERT INTO app_user VALUES ('asdf', 'asdimg', 'pw', DEFAULT, 100)`
 db
   .tx(t => {
     // creating a sequence of transaction queries:

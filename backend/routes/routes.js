@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 
-router.get('/', function (req, res){
+router.get('/', function(req, res){
   res.json({message: 'API entry point is /api/<object>'})
 })
 
@@ -19,4 +19,6 @@ unsubscribe, patch and search. */
 router.route('/example').get(exampleController.example)
 router.route('/user').put(userController.createUser)
 router.route('/user').post(userController.authUser)
+router.route('/user').get(userController.getUserDetails)
+
 module.exports = router
