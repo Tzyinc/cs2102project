@@ -1,6 +1,5 @@
 <template>
-  <div class="LoginHeader">
-    <nav>
+  <nav>
   <ul>
     <li>
       <h1><router-link to="/">Stuff Share</router-link></h1>
@@ -11,7 +10,6 @@
     </li>
   </ul>
 </nav>
-  </div>
 </template>
 
 <script>
@@ -30,10 +28,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 nav {
   background-color: #000000;
   color: #888;
   margin: 0px 0px 0px 0px;
+  border: 0px;
   overflow: hidden;
   width: 100%;
   display: -webkit-flex;

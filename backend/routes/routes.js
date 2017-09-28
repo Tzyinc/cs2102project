@@ -8,7 +8,8 @@ router.get('/', function(req, res) {
 // for every new schema, write routes for them
 // import functions from controller file
 var exampleController = require('../controllers/example.controller.js')
+var loginController = require('../controllers/login-controller.js')
 // routes for each function
 router.route('/example').get(exampleController.example)
-
+router.route('/login').post(login-controller.login)
 module.exports = router

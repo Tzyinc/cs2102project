@@ -8,7 +8,7 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Enter your username"
+          placeholder="Username"
           v-model="credentials.username"
         >
       </div>
@@ -16,16 +16,17 @@
         <input
           type="password"
           class="form-control"
-          placeholder="Enter your password"
+          placeholder="Password"
           v-model="credentials.password"
         >
       </div>
-      <button class="btn btn-primary" @click="submit()">Access</button>
+      <button class="btn btn-primary" @click="submit()">Log in</button>
+	  <p style="color:red">{{login_msg}}</p>
     </div>
   </template>
 
   <script>
-  import auth from '../auth'
+  import auth from '../auth/auth'
   export default {
     data() {
       return {
@@ -35,6 +36,7 @@
           username: '',
           password: ''
         },
+		login_msg: '',
         error: ''
       }
     },
@@ -46,7 +48,7 @@
         }
         // We need to pass the component's this context
         // to properly make use of http in the auth service
-        auth.login(this, credentials, 'secretquote')
+        login_msg = auth.login(this, credentials, '/')
       }
     }
   }
