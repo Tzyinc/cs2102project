@@ -9,6 +9,16 @@ const authUserPS = new dbcon.PS(
   'SELECT password FROM app_user WHERE username = $1'
 )
 
+const getUserPS = new dbcon.PS(
+  'authUser',
+  'SELECT username, imagesrc, isadmin, userRating FROM app_user WHERE username = $1'
+)
+
+const getAllUserPS = new dbcon.PS(
+  'authUser',
+  'SELECT username, imagesrc, isadmin, userRating FROM app_user'
+)
+
 // takes in unique username and (hashed) password and stores in database.
 function createUser (req, res){
   var userDetails = req.body.data
@@ -40,7 +50,32 @@ function authUser (req, res){
     })
 }
 
+function getUserDetails (req, res){
+  var userDetails = req.query
+  if (userDetails.username != null) {
+    getUserPS.values = [ userDetails.username ]
+    dbcon.db
+      .one(getUserPS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
+  } else {
+    dbcon.db
+      .any(getAllUserPS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
+  }
+}
+
 module.exports = {
   createUser: createUser,
-  authUser: authUser
+  authUser: authUser,
+  getUserDetails: getUserDetails
 }
