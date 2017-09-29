@@ -42,10 +42,12 @@
     },
     methods: {
       submit() {
-		
+		var bcrypt = require('bcryptjs');
+		var hash = bcrypt.hashSync(this.credentials.password, 8);
+		console.log('create: ' + hash);
         var credentials = {
           username: this.credentials.username,
-          password: this.credentials.password
+          password: hash
         }
         // We need to pass the component's this context
         // to properly make use of http in the auth service

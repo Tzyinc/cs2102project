@@ -43,7 +43,9 @@ function authUser(req, res){
   dbcon.db
     .one(authUserPS)
     .then(result => {
-      res.json({success: result.password === userDetails.password})
+		var bcrypt = require('bcryptjs');
+      //res.json({success: result.password === userDetails.password})
+	  res.json({success: bcrypt.compareSync(userDetails.password, result.password)})
     })
     .catch(error => {
       res.json(error)

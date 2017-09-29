@@ -48,7 +48,7 @@
         }
         // We need to pass the component's this context
         // to properly make use of http in the auth service
-        login_msg = auth.login(this, credentials, '/')
+        this.login_msg = auth.login(this, credentials, '/')
       }
     }
   }

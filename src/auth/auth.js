@@ -10,13 +10,13 @@ export default {
 
   // Send a request to the login URL and save the returned credentials
   login(context, creds, redirect) {
-    context.$http
-      .post(api_ep.API_URL + api_ep.USER, creds)
-      .then(response => {
-        if (response.login_result === true) {
-          localStorage.setItem('id_token', response.id_token)
-          localStorage.setItem('access_token', response.access_token)
-
+    $.ajax({ 
+	  url: api_ep.API_URL + api_ep.USER, //Your api url
+	  type: 'POST', //type is any HTTP method 
+	  data: { data: creds }, //Data as js object 
+	  success: function (response) {
+        if (response.success === true) {
+			console.log('logged in');
           this.user.authenticated = true
           // Redirect to a specified route
           if (redirect) {
@@ -24,12 +24,9 @@ export default {
           }
           return ''
         } else {
+		console.log('failed login');
           return 'Incorrect username/password!'
-        }
-      })
-      .error(err => {
-        context.error = err
-      })
+        }} });
   },
 
   signup(context, creds, redirect) {
