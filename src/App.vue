@@ -17,7 +17,7 @@ export default {
   name: 'app',
   components: {
 	LoginHeader,
-  DetailedItem
+  DetailedItem,
   },
   data () {
     return{
