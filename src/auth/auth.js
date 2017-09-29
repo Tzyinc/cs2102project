@@ -40,7 +40,14 @@ export default {
 	  $.ajax({ url: SIGNUP_URL, //Your api url 
 	  type: 'PUT', //type is any HTTP method 
 	  data: { data: creds }, //Data as js object 
-	  success: function () { console.log('test'); return data;} }) ;
+	  success: function (response) {
+		if(response.success == true) {
+			console.log('success');
+			return 'Creation success!';
+		} else {
+			console.log('fail');		
+			return 'Username already exist!';
+		}} }) ;
   //console.log('Signed up');
     /*context.$http.put(SIGNUP_URL, creds, (data) => {
       /*localStorage.setItem('id_token', data.id_token)
