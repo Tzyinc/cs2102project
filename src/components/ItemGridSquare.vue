@@ -38,6 +38,7 @@ img {
     /*background-color: red;*/
     display: inline-block;
     padding-bottom: 5px;
+    border-radius: 1em;
 }
 .image{
 	/*background-color: blue;*/

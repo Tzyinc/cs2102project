@@ -4,6 +4,7 @@ import Hello from '@/components/Hello.vue'
 import UserList from '@/components/UserList.vue'
 import Registration from '@/components/Registration.vue'
 import Login from '@/components/Login.vue'
+import CreateItem from '@/components/CreateItem.vue'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Registration
+    },
+    {
+      path: '/createItem',
+      name: 'CreateItem',
+      component: CreateItem
     }
   ]
 })
