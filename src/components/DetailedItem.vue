@@ -1,6 +1,6 @@
 <template>
-  <div class="container" id="detailed-item">
-    <h1>{{msg}} hi</h1>
+  <div class="detailed-item">
+    <h1>Listing Details</h1>
     <ItemPicture></ItemPicture>
     <ItemOwnerInfo></ItemOwnerInfo>
   </div>
@@ -12,6 +12,10 @@
 
   export default {
   name: 'DetailedItem',
+  components: {
+    ItemPicture,
+    ItemOwnerInfo
+  },
   data() {
     return {
 
@@ -21,5 +25,8 @@
 </script>
 
 <style scoped>
-
+.detailed-item {
+  width: 80%;
+  margin:auto;
+}
 </style>

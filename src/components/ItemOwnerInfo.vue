@@ -1,7 +1,7 @@
 <template>
   <div class="item-owner-info">
     <h3>Info</h3>
-    <p>Status: <span v-if="status">Available</span><span v-else>Not Available</span>/</p>
+    <p>Status: <span v-if="item.status">Available</span><span v-else>Not Available</span></p>
     <p>Owner: {{itemOwner.username}}</p>
     <p>Location: {{item.location}}</p>
   </div>
@@ -24,3 +24,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.item-owner-info {
+  width: 30%;
+  text-align: left;
+
+}
+</style>

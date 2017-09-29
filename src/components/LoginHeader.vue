@@ -9,6 +9,8 @@
     </li>
     <li><router-link to="/Register">Sign up</router-link>
     </li>
+    <li><router-link to="/item/placeholderstringfornow">Detailed Item</router-link>
+    </li>
   </ul>
 </nav>
   </div>
@@ -19,7 +21,7 @@ export default {
   name: 'LoginHeader',
   data () {
       return{
-        
+
       }
     /* {
       source: ""
@@ -43,7 +45,7 @@ nav {
   -ms-flex-align: center;
   align-items: center;
 }
-nav ul {  
+nav ul {
   display: inline-block;
   margin: 0;
   padding: 0;

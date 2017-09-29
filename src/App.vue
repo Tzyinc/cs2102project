@@ -5,19 +5,16 @@
   <Userlist v-bind:source="source"></Userlist>-->
   <LoginHeader></LoginHeader>
   <router-view></router-view>
-  <DetailedItem></DetailedItem>
   </div>
 </template>
 
 <script>
 import LoginHeader from './components/LoginHeader'
-import DetailedItem from './components/DetailedItem'
 
 export default {
   name: 'app',
   components: {
 	LoginHeader,
-  DetailedItem,
   },
   data () {
     return{
