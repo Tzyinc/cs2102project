@@ -68,6 +68,11 @@ const createNotiQuery =
   ');'
 
 const insertUserQuery = `INSERT INTO app_user VALUES ('asdf', 'asdimg', 'pw', DEFAULT, 100)`
+
+const insertItemQuery =
+  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location) ' +
+  `VALUES('asdf','someitem','imgsrc', 10 ,now(), FALSE,'somewhere')`
+
 db
   .tx(t => {
     // creating a sequence of transaction queries:
@@ -79,6 +84,8 @@ db
     queries.push(t.any(createLoanQuery))
     queries.push(t.any(createNotiQuery))
     queries.push(t.any(insertUserQuery))
+    queries.push(t.any(insertItemQuery))
+    queries.push(t.any('SELECT * FROM app_item'))
 
     // returning a promise that determines a successful transaction:
     return t.batch(queries) // all of the queries are to be resolved;
