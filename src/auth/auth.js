@@ -35,14 +35,17 @@ export default {
   signup(context, creds, redirect) {
     $.ajax({
       url: api_ep.API_URL + api_ep.USER, //Your api url
-      type: 'PUT', //type is any HTTP method
-      data: {data: creds}, //Data as js object
-      success: function(){
-        console.log('test')
-        return data
-      }
-    })
-    //console.log('Signed up');
+	  type: 'PUT', //type is any HTTP method 
+	  data: { data: creds }, //Data as js object 
+	  success: function (response) {
+		if(response.success == true) {
+			console.log('success');
+			return 'Creation success!';
+		} else {
+			console.log('fail');		
+			return 'Username already exist!';
+		}} }) ;
+  //console.log('Signed up');
     /*context.$http.put(SIGNUP_URL, creds, (data) => {
       /*localStorage.setItem('id_token', data.id_token)
       localStorage.setItem('access_token', data.access_token)

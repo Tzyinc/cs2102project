@@ -54,7 +54,20 @@
 		//	register_msg = JSON.parse(response);
 		//	});
   
-        this.register_msg = auth.signup(this, credentials, '/')
+        //this.register_msg = auth.signup(this, credentials, '/')
+		
+		$.ajax({ url: 'http://localhost:8080/api/user', //Your api url 
+	  type: 'PUT', //type is any HTTP method 
+	  data: { data: credentials }, //Data as js object 
+	  success: function (response) {
+		if(response.success == true) {
+			console.log('success');
+			this.register_msg = 'Creation success!';
+		} else {
+					
+			this.register_msg = 'Username already exist!';
+			console.log('fail');
+		}} }) ;
       }
     }
   }
