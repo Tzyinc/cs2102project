@@ -15,7 +15,7 @@ export default {
       msg: "testing",
       itemOwner: {
         username: 'randomuser123',
-      }
+      },
       item: {
         status: true,
         location: 'blk 123 clementi ave west',
