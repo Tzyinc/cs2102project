@@ -16,7 +16,7 @@
 		<!-- Image -->
 		<div class="formRow">
 			<label for="image">Image: </label>
-			<input class="image" type="text" v-model="image">
+			<input class="image" type="text" v-model="imageSrc">
 		</div>
 		<!-- Tags -->
 		<div class="formRow">
@@ -26,7 +26,7 @@
 		<!-- Min Price -->
 		<div class="formRow">
 			<label for="minbid">Minimum Price: </label>
-			<input class="minbid" v-model="minbid" number>
+			<input class="minbid" v-model="minBid" number>
 		</div>
 		<!-- Location -->
 		<div class="formRow">
@@ -41,8 +41,9 @@
 			
 		</div>
 		<div class="formRow">
-			<label></label><button type="">Cancel</button>
-			<button type="">Submit</button>
+			<label></label>
+			<button v-on:click="cancel()">Cancel</button>
+			<button v-on:click="submit($data)">Submit</button>
 		</div> 
         
 	</form>
@@ -51,21 +52,48 @@
 </template>
 
 <script>
+import api_ep from '../api.json'
+
+var api_url = api_ep.API_URL + api_ep.ITEM
+
 export default {
   name: 'CreateItem',
   data () {
+
     return {
+    	owner_username   : 'asdf',
 	    name    : 'Item Name',
 	    desc    : 'Description of Item',
-	    image   : 'Image link',
+	    imageSrc   : 'Image link',
 	    tags    : 'tags',
-	    minbid  : 1.50,
+	    minBid  : 1.50,
 	    location: 'Kent Ridge',
 	    availF   : '11-10-2017',
-	    availT   : '11-11-2017'
+	    availT   : '11-11-2017',
+	    status   : true,
+	    api : api_url
     }
   },
   methods: {
+  	submit (formData) {
+  		$.ajax({
+    	url: api_url, //Your api url
+     	type: 'PUT', //type is any HTTP method
+     	data: {data: formData}, //Data as js object
+     	success: function(response){
+	        console.log('submit')
+	        if(response.hasOwnProperty('success')){
+	        	alert("Successfully created item:\n" + formData.name)
+			} else{
+				alert("Failed to submit.\nPlease try again.")
+			}
+		}
+    	})
+  	}, 
+  	cancel (){
+  		alert("Cancelling creation")
+  		location.reload()
+  	}
   } 
 }
 </script>
