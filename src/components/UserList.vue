@@ -3,7 +3,7 @@
     <h1>{{msg}}</h1>
     {{users}}
     <li v-for = "user in users">
-      userid : {{user.userid}}
+      userid : {{user.uid}}
     </li>
     <form id="search">
     Search <input name="query" v-model="searchQuery">
