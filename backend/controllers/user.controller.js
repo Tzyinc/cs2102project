@@ -20,7 +20,7 @@ const getAllUserPS = new dbcon.PS(
 )
 
 // takes in unique username and (hashed) password and stores in database.
-function createUser (req, res){
+function createUser(req, res){
   var userDetails = req.body.data
   if (userDetails != null) {
     createUserPS.values = [ userDetails.username, userDetails.password ]
@@ -28,14 +28,14 @@ function createUser (req, res){
   dbcon.db
     .any(createUserPS)
     .then(result => {
-      res.json('success')
+      res.json({success: true})
     })
     .catch(error => {
       res.json(error)
     })
 }
 // takes in username and (hashed) password and compares to existing username or passwor
-function authUser (req, res){
+function authUser(req, res){
   var userDetails = req.body.data
   if (userDetails != null) {
     authUserPS.values = [ userDetails.username ]
@@ -43,14 +43,14 @@ function authUser (req, res){
   dbcon.db
     .one(authUserPS)
     .then(result => {
-      res.json(result.password === userDetails.password)
+      res.json({success: result.password === userDetails.password})
     })
     .catch(error => {
       res.json(error)
     })
 }
 
-function getUserDetails (req, res){
+function getUserDetails(req, res){
   var userDetails = req.query
   if (userDetails.username != null) {
     getUserPS.values = [ userDetails.username ]
