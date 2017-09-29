@@ -25,7 +25,10 @@ export default {
 </script>
 
 <style scoped>
-
+img {
+    max-width: 100%;
+    max-height: 100%;
+}
 .itemsquare{
 	width:200px;
 	min-height: auto;
@@ -38,7 +41,10 @@ export default {
 }
 .image{
 	/*background-color: blue;*/
+	width :100%;
 	height: 150px;
+	background-size: auto 100%;
+	padding-top: 5px;
 }
 .name{
 	padding-left: 10px;

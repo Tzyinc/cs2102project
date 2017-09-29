@@ -41,7 +41,7 @@ export default {
       name: 'Book',
       owner: 'tom',
       price: 5.5,
-      image: '../assets/book.png'
+      image: '/static/images/book.png'
 
     }
   },
