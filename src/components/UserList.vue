@@ -13,24 +13,36 @@
       :columns="gridColumns"
       :filter-key="searchQuery">
     </grid>
+    <itemsquare
+      :name="name"
+      :owner='owner'
+      :price= '5.5'
+      :image="image"></itemsquare>
   </div>
 </template>
 
 
 <script>
 import Grid from './Grid'
+import ItemSquare from './ItemGridSquare'
 
 export default {
   name: 'userlist',
   components: {
-    Grid,
+    Grid, 
+    'itemsquare' : ItemSquare,
   },
   data () {
     return {
       searchQuery: '',
       users: [],
       msg: 'User List',
-      gridColumns: []
+      gridColumns: [],
+      name: 'Book',
+      owner: 'tom',
+      price: 5.5,
+      image: '../assets/book.png'
+
     }
   },
   methods: {
