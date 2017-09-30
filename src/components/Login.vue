@@ -42,13 +42,14 @@
     },
     methods: {
       submit() {
+	  this.login_msg = 'test';
         var credentials = {
           username: this.credentials.username,
           password: this.credentials.password
         }
         // We need to pass the component's this context
         // to properly make use of http in the auth service
-        this.login_msg = auth.login(this, credentials, '/')
+        this.login_msg = auth.login(this, credentials, '/Register')
       }
     }
 
