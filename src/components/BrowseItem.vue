@@ -1,27 +1,25 @@
 <template>
 <div class="browseItem">
 	<h1>Browse Item</h1>
-	<form id="search">
-    <input class="form-control" name="query"  v-model="searchQuery" aria-describedby="searchHelp" placeholder="Search for items">
-    <small id="searchHelp" class="form-text text-muted">Search for items listed by other users here</small>
-    </form>	
+	<div class="input-group">
+    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
+    <span class="input-group-btn">
+    	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
+    </span>
+
+    </div>	
     <br/>
-    <div class="row">
-    	<div class="">
+    <div class="itemRow" v-for = "item in items">
+    	<div class="item"> 
     	<itemsquare
-	      :name="name"
-	      :owner='owner'
-	      :price= 'price'
-	      :image="image"></itemsquare>
-    	</div>
-    	<div class="">
-    	<itemsquare
-	      :name="name"
-	      :owner='owner'
-	      :price= 'price'
+    	  :iid = "item.iid"
+	      :name="item.name"
+	      :owner='item.owner_username'
+	      :price= 'item.minbid'
 	      :image="image"></itemsquare>
     	</div>
     </div>
+    <br/>
     <div><pre>data: {{$data}}</pre></div>	
 </div>
 </template>
@@ -54,6 +52,9 @@ export default {
     }
   },
   methods: {
+  	search (query){
+  		alert("Searching for ...\n" + query)
+  	}
   } ,
   created: function () {
     this.$http.get(api_url)
@@ -75,4 +76,13 @@ export default {
     margin-top: 20px;
 }
 
+.item{
+	margin:10px;
+	display: inline-block;
+}
+
+.itemRow{
+	display: inline-block;
+}
 </style>
+

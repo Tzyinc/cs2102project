@@ -1,5 +1,5 @@
 <template>
-<div class="itemsquare">
+<div class="itemsquare" v-on:click="load(iid)">
 	<div id='image'>
 		<img :src="image">
 	</div>
@@ -14,12 +14,15 @@
 <script>
 export default {
   name: 'ItemSquare',
-  props: ['name', 'owner', 'price', 'image'],
+  props: ['iid','name', 'owner', 'price', 'image'],
   data () {
     return {
     }
   },
   methods: {
+  	load (iid){
+  		alert("Loading item id: " + iid)
+  	}
   } 
 }
 </script>
@@ -39,6 +42,9 @@ img {
     display: inline-block;
     padding-bottom: 1px;
     border-radius: 1em;
+}
+.itemsquare:hover {
+	border-color: grey;
 }
 #image{
 	/*background-color: blue;*/
