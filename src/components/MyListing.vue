@@ -1,26 +1,28 @@
 <template>
-<div class="browseItem">
-	<h1>Browse Item</h1>
+<div class="myListing">
+	<h1>My Listing</h1>
+  <!--
 	<div class="input-group">
     <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
     <span class="input-group-btn">
     	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
     </span>
 
-    </div>	
-    <br/>
-    <div class="itemRow" v-for = "item in items">
-    	<div class="item"> 
+  </div>	
+  -->
+  <br/>
+  <div class="itemRow" v-for = "item in items">
+    <div class="item"> 
     	<itemsquare
     	  :iid = "item.iid"
 	      :name="item.name"
 	      :owner='item.owner_username'
 	      :price= 'item.minbid'
 	      :image="image"></itemsquare>
-    	</div>
-    </div>
-    <br/>
-    <!--<div><pre>data: {{$data}}</pre></div>	-->
+  	</div>
+  </div>
+  <br/>
+  <!--<div><pre>data: {{$data}}</pre></div>	-->
 </div>
 </template>
 
@@ -30,7 +32,7 @@ import ItemSquare from './ItemGridSquare'
 var api_url = api_ep.API_URL + api_ep.ITEM
 
 export default {
-  name: 'BrowseItem',
+  name: 'MyListing',
   components: {
     'itemsquare' : ItemSquare,
   },
@@ -39,16 +41,14 @@ export default {
     return {
     	searchQuery: '',
     	items: [],
-      	image: '/static/images/book.png'
-
+      image: '/static/images/book.png',
+      login_user: 'asdf'
     }
   },
   methods: {
-  	search (query){
-  		alert("Searching for ...\n" + query)
-  	}
   } ,
   created: function () {
+    /*Change here to get items by logged in user*/
     this.$http.get(api_url)
       .then(response => {
         this.items = response.data;
@@ -59,12 +59,12 @@ export default {
 </script>
 
 <style scoped>
-.browseItem{
+.myListing{
     margin: 0 auto;
     text-align: center;
 }
 
-.browseItem h1{
+.myListing h1{
     margin-top: 20px;
 }
 
