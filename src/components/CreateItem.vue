@@ -47,7 +47,7 @@
 		</div> 
         
 	</form>
-			<div><pre>data: {{$data | json 2}}</pre></div>
+			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
 </div>
 </template>
 
@@ -62,16 +62,15 @@ export default {
 
     return {
     	owner_username   : 'asdf',
-	    name    : 'Item Name',
-	    desc    : 'Description of Item',
-	    imageSrc   : 'Image link',
-	    tags    : 'tags',
-	    minBid  : 1.50,
-	    location: 'Kent Ridge',
+	    name     : 'Item Name',
+	    desc     : 'Description of Item',
+	    imageSrc : 'Image link',
+	    tags     : 'tags',
+	    minBid   : 1.50,
+	    location : 'Kent Ridge',
 	    availF   : '11-10-2017',
 	    availT   : '11-11-2017',
-	    status   : true,
-	    api : api_url
+	    status   : true
     }
   },
   methods: {

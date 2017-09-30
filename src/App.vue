@@ -1,5 +1,5 @@
 <template>
-  <div class="container" id="app">
+  <div class="container-fluid" id="app">
     <!-- <img src="./assets/logo.png"> 
 	<UserSelection v-on:sourceChanged="sourceChanged"></UserSelection>
   <Userlist v-bind:source="source"></Userlist>-->

@@ -62,14 +62,14 @@ export default {
     }
   },
   created: function () {
-    this.$http.get('http://localhost:8080/api/example')
+    this.$http.get('http://localhost:8080/api/user')
       .then(response => {
         this.users = response.data;
         // alert(response);
-        msg = response;
-        document.write(response);
+        //msg = response;
+        //document.write(response);
         console.log(this.users);
-        userKeys(users[0]);
+        //userKeys(users[0]);
       });
   }
 }
