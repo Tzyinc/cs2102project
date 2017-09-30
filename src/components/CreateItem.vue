@@ -1,53 +1,56 @@
 <template>
 <div class="createItem">
-	<h1>Create an Item</h1>
+	<h1>Create Item</h1>
 	<form id="itemForm">
 		
 		<!-- Name -->
 		<div class="formRow">
 			<label for="name">Name: </label>
-			<input class="name" type="text" v-model="name">
+			<input class="name form-control" type="text" v-model="name" placeholder="Item Name" >
 		</div>
 		<!-- Desc -->
 		<div class="formRow">
 			<label for="desc">Description: </label>
-			<textarea class="desc" v-model="desc" rows="5">{{desc}}</textarea>
+			<textarea class="desc form-control" v-model="desc" rows="5" placeholder="Description of Item"></textarea>
 		</div>
 		<!-- Image -->
 		<div class="formRow">
 			<label for="image">Image: </label>
-			<input class="image" type="text" v-model="imageSrc">
+			<input class="image form-control" type="text" v-model="imageSrc" placeholder="Image link">
 		</div>
 		<!-- Tags -->
 		<div class="formRow">
 			<label for="tag">Tags: </label>
-			<input class="tag" type="text" v-model="tags">
+			<input class="tag form-control" type="text" v-model="tags" placeholder="Tags">
 		</div>
 		<!-- Min Price -->
 		<div class="formRow">
 			<label for="minbid">Minimum Price: </label>
-			<input class="minbid" v-model="minBid" number>
+			<input class="minbid form-control" v-model="minBid" number placeholder="1.50">
 		</div>
 		<!-- Location -->
 		<div class="formRow">
 			<label for="location">Location: </label>
-			<input class="location" type="text" v-model="location">
+			<input class="location form-control" type="text" v-model="location" placeholder="Kent Ridge">
 		</div>
 		<!-- Availability -->
 		<div class="formRow">
 			<label for="avail">Availability: </label>
-			<input class="avail" type="date" v-model="availF">
-			<input class="avail" type="date" v-model="availT">
+			<input class="avail form-control" type="date" v-model="availF" placeholder="01-10-2017">
+			<input class="avail form-control" type="date" v-model="availT" placeholder="11-10-2017"> 
 			
 		</div>
-		<div class="formRow">
+		<br/>
+		<div class="formRow" >
 			<label></label>
-			<button v-on:click="cancel()">Cancel</button>
-			<button v-on:click="submit($data)">Submit</button>
+			<button type="button" class="btn btn-secondary" v-on:click="cancel()">Cancel</button>
+			<button type="button" class="btn btn-primary" v-on:click="submit($data)">Submit</button>
 		</div> 
         
 	</form>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
+			<div><pre>data: {{$data}}</pre></div>
+			
 </div>
 </template>
 
@@ -62,14 +65,14 @@ export default {
 
     return {
     	owner_username   : 'asdf',
-	    name     : 'Item Name',
-	    desc     : 'Description of Item',
-	    imageSrc : 'Image link',
-	    tags     : 'tags',
-	    minBid   : 1.50,
-	    location : 'Kent Ridge',
-	    availF   : '11-10-2017',
-	    availT   : '11-11-2017',
+	    name     : '',
+	    desc     : '',
+	    imageSrc : '',
+	    tags     : '',
+	    minBid   : 0.99,
+	    location : '',
+	    availF   : '',
+	    availT   : '',
 	    status   : true
     }
   },
@@ -121,6 +124,7 @@ export default {
 	border-collapse: collapse;
 	text-align: center;
 	width: 100%;
+	margin-top: 20px;
 }
 
 .formRow{
@@ -150,5 +154,6 @@ export default {
 .createItem h1{
 	width : 100%;
 	vertical-align:middle;
+	margin-top: 20px;
 }
 </style>

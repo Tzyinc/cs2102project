@@ -1,12 +1,12 @@
 <template>
 <div class="itemsquare">
-	<div class='image'>
+	<div id='image'>
 		<img :src="image">
 	</div>
 	<div class='info'>
-		<div class='name'>{{name}}</div>
-		<div class='owner'>{{owner}}</div>
-		<div class='price'>{{price}}</div>
+		<div id='name'>{{name}}</div>
+		<div class="alert-light" id='owner'>{{owner}}</div>
+		<div id='price'>{{price}}</div>
 	</div>
 </div>
 </template>
@@ -37,17 +37,17 @@ img {
     overflow:hidden;
     /*background-color: red;*/
     display: inline-block;
-    padding-bottom: 5px;
+    padding-bottom: 1px;
     border-radius: 1em;
 }
-.image{
+#image{
 	/*background-color: blue;*/
 	width :100%;
 	height: 150px;
 	background-size: auto 100%;
 	padding-top: 5px;
 }
-.name{
+#name{
 	padding-left: 10px;
 	padding-bottom: 5px;
 	width:90%;
@@ -55,7 +55,7 @@ img {
 	/*background-color: green;*/
 
 }
-.owner{
+#owner{
 	padding-left: 10px; 
 	width:40%;
 	float:left;
@@ -63,7 +63,7 @@ img {
 	font-size: smaller;
 	/*background-color: yellow;*/
 }
-.price{
+#price{
 	padding-right: 10px;
 	width:40%;
 	float:right;

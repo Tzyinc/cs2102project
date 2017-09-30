@@ -5,6 +5,7 @@ import UserList from '@/components/UserList.vue'
 import Registration from '@/components/Registration.vue'
 import Login from '@/components/Login.vue'
 import CreateItem from '@/components/CreateItem.vue'
+import BrowseItem from '@/components/BrowseItem.vue'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/createItem',
       name: 'CreateItem',
       component: CreateItem
+    },
+    {
+      path: '/browseItem',
+      name: 'BrowseItem',
+      component: BrowseItem
     }
   ]
 })

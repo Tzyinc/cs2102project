@@ -13,6 +13,7 @@
       :columns="gridColumns"
       :filter-key="searchQuery">
     </grid>
+    <br/>
     <itemsquare
       :name="name"
       :owner='owner'
