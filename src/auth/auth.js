@@ -17,7 +17,8 @@ export default {
 	  success: function (response) {
         if (response.success === true) {
 			console.log('logged in');
-          this.user.authenticated = true
+			this.$session.start()
+			this.$session.set('username', creds.username)
           // Redirect to a specified route
           if (redirect) {
             router.go(redirect)
