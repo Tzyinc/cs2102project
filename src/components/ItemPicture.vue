@@ -1,6 +1,5 @@
 <template>
   <div class="item-picture">
-    <div class="item-name">{{item.name}}</div>
     <div class="item-image"><img :src="item.imagesrc"/></div>
   </div>
 </template>
@@ -23,12 +22,17 @@ export default {
 <style scoped>
 .item-picture {
   width: 30%;
-  text-align: left;
-  padding: 2%;
+  display: inline-block;
+  /*background-color: #cecece;*/
+  text-align:left;
+  vertical-align: top;
+  height: 270px;
 }
 
 .item-picture img {
   max-width:100%;
+  object-fit: cover;
+  margin: auto;
 }
 
 .item-name {
