@@ -1,16 +1,14 @@
 <template>
   <div class="LoginHeader">
-    <nav>
-    <ul>
-      <li>
-        <h1><router-link to="/">Stuff Share</router-link></h1>
-      </li>
-      <li><router-link to="/Login">Sign in</router-link>
-      </li>
-      <li><router-link to="/Register">Sign up</router-link>
-      </li>
-    </ul>
-</nav>
+    <nav class="navbar navbar-default">
+      <div class="navbar-header">
+      <router-link to="/">StuffShare</router-link>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><router-link to="/Login">Login</router-link></li>
+        <li><router-link to="/Register">Sign Up</router-link></li>
+      </ul>
+  </nav>
   </div>
 </template>
 
@@ -31,7 +29,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 nav {
-  background-color: #000000;
+  background-color: #cecece;
   color: #888;
   margin: 0px 0px 0px 0px;
   overflow: hidden;
@@ -65,5 +63,15 @@ nav > ul > li > router-link {
 nav > ul > li:hover > router-link {
   color: rgb(255, 255, 255);
 }
+
+.navbar {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      border: 0;
+      border-radius: 0;
+      margin-bottom: 0;
+      font-size: 12px;
+      letter-spacing: 5px;
+  }
 
 </style>
