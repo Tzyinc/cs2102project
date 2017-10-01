@@ -12,7 +12,7 @@ export default {
         item: {
           id: '12345',
           name: 'A book about cats',
-          imagesrc: 'https://en.facebookbrand.com/wp-content/uploads/2016/05/FB-fLogo-Blue-broadcast-2.png',
+          imagesrc: '/static/images/book.png',
         }
       }
   }

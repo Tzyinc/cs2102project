@@ -1,28 +1,39 @@
 <template>
   <div class="item-owner-info">
     <div class="item-info-title">Info</div>
-    <p>Name: {{item.name}}</p>
-    <p>Status: <span v-if="item.status">Available</span><span v-else>Not Available</span></p>
-    <p>Owner: {{itemOwner.username}}</p>
-    <p>Location: {{item.location}}</p>
+    <p><span class="item-info-attr">Name:</span> {{item.name}}</p>
+    <p><span class="item-info-attr">Owner:</span> {{item.owner_uid}}</p>
+    <p><span class="item-info-attr">Status</span> <span v-if="item.status">Available</span><span v-else>Not Available</span></p>
+    <p><span class="item-info-attr">Location:</span> {{item.location}}</p>
+    <p><span class="item-info-attr">Time Listed:</span> {{item.timelisted}}</p>
   </div>
 </template>
 
 <script>
+import api_ep from '../api.json'
+
+var api_url = api_ep.API_URL + api_ep.ITEM
+
 export default {
   name: 'ItemOwnerInfo',
   data() {
     return {
-      msg: "testing",
-      itemOwner: {
-        username: 'randomuser123',
-      },
       item: {
+        owner_uid: 'user123',
         status: true,
         name: 'A book about cats, 5th edition',
         location: 'blk 123 clementi ave west',
+        timelisted: '',
       }
     }
+  },
+
+  created: function () {
+    this.$http.get(api_url)
+      .then(response => {
+        this.item = response.data;
+        console.log(this.item);
+      });
   }
 }
 </script>
@@ -42,5 +53,9 @@ export default {
   font-weight:bold;
   font-size:2em;
   padding-bottom: 2%;
+}
+
+.item-info-attr {
+  font-weight:bold;
 }
 </style>

@@ -39,7 +39,7 @@
 .detailed-item {
   width: 80%;
   margin:auto;
-  background-color: #efefef; /*to remove later*/
+  /*background-color: #efefef; /*to remove later*/
   padding: 2%;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .detailed-title {
-  background-color: #b3ffec;
+  background-color: #cecece;
   font-weight:bold;
   font-size: 2em;
 }
