@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>do we really need to show this</td> <!-- need to fix td width-->
+        <td>do we really need to show the bidder</td> <!-- need to fix td width-->
         <td>{{item.minBid}}</td>
       </tr>
     </tbody>
