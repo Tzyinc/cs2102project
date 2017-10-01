@@ -29,7 +29,7 @@ export default new Router({
       component: Registration
     },
     {
-      path: '/item/placeholderstringfornow',
+      path: '/item/itemid',
       name: 'Item - book',
       component: DetailedItem
     },

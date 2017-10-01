@@ -1,17 +1,15 @@
 <template>
   <div class="LoginHeader">
     <nav>
-  <ul>
-    <li>
-      <h1><router-link to="/">Stuff Share</router-link></h1>
-    </li>
-    <li><router-link to="/Login">Sign in</router-link>
-    </li>
-    <li><router-link to="/Register">Sign up</router-link>
-    </li>
-    <li><router-link to="/item/placeholderstringfornow">Detailed Item</router-link>
-    </li>
-  </ul>
+    <ul>
+      <li>
+        <h1><router-link to="/">Stuff Share</router-link></h1>
+      </li>
+      <li><router-link to="/Login">Sign in</router-link>
+      </li>
+      <li><router-link to="/Register">Sign up</router-link>
+      </li>
+    </ul>
 </nav>
   </div>
 </template>
