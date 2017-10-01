@@ -8,6 +8,11 @@ const createItemPS = new dbcon.PS(
 
 const getAllItemPS = new dbcon.PS('getItem', 'SELECT * FROM app_item ')
 
+const getItemByUserPS = new dbcon.PS(
+  'getItemByUser',
+  'SELECT * FROM app_item WHERE owner_username = $1'
+)
+
 function createItem(req, res){
   var itemDetails = req.body.data
   if (itemDetails != null) {
@@ -31,14 +36,27 @@ function createItem(req, res){
 }
 
 function getItem(req, res){
-  dbcon.db
-    .any(getAllItemPS)
-    .then(result => {
-      res.json(result)
-    })
-    .catch(error => {
-      res.json(error)
-    })
+  var itemDetails = req.query
+  if (itemDetails.item_owner != null) {
+    getItemByUserPS.values = [ itemDetails.item_owner ]
+    dbcon.db
+      .any(getItemByUserPS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
+  } else {
+    dbcon.db
+      .any(getAllItemPS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
+  }
 }
 
 module.exports = {
