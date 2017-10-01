@@ -13,24 +13,37 @@
       :columns="gridColumns"
       :filter-key="searchQuery">
     </grid>
+    <br/>
+    <itemsquare
+      :name="name"
+      :owner='owner'
+      :price= '5.5'
+      :image="image"></itemsquare>
   </div>
 </template>
 
 
 <script>
 import Grid from './Grid'
+import ItemSquare from './ItemGridSquare'
 
 export default {
   name: 'userlist',
   components: {
-    Grid,
+    Grid, 
+    'itemsquare' : ItemSquare,
   },
   data () {
     return {
       searchQuery: '',
       users: [],
       msg: 'User List',
-      gridColumns: []
+      gridColumns: [],
+      name: 'Book',
+      owner: 'tom',
+      price: 5.5,
+      image: '/static/images/book.png'
+
     }
   },
   methods: {
@@ -50,14 +63,14 @@ export default {
     }
   },
   created: function () {
-    this.$http.get('http://localhost:8080/api/example')
+    this.$http.get('http://localhost:8080/api/user')
       .then(response => {
         this.users = response.data;
         // alert(response);
-        msg = response;
-        document.write(response);
+        //msg = response;
+        //document.write(response);
         console.log(this.users);
-        userKeys(users[0]);
+        //userKeys(users[0]);
       });
   }
 }

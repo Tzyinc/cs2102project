@@ -5,6 +5,9 @@ import UserList from '@/components/UserList.vue'
 import Registration from '@/components/Registration.vue'
 import Login from '@/components/Login.vue'
 import DetailedItem from '@/components/DetailedItem.vue'
+import CreateItem from '@/components/CreateItem.vue'
+import BrowseItem from '@/components/BrowseItem.vue'
+import MyListing from '@/components/MyListing.vue'
 
 Vue.use(Router)
 
@@ -29,6 +32,21 @@ export default new Router({
       path: '/item/placeholderstringfornow',
       name: 'Item - book',
       component: DetailedItem
+    },
+    {
+      path: '/createItem',
+      name: 'CreateItem',
+      component: CreateItem
+    },
+    {
+      path: '/browseItem',
+      name: 'BrowseItem',
+      component: BrowseItem
+    },
+    {
+      path: '/myListing',
+      name: 'MyListing',
+      component: MyListing
     }
   ]
 })
