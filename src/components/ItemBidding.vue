@@ -19,7 +19,7 @@ export default {
 
 <style scoped>
 .item-bidding {
-  width: 50%;
+  width: 70%;
   text-align: left;
   display: inline-block;
   position: relative;

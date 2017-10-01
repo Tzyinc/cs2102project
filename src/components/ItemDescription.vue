@@ -25,7 +25,7 @@ export default {
 
 <style scoped>
 .item-desc {
-  width: 50%;
+  width: 70%;
   text-align: left;
   display: inline-block;
   position: relative;

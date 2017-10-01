@@ -1,6 +1,6 @@
 <template>
   <div class="container detailed-item">
-    <h1>Listing Details</h1>
+    <div class = "detailed-title">Listing Details</div>
     <div class="row">
       <ItemPicture></ItemPicture>
       <ItemDescription></ItemDescription>
@@ -39,9 +39,18 @@
 .detailed-item {
   width: 80%;
   margin:auto;
+  background-color: #efefef; /*to remove later*/
+  padding: 2%;
 }
 
 .detailed-item * {
-  padding:2%;
+  padding:3%;
 }
+
+.detailed-title {
+  background-color: #b3ffec;
+  font-weight:bold;
+  font-size: 2em;
+}
+
 </style>
