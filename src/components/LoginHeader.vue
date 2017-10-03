@@ -60,6 +60,7 @@ nav {
   background-color: #cecece;
   color: #888;
   margin: 0px 0px 0px 0px;
+  border: 0px;
   overflow: hidden;
   width: 100%;
   display: -webkit-flex;
