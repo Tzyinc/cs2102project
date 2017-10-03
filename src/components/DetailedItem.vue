@@ -46,8 +46,7 @@
     }
   },
   created: function () {
-    this.iid = this.$route.params.iid
-    this.$http.get(api_url + iid)
+    this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
         this.item = response.data;
         console.log(this.item);
