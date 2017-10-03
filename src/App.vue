@@ -1,6 +1,6 @@
 <template>
   <div class="container-fluid" id="app">
-    <!-- <img src="./assets/logo.png"> 
+    <!-- <img src="./assets/logo.png">
 	<UserSelection v-on:sourceChanged="sourceChanged"></UserSelection>
   <Userlist v-bind:source="source"></Userlist>-->
   <LoginHeader></LoginHeader>

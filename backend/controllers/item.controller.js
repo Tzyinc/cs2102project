@@ -8,6 +8,16 @@ const createItemPS = new dbcon.PS(
 
 const getAllItemPS = new dbcon.PS('getItem', 'SELECT * FROM app_item ')
 
+const getItemByUserPS = new dbcon.PS(
+  'getItemByUser',
+  'SELECT * FROM app_item WHERE owner_username = $1'
+)
+
+const getItemUserByIDPS = new dbcon.PS(
+  'getItemUserByID',
+  'SELECT i.iid, i.owner_username, i.name, i.imagesrc AS itemImg, i.description, i.minbid, i.timeListed, i.status, i.location, i.startdate, i.enddate, u.userrating, u.imagesrc AS userImg FROM app_item i INNER JOIN app_user u ON i.owner_username = u.username WHERE i.iid = $1'
+)
+
 function createItem(req, res){
   var itemDetails = req.body.data
   if (itemDetails != null) {
@@ -31,17 +41,50 @@ function createItem(req, res){
 }
 
 function getItem(req, res){
-  dbcon.db
-    .any(getAllItemPS)
-    .then(result => {
-      res.json(result)
-    })
-    .catch(error => {
-      res.json(error)
-    })
+  var itemDetails = req.query
+  if (itemDetails.item_owner != null) {
+    getItemByUserPS.values = [ itemDetails.item_owner ]
+    dbcon.db
+      .any(getItemByUserPS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
+  } else {
+    dbcon.db
+      .any(getAllItemPS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
+  }
+}
+
+function getItemWithUser(req, res){
+  var itemDetails = req.query
+  if (itemDetails.iid != null) {
+    console.log(itemDetails.iid)
+    getItemUserByIDPS.values = [ itemDetails.iid ]
+    console.log(getItemUserByIDPS)
+    dbcon.db
+      .any(getItemUserByIDPS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
+  } else {
+    res.json({success: false})
+  }
 }
 
 module.exports = {
   createItem: createItem,
-  getItem: getItem
+  getItem: getItem,
+  getItemWithUser: getItemWithUser
 }
