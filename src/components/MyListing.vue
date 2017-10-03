@@ -10,6 +10,11 @@
 
   </div>	
   -->
+  <div class="createButton">
+    
+    <button type="button" class="btn btn-info" v-on:click="go_to_create()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create New Listing</button>
+  </div>
+   <br/>
   <br/>
   <div class="itemRow" v-for = "item in items">
     <div class="item"> 
@@ -30,6 +35,7 @@
 import api_ep from '../api.json'
 import ItemSquare from './ItemGridSquare'
 var api_url = api_ep.API_URL + api_ep.ITEM
+var api_item_owner = '?item_owner='
 
 export default {
   name: 'MyListing',
@@ -46,10 +52,13 @@ export default {
     }
   },
   methods: {
+    go_to_create (){
+      this.$router.push('createItem')
+    }
   } ,
   created: function () {
     /*Change here to get items by logged in user*/
-    this.$http.get(api_url)
+    this.$http.get(api_url+api_item_owner+this.login_user)
       .then(response => {
         this.items = response.data;
         console.log(this.items);
@@ -76,5 +85,11 @@ export default {
 .itemRow{
 	display: inline-block;
 }
+
+.createButton{
+  float: right;
+  margin-right: 50px;
+}
+
 </style>
 
