@@ -40,11 +40,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
-<<<<<<< HEAD
 }
 html, body {
     height:100%;
-=======
->>>>>>> 35e1f7312e6428b3721fef287328b286c93232bf
 }
 </style>

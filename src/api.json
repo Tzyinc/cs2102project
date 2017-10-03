@@ -1,9 +1,5 @@
 {
   "API_URL": "http://localhost:8080/",
-<<<<<<< HEAD
   "USER": "api/user/",
   "ITEM": "api/item"
-=======
-  "USER": "api/user/"
->>>>>>> 35e1f7312e6428b3721fef287328b286c93232bf
 }
