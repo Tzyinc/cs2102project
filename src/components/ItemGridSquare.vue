@@ -6,7 +6,7 @@
 	<div class='info'>
 		<div id='name'>{{name}}</div>
 		<div class="alert-light" id='owner'>{{owner}}</div>
-		<div id='price'>{{price}}</div>
+		<div id='price'>${{price}}</div>
 	</div>
 </div>
 </template>
@@ -22,6 +22,7 @@ export default {
   methods: {
   	load (iid){
   		alert("Loading item id: " + iid)
+  		this.$router.push({ name: 'DetailedItem', params: { iid: iid }})
   	}
   } 
 }
