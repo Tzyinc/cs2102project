@@ -8,14 +8,13 @@ import VueResource from 'vue-resource'
 Vue.use(VueResource)
 Vue.config.productionTip = false
 
-import session from 'vue-session'
-Vue.use(session)
+import VueSession from 'vue-session'
+Vue.use(VueSession)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  session,
   template: '<App/>',
   components: { App }
 })
