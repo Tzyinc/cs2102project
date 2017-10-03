@@ -4,6 +4,11 @@ import Hello from '@/components/Hello.vue'
 import UserList from '@/components/UserList.vue'
 import Registration from '@/components/Registration.vue'
 import Login from '@/components/Login.vue'
+import DetailedItem from '@/components/DetailedItem.vue'
+import CreateItem from '@/components/CreateItem.vue'
+import UpdateItem from '@/components/UpdateItem.vue'
+import BrowseItem from '@/components/BrowseItem.vue'
+import MyListing from '@/components/MyListing.vue'
 
 Vue.use(Router)
 
@@ -11,8 +16,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'UserList',
-      component: UserList
+      alias: '/browseItem',
+      name: 'BrowseItem',
+      component: BrowseItem
     },
     {
       path: '/login',
@@ -23,6 +29,26 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Registration
+    },
+    {
+      path: '/item/:iid',
+      name: 'DetailedItem',
+      component: DetailedItem
+    },
+    {
+      path: '/createItem',
+      name: 'CreateItem',
+      component: CreateItem
+    },
+    {
+      path: '/updateItem',
+      name: 'UpdateItem',
+      component: UpdateItem
+    },
+    {
+      path: '/myListing',
+      name: 'MyListing',
+      component: MyListing
     }
   ]
 })

@@ -1,6 +1,6 @@
 <template>
-  <div class="container" id="app">
-    <!-- <img src="./assets/logo.png"> 
+  <div class="container-fluid" id="app">
+    <!-- <img src="./assets/logo.png">
 	<UserSelection v-on:sourceChanged="sourceChanged"></UserSelection>
   <Userlist v-bind:source="source"></Userlist>-->
   <LoginHeader></LoginHeader>
@@ -40,5 +40,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 0px;
+}
+html, body {
+    height:100%;
 }
 </style>

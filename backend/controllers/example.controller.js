@@ -1,7 +1,7 @@
 var dbcon = require('../dbcon/database.js')
 const selectUserPS = new dbcon.PS('selectAllUsers', 'SELECT * FROM app_user')
 
-function someExample (req, res){
+function someExample(req, res){
   dbcon.db
     .any(selectUserPS)
     .then(result => {
