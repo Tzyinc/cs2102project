@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello.vue'
-import UserList from '@/components/UserList.vue'
 import Registration from '@/components/Registration.vue'
 import Login from '@/components/Login.vue'
 import CreateItem from '@/components/CreateItem.vue'
@@ -14,8 +13,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'UserList',
-      component: UserList
+      alias: '/browseItem',
+      name: 'BrowseItem',
+      component: BrowseItem
     },
     {
       path: '/login',
@@ -31,11 +31,6 @@ export default new Router({
       path: '/createItem',
       name: 'CreateItem',
       component: CreateItem
-    },
-    {
-      path: '/browseItem',
-      name: 'BrowseItem',
-      component: BrowseItem
     },
     {
       path: '/myListing',
