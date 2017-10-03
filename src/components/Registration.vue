@@ -29,7 +29,7 @@
       >
     </div>
     <button class="btn btn-primary" @click="submit()">Submit</button>
-  <p style="color:red">{{register_msg}}</p>
+    <p>{{register_msg}}</p>
   </div>
 </template>
 
@@ -71,6 +71,11 @@ export default {
         this.register_msg = 'Passwords do not match!'
       }
     }
+  },
+  created: function () {
+    if(this.$session.has('username')) {
+      this.$router.push('/')
+    }
   }
 }
 </script>
@@ -85,5 +90,10 @@ export default {
 
 .registrationPage h1{
     margin-top: 20px;
+}
+
+.registrationPage p{
+  color: red;
+  margin-top: 20px;
 }
 </style>

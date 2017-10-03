@@ -38,6 +38,7 @@ export default {
             success: function (response) {
                 if(response.success == true) {
                     console.log('success');
+                    context.$router.push('/Login')
                 } else {
                     console.log('fail');
                 }
