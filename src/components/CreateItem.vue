@@ -77,7 +77,7 @@ export default {
     }
   },
   methods: {
-  	submit (formData) {
+	submit (formData) {
   		$.ajax({
     	url: api_url, //Your api url
      	type: 'PUT', //type is any HTTP method

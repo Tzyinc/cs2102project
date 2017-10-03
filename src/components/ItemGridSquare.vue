@@ -22,6 +22,7 @@ export default {
   methods: {
   	load (iid){
   		alert("Loading item id: " + iid)
+  		this.$router.push({ name: 'DetailedItem', params: { iid: iid }})
   	}
   } 
 }
