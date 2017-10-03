@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello.vue'
-import UserList from '@/components/UserList.vue'
 import Registration from '@/components/Registration.vue'
 import Login from '@/components/Login.vue'
 import DetailedItem from '@/components/DetailedItem.vue'
