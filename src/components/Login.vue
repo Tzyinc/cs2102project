@@ -1,31 +1,31 @@
 <template>
-    <div class="col-sm-4 col-sm-offset-4">
-      <h2>Log In</h2>
-      <div class="alert alert-danger" v-if="error">
-        <p>{{ error }}</p>
-      </div>
-      <div class="form-group">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Username"
-          v-model="credentials.username"
-        >
-      </div>
-      <div class="form-group">
-        <input
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          v-model="credentials.password"
-        >
-      </div>
-      <button class="btn btn-primary" @click="submit()">Log in</button>
-	  <p style="color:red">{{login_msg}}</p>
+  <div class="container loginPage">
+    <h1>Log In</h1>
+    <div class="alert alert-danger" v-if="error">
+      <p>{{ error }}</p>
     </div>
-  </template>
+    <div class="form-group">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Username"
+        v-model="credentials.username"
+      >
+    </div>
+    <div class="form-group">
+      <input
+        type="password"
+        class="form-control"
+        placeholder="Password"
+        v-model="credentials.password"
+      >
+    </div>
+    <button class="btn btn-primary" @click="submit()">Log in</button>
+	  <p style="color:red">{{login_msg}}</p>
+  </div>
+</template>
 
-  <script>
+<script>
   import auth from '../auth/auth'
   export default {
     data() {
@@ -36,13 +36,14 @@
           username: '',
           password: ''
         },
-		login_msg: '',
+		    login_msg: '',
         error: ''
       }
     },
+
     methods: {
       submit() {
-	  this.login_msg = 'test';
+        this.login_msg = 'test';
         var credentials = {
           username: this.credentials.username,
           password: this.credentials.password
@@ -51,7 +52,25 @@
         // to properly make use of http in the auth service
         this.login_msg = auth.login(this, credentials, '/Register')
       }
+    },
+    created: function () {
+      if(this.$session.has('username')) {
+        this.$router.push('/')
+      }
     }
-
   }
-  </script>
+</script>
+
+<style scoped>
+.loginPage{
+  width: 400px;
+  margin:auto;
+  /*background-color: #efefef; /*to remove later*/
+  padding: 2%;
+}
+
+.loginPage h1{
+    margin-top: 20px;
+}
+</style>
+

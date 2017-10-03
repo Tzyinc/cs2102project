@@ -10,16 +10,18 @@ export default {
 
     // Send a request to the login URL and save the returned credentials
     login(context, creds, redirect) {
+        var _auth = this;
         $.ajax({ 
 	       url: api_ep.API_URL + api_ep.USER, //Your api url
 	       type: 'POST', //type is any HTTP method 
 	       data: { data: creds }, //Data as js object 
 	       success: function (response) {
                 if (response.success === true) {
-                    console.log('logged in');
+                    console.log('logged in')
                     context.$session.start()
                     context.$session.set('username', creds.username)
-                    return ''
+                    _auth.user.authenticated = true;
+                    context.$router.push('/')
                 } else {
                     console.log('failed login');
                     return 'Incorrect username/password!'
@@ -36,10 +38,8 @@ export default {
             success: function (response) {
                 if(response.success == true) {
                     console.log('success');
-                    return 'Creation success!';
                 } else {
-                    console.log('fail');		
-                    return 'Username already exist!';
+                    console.log('fail');
                 }
             }
         });
@@ -48,8 +48,8 @@ export default {
     // To log out, we just need to remove the token
     logout(context) {
         context.$session.destroy()
-        context.$router.push('/')
-        this.user.authenticated = false
+        //context.$router.push('/')
+        //this.user.authenticated = false
     },
 
     isLoggedIn(context) {
