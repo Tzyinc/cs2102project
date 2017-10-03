@@ -28,7 +28,7 @@
   import ItemBidding from './ItemBidding'
 
   //var iid //= this.$route.params.iid
-  var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
+  var api_url = api_ep.API_URL + api_ep.ITEM + 'Info?iid='
 
 
   export default {
