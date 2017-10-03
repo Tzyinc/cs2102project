@@ -3,10 +3,16 @@
     <div class = "detailed-title">Listing Details</div>
     <div class="row">
       <ItemPicture></ItemPicture>
-      <ItemDescription></ItemDescription>
+      <ItemDescription :description = "item.description"></ItemDescription>
     </div>
     <div class="row">
-      <ItemOwnerInfo></ItemOwnerInfo>
+      <ItemOwnerInfo
+          :owner = "item.owner_username"
+          :name = "item.name"
+          :location = "item.location"
+          :status = "item.status"
+          :timelisted = "item.timelisted">
+      </ItemOwnerInfo>
       <ItemBidding></ItemBidding>
     </div>
   </div>
@@ -14,10 +20,14 @@
 </template>
 
 <script>
+
+  import api_ep from '../api.json'
   import ItemPicture from './ItemPicture'
   import ItemOwnerInfo from './ItemOwnerInfo'
   import ItemDescription from './ItemDescription'
   import ItemBidding from './ItemBidding'
+
+  var api_url = api_ep.API_URL + api_ep.ITEM
 
   export default {
   name: 'DetailedItem',
@@ -29,8 +39,15 @@
   },
   data() {
     return {
-
+        item: [],
     }
+  },
+  created: function () {
+    this.$http.get(api_url)
+      .then(response => {
+        this.item = response.data;
+        console.log(this.item);
+      });
   }
 }
 </script>

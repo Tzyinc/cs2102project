@@ -7,6 +7,7 @@
 <script>
 export default {
   name: 'ItemPicture',
+  props: ['imagesrc'],
   data() {
       return {
         item: {

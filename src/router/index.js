@@ -29,7 +29,7 @@ export default new Router({
       component: Registration
     },
     {
-      path: '/item/itemid',
+      path: '/item/:iid',
       name: 'Item - book',
       component: DetailedItem
     },

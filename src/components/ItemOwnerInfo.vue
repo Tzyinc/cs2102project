@@ -10,12 +10,10 @@
 </template>
 
 <script>
-import api_ep from '../api.json'
-
-var api_url = api_ep.API_URL + api_ep.ITEM
 
 export default {
   name: 'ItemOwnerInfo',
+  props: ['owner', 'name', 'location', 'status', 'timelisted'],
   data() {
     return {
       item: {
@@ -26,14 +24,6 @@ export default {
         timelisted: '',
       }
     }
-  },
-
-  created: function () {
-    this.$http.get(api_url)
-      .then(response => {
-        this.item = response.data;
-        console.log(this.item);
-      });
   }
 }
 </script>
