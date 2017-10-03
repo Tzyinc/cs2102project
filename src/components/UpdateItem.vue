@@ -1,6 +1,6 @@
 <template>
-<div class="createItem">
-	<h1>Create Item</h1>
+<div class="updateItem">
+	<h1>Update Item</h1>
 	<form id="itemForm">
 		
 		<!-- Name -->
@@ -49,6 +49,7 @@
         
 	</form>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
+			<div><pre>data: {{$data}}</pre></div>
 			
 </div>
 </template>
@@ -59,7 +60,7 @@ import api_ep from '../api.json'
 var api_url = api_ep.API_URL + api_ep.ITEM
 
 export default {
-  name: 'CreateItem',
+  name: 'UpdateItem',
   data () {
 
     return {
@@ -100,13 +101,13 @@ export default {
 </script>
 
 <style scoped>
-.createItem{
+.updateItem{
 	width: 500px;
     margin: 0 auto;
     text-align: center;
 }
 
-.createItem input, textarea{
+.updateItem input, textarea{
 	width : 80% ;
 	display: block;
 	vertical-align: top;
@@ -133,7 +134,7 @@ export default {
 
 }
 
-.createItem label{
+.updateItem label{
 	width: 30%;
 	display: table-cell;
 	vertical-align: top;
@@ -141,7 +142,7 @@ export default {
 	padding-right: 10px;
 }
 
-.createItem button{
+.updateItem button{
 	width: 30%;
 	margin-left: 10px;
 	display: block;
@@ -150,7 +151,7 @@ export default {
 	text-align: center;
 }
 
-.createItem h1{
+.updateItem h1{
 	width : 100%;
 	vertical-align:middle;
 	margin-top: 20px;

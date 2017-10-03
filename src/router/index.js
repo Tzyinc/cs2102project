@@ -5,6 +5,7 @@ import Registration from '@/components/Registration.vue'
 import Login from '@/components/Login.vue'
 import DetailedItem from '@/components/DetailedItem.vue'
 import CreateItem from '@/components/CreateItem.vue'
+import UpdateItem from '@/components/UpdateItem.vue'
 import BrowseItem from '@/components/BrowseItem.vue'
 import MyListing from '@/components/MyListing.vue'
 
@@ -37,6 +38,11 @@ export default new Router({
       path: '/createItem',
       name: 'CreateItem',
       component: CreateItem
+    },
+    {
+      path: '/updateItem',
+      name: 'UpdateItem',
+      component: UpdateItem
     },
     {
       path: '/myListing',
