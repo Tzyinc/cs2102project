@@ -23,5 +23,6 @@ router.route('/user').post(userController.authUser)
 router.route('/user').get(userController.getUserDetails)
 router.route('/item').put(itemController.createItem)
 router.route('/item').get(itemController.getItem)
+router.route('/itemInfo').get(itemController.getItemWithUser)
 
 module.exports = router
