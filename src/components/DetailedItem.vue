@@ -27,7 +27,9 @@
   import ItemDescription from './ItemDescription'
   import ItemBidding from './ItemBidding'
 
-  var api_url = api_ep.API_URL + api_ep.ITEM
+  //var iid //= this.$route.params.iid
+  var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
+
 
   export default {
   name: 'DetailedItem',
@@ -40,10 +42,12 @@
   data() {
     return {
         item: [],
+        iid: 0
     }
   },
   created: function () {
-    this.$http.get(api_url)
+    this.iid = this.$route.params.iid
+    this.$http.get(api_url + iid)
       .then(response => {
         this.item = response.data;
         console.log(this.item);
