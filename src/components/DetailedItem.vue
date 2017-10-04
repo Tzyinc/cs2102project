@@ -1,5 +1,7 @@
 <template>
   <div class="container detailed-item">
+    <div class="btn btn-success boton" v-on:click="load(iid)">
+    <span class="glyphicon glyphicon-pencil"></span> Edit </div>
     <div class = "detailed-title">Listing Details</div>
     <div class="row">
       <ItemPicture></ItemPicture>
@@ -46,6 +48,13 @@
         item: []
     }
   },
+
+  methods: {
+  	load (iid){
+  		this.$router.push({ name: 'UpdateItem', params: { iid: this.$route.params.iid }})
+  	}
+  },
+
   created: function () {
 
     console.log("the full url is:" + api_url + this.$route.params.iid)
@@ -75,6 +84,11 @@
   background-color: #cecece;
   font-weight:bold;
   font-size: 2em;
+}
+
+.boton {
+  position: fixed;
+  right: 10%;
 }
 
 </style>
