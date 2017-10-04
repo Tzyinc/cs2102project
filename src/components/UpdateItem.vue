@@ -98,7 +98,7 @@ export default {
     	})
   	}, 
   	cancel (){
-  		this.$router.push('myListing')
+  		this.$router.push('/myListing')
   	}
   },
   	created: function () {
@@ -116,7 +116,13 @@ export default {
 	    	this.enddate = item.enddate;
 	    	this.owner_username = item.owner_username;
 	    	this.timeListed = item.timelisted;
+	    	if(auth.getUsername(this) != item.owner_username){
+		    	alert("You cannot edit this item.")
+		    	this.$router.push('/myListing')
+		    }
 	    });
+	    
+
 	}    
 }
 </script>
