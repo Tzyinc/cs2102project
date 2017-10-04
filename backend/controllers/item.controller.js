@@ -6,6 +6,12 @@ const createItemPS = new dbcon.PS(
     'VALUES($1, $2, $3, $4, now(), $5, $6, $7, $8, $9)'
 )
 
+const updateItemPS = new dbcon.PS(
+  'updateItem',
+  'UPDATE app_item SET owner_username = $1, name = $2, imagesrc = $3, minbid = $4, timeListed = $5, status = $6, location = $7, description = $8, startdate = $9, enddate = $10 ' +
+    'WHERE iid = $11'
+)
+
 const getAllItemPS = new dbcon.PS('getItem', 'SELECT * FROM app_item ')
 
 const getItemByUserPS = new dbcon.PS(
@@ -35,6 +41,34 @@ function createItem(req, res){
   }
   dbcon.db
     .any(createItemPS)
+    .then(result => {
+      res.json({success: true})
+    })
+    .catch(error => {
+      res.json(error)
+    })
+}
+
+function updateItem(req, res){
+  var itemDetails = req.body.data
+  console.log('test')
+  if (itemDetails != null) {
+    updateItemPS.values = [
+      itemDetails.owner_username,
+      itemDetails.name,
+      itemDetails.imageSrc,
+      itemDetails.minBid,
+      itemDetails.timeListed,
+      itemDetails.status,
+      itemDetails.location,
+      itemDetails.description,
+      itemDetails.startdate,
+      itemDetails.enddate,
+      itemDetails.iid
+    ]
+  }
+  dbcon.db
+    .any(updateItemPS)
     .then(result => {
       res.json({success: true})
     })
@@ -89,5 +123,6 @@ function getItemWithUser(req, res){
 module.exports = {
   createItem: createItem,
   getItem: getItem,
-  getItemWithUser: getItemWithUser
+  getItemWithUser: getItemWithUser,
+  updateItem: updateItem
 }
