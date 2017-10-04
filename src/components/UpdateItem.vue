@@ -49,7 +49,6 @@
         
 	</form>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
-			<div><pre>data: {{$data}}</pre></div>
 			
 </div>
 </template>
@@ -59,6 +58,7 @@ import auth from '../auth/auth'
 import api_ep from '../api.json'
 
 var api_url = api_ep.API_URL + api_ep.ITEM + 'Info?iid='
+var api_post_url = api_ep.API_URL + api_ep.ITEM 
 export default {
   name: 'UpdateItem',
   props: ['iid'],
@@ -74,7 +74,8 @@ export default {
 	    location : '',
 	    startdate   : '',
 	    enddate   : '',
-	    status   : true
+	    status   : true,
+	    timeListed: ''
     }
   },
   methods: {
@@ -82,14 +83,14 @@ export default {
 		var context = this
 		formData.iid = this.iid
   		$.ajax({
-    	url: api_url, //Your api url
+    	url: api_post_url, //Your api url
      	type: 'POST', //type is any HTTP method
      	data: {data: formData}, //Data as js object
      	success: function(response){
 	        console.log('submit update')
 	        if(response.hasOwnProperty('success')){
-	        	alert("Successfully created item:\n" + formData.name)
-	        	context.$router.push('myListing')
+	        	alert("Successfully updated item:\n" + formData.name)
+	        	context.$router.push('/myListing')
 			} else{
 				alert("Failed to submit.\nPlease try again.")
 			}
@@ -114,6 +115,7 @@ export default {
 	    	this.startdate = item.startdate;
 	    	this.enddate = item.enddate;
 	    	this.owner_username = item.owner_username;
+	    	this.timeListed = item.timelisted;
 	    });
 	}    
 }
