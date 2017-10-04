@@ -55,23 +55,22 @@
 </template>
 
 <script>
+import auth from '../auth/auth'
 import api_ep from '../api.json'
 
-var api_url = api_ep.API_URL + api_ep.ITEM
-
+var api_url = api_ep.API_URL + api_ep.ITEM + 'Info?iid='
 export default {
   name: 'UpdateItem',
-  props: ['o_iid','o_name', 'o_description', 'o_imageSrc','o_tags','o_minBid', 'o_location', 'o_startdate', 'o_enddate'],
+  props: ['iid'],
   data () {
 
     return {
-    	owner_username   : 'asdf',
-    	iid : this.o_iid,
-    	name     : this.o_name,
-	    description     : this.o_name,
+    	owner_username   : '',
+    	name     : '',
+	    description     : '',
 	    imageSrc : '',
 	    tags     : '',
-	    minBid   : this.o_minBid,
+	    minBid   : 0,
 	    location : '',
 	    startdate   : '',
 	    enddate   : '',
@@ -80,14 +79,17 @@ export default {
   },
   methods: {
 	submit (formData) {
+		var context = this
+		formData.iid = this.iid
   		$.ajax({
     	url: api_url, //Your api url
-     	type: 'PUT', //type is any HTTP method
+     	type: 'POST', //type is any HTTP method
      	data: {data: formData}, //Data as js object
      	success: function(response){
-	        console.log('submit')
+	        console.log('submit update')
 	        if(response.hasOwnProperty('success')){
 	        	alert("Successfully created item:\n" + formData.name)
+	        	context.$router.push('myListing')
 			} else{
 				alert("Failed to submit.\nPlease try again.")
 			}
@@ -95,19 +97,24 @@ export default {
     	})
   	}, 
   	cancel (){
-  		alert("Cancelling creation")
-  		location.reload()
+  		this.$router.push('myListing')
   	}
   },
-  	created(){
-	    let props = []
-	    if(this.props ){
-	      // apply properties to component data
-	      _.forOwn(this.props, (value, key)=>{
-	        // console.debug( key,  this[key])
-	        props.push(`:${_.kebabCase(key)}="props['${key}']"`)
-	      })
-	    }
+  	created: function () {
+  		console.log(api_url + this.iid)
+	    this.$http.get(api_url + this.iid)
+	      .then(response => {
+	        var item = response.data[0];
+	        this.name = item.name;
+	       	this.description = item.description;
+	    	this.imageSrc = item.itemimg;
+	    	this.tags = item.tags;
+	    	this.minBid = item.minbid;
+	    	this.location = item.location;
+	    	this.startdate = item.startdate;
+	    	this.enddate = item.enddate;
+	    	this.owner_username = item.owner_username;
+	    });
 	}    
 }
 </script>

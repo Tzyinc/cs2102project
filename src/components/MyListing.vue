@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import auth from '../auth/auth'
 import api_ep from '../api.json'
 import ItemSquare from './ItemGridSquare'
 var api_url = api_ep.API_URL + api_ep.ITEM
@@ -48,7 +49,7 @@ export default {
     	searchQuery: '',
     	items: [],
       image: '/static/images/book.png',
-      login_user: 'asdf'
+      login_user: ''
     }
   },
   methods: {
@@ -58,6 +59,7 @@ export default {
   } ,
   created: function () {
     /*Change here to get items by logged in user*/
+    this.login_user = auth.getUsername(this)
     this.$http.get(api_url+api_item_owner+this.login_user)
       .then(response => {
         this.items = response.data;

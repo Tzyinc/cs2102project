@@ -54,6 +54,7 @@
 </template>
 
 <script>
+import auth from '../auth/auth'
 import api_ep from '../api.json'
 
 var api_url = api_ep.API_URL + api_ep.ITEM
@@ -63,7 +64,7 @@ export default {
   data () {
 
     return {
-    	owner_username   : 'asdf',
+    	owner_username   : '',
 	    name     : '',
 	    description     : '',
 	    imageSrc : '',
@@ -77,6 +78,7 @@ export default {
   },
   methods: {
 	submit (formData) {
+		var context = this
   		$.ajax({
     	url: api_url, //Your api url
      	type: 'PUT', //type is any HTTP method
@@ -85,6 +87,8 @@ export default {
 	        console.log('submit')
 	        if(response.hasOwnProperty('success')){
 	        	alert("Successfully created item:\n" + formData.name)
+	        	context.$router.push('myListing')
+	        	//redirect(this)
 			} else{
 				alert("Failed to submit.\nPlease try again.")
 			}
@@ -92,9 +96,13 @@ export default {
     	})
   	}, 
   	cancel (){
-  		alert("Cancelling creation")
-  		location.reload()
+  		this.$router.push('myListing')
   	}
+  },
+  created: function () {
+    /*Change here to get items by logged in user*/
+    this.owner_username = auth.getUsername(this);
+
   } 
 }
 </script>
