@@ -8,6 +8,7 @@ import CreateItem from '@/components/CreateItem.vue'
 import UpdateItem from '@/components/UpdateItem.vue'
 import BrowseItem from '@/components/BrowseItem.vue'
 import MyListing from '@/components/MyListing.vue'
+import MyLoan from '@/components/MyLoan.vue'
 
 Vue.use(Router)
 
@@ -49,6 +50,11 @@ export default new Router({
       path: '/myListing',
       name: 'MyListing',
       component: MyListing
+    },
+    {
+      path: '/myLoan',
+      name: 'MyLoan',
+      component: MyLoan
     }
   ]
 })
