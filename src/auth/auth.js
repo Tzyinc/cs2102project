@@ -57,6 +57,14 @@ export default {
         return context.$session.exists()
     },
 
+    getUsername (context) {
+        if(context.$session.has('username')) {
+            return context.$session.get('username')
+        } else {
+            return 'DEFAULT_USER'
+        }
+    },
+
 // The object to be passed as a header for authenticated requests
     getAuthHeader() {
         return {

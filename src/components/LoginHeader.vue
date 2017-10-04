@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       logged_in: this.$session.has('username'),
-      display_name: this.$session.get('username')
+      display_name: auth.getUsername(this)
     }
   },
 
@@ -40,7 +40,7 @@ export default {
     updateLoginStatus() {
       //if(this.$session.exists()) {
         this.logged_in = this.$session.has('username')
-        this.display_name = this.$session.get('username')
+        this.display_name = auth.getUsername(this)
       //} else {
       //  logged_in = false;
       //}
