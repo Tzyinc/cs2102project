@@ -3,7 +3,9 @@
     <div class = "detailed-title">Listing Details</div>
     <div class="row">
       <ItemPicture></ItemPicture>
-      <ItemDescription :description = "item.description"></ItemDescription>
+      <ItemDescription
+        :description = "item.description">
+      </ItemDescription>
     </div>
     <div class="row">
       <ItemOwnerInfo
@@ -11,7 +13,9 @@
           :name = "item.name"
           :location = "item.location"
           :status = "item.status"
-          :timelisted = "item.timelisted">
+          :timelisted = "item.timelisted"
+          :startdate = "item.startdate"
+          :enddate = "item.enddate">
       </ItemOwnerInfo>
       <ItemBidding></ItemBidding>
     </div>
