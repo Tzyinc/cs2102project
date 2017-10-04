@@ -40,7 +40,8 @@ export default new Router({
       component: CreateItem
     },
     {
-      path: '/updateItem',
+      path:
+        '/updateItem/:o_iid/:o_name/:o_description/:o_imageSrc/:o_tags/:o_minBid/:o_location/:o_startdate/:o_enddate',
       name: 'UpdateItem',
       component: UpdateItem
     },

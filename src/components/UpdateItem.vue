@@ -61,15 +61,17 @@ var api_url = api_ep.API_URL + api_ep.ITEM
 
 export default {
   name: 'UpdateItem',
+  props: ['o_iid','o_name', 'o_description', 'o_imageSrc','o_tags','o_minBid', 'o_location', 'o_startdate', 'o_enddate'],
   data () {
 
     return {
     	owner_username   : 'asdf',
-	    name     : '',
-	    description     : '',
+    	iid : this.o_iid,
+    	name     : this.o_name,
+	    description     : this.o_name,
 	    imageSrc : '',
 	    tags     : '',
-	    minBid   : 0.99,
+	    minBid   : this.o_minBid,
 	    location : '',
 	    startdate   : '',
 	    enddate   : '',
@@ -96,7 +98,17 @@ export default {
   		alert("Cancelling creation")
   		location.reload()
   	}
-  } 
+  },
+  	created(){
+	    let props = []
+	    if(this.props ){
+	      // apply properties to component data
+	      _.forOwn(this.props, (value, key)=>{
+	        // console.debug( key,  this[key])
+	        props.push(`:${_.kebabCase(key)}="props['${key}']"`)
+	      })
+	    }
+	}    
 }
 </script>
 
