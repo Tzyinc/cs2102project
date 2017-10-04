@@ -12,7 +12,7 @@
         <template v-else>
           <li><router-link to="/myListing">Lent</router-link></li>
           <li><router-link to="/myLoan">Borrowed</router-link></li>
-          <li><router-link to="/myListing">{{display_name}}</router-link></li>
+          <li><router-link to="/myProfile">{{display_name}}</router-link></li>
           <li><button type="button" v-on:click="logout()">Logout</button></li>
         </template>
       </ul>
