@@ -2,8 +2,8 @@ var dbcon = require('../dbcon/database.js')
 
 const createItemPS = new dbcon.PS(
   'createItem',
-  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location) ' +
-    'VALUES($1,$2,$3,$4,now(),$5,$6)'
+  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location, description, startdate, enddate) ' +
+    'VALUES($1, $2, $3, $4, now(), $5, $6, $7, $8, $9)'
 )
 
 const getAllItemPS = new dbcon.PS('getItem', 'SELECT * FROM app_item ')
@@ -27,7 +27,10 @@ function createItem(req, res){
       itemDetails.imageSrc,
       itemDetails.minBid,
       itemDetails.status,
-      itemDetails.location
+      itemDetails.location,
+      itemDetails.description,
+      itemDetails.startdate,
+      itemDetails.enddate
     ]
   }
   dbcon.db
