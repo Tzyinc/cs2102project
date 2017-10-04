@@ -1,7 +1,8 @@
 <template>
   <div class="item-desc">
     <div class="item-desc-title">Description</div>
-    <div class="item-desc-text">{{item.description}}</div>
+    <div class="item-desc-text">{{description}}</div>
+    <hr/>
   </div>
 </template>
 

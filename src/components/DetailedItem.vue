@@ -1,9 +1,13 @@
 <template>
   <div class="container detailed-item">
+    <div class="btn btn-success boton" v-on:click="load(iid)">
+    <span class="glyphicon glyphicon-pencil"></span> Edit </div>
     <div class = "detailed-title">Listing Details</div>
     <div class="row">
       <ItemPicture></ItemPicture>
-      <ItemDescription :description = "item.description"></ItemDescription>
+      <ItemDescription
+        :description = "item.description">
+      </ItemDescription>
     </div>
     <div class="row">
       <ItemOwnerInfo
@@ -11,7 +15,9 @@
           :name = "item.name"
           :location = "item.location"
           :status = "item.status"
-          :timelisted = "item.timelisted">
+          :timelisted = "item.timelisted"
+          :startdate = "item.startdate"
+          :enddate = "item.enddate">
       </ItemOwnerInfo>
       <ItemBidding></ItemBidding>
     </div>
@@ -42,6 +48,13 @@
         item: []
     }
   },
+
+  methods: {
+  	load (iid){
+  		this.$router.push({ name: 'UpdateItem', params: { iid: this.$route.params.iid }})
+  	}
+  },
+
   created: function () {
 
     console.log("the full url is:" + api_url + this.$route.params.iid)
@@ -71,6 +84,11 @@
   background-color: #cecece;
   font-weight:bold;
   font-size: 2em;
+}
+
+.boton {
+  position: fixed;
+  right: 10%;
 }
 
 </style>

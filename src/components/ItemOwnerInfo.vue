@@ -3,9 +3,11 @@
     <div class="item-info-title">Info</div>
     <p><span class="item-info-attr">Name:</span> {{name}}</p>
     <p><span class="item-info-attr">Owner:</span> {{owner_username}}</p>
+    <p><span class="item-info-attr">Time Listed:</span> {{timelisted}}</p>
     <p><span class="item-info-attr">Status</span> <span v-if="status">Available</span><span v-else>Not Available</span></p>
     <p><span class="item-info-attr">Location:</span> {{location}}</p>
-    <p><span class="item-info-attr">Time Listed:</span> {{timelisted}}</p>
+    <p><span class="item-info-attr">Avaialble start:</span> {{startdate}}</p>
+    <p><span class="item-info-attr">Avaialble end:</span> {{enddate}}</p>
   </div>
 </template>
 
@@ -13,7 +15,7 @@
 
 export default {
   name: 'ItemOwnerInfo',
-  props: ['owner_username', 'name', 'location', 'status', 'timelisted'],
+  props: ['owner_username', 'name', 'location', 'status', 'timelisted', 'startdate', 'enddate'],
   data() {
     return {
       item: {
