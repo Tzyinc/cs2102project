@@ -7,7 +7,7 @@
     </div>
     <div class="row">
       <ItemOwnerInfo
-          :owner = "item.owner_username"
+          :owner_username = "item.owner_username"
           :name = "item.name"
           :location = "item.location"
           :status = "item.status"
@@ -27,9 +27,7 @@
   import ItemDescription from './ItemDescription'
   import ItemBidding from './ItemBidding'
 
-  //var iid //= this.$route.params.iid
   var api_url = api_ep.API_URL + api_ep.ITEM + 'Info?iid='
-
 
   export default {
   name: 'DetailedItem',
@@ -41,17 +39,18 @@
   },
   data() {
     return {
-        item: [],
-        iid: 0
+        item: []
     }
   },
   created: function () {
-    this.iid = this.$route.params.iid
-    this.$http.get(api_url + iid)
+
+    console.log("the full url is:" + api_url + this.$route.params.iid)
+    this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
-        this.item = response.data;
-        console.log(this.item);
+        this.item = response.data[0];
+        console.log("asdf" + this.item);
       });
+    console.log("got data?")
   }
 }
 </script>

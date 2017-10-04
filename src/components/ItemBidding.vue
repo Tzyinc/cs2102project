@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>do we really need to show the bidder</td> <!-- need to fix td width-->
+        <td>username here.</td> <!-- need to fix td width-->
         <td>{{item.minBid}}</td>
       </tr>
     </tbody>
@@ -34,9 +34,6 @@
 </template>
 
 <script>
-import api_ep from '../api.json'
-
-var api_url = api_ep.API_URL + api_ep.USER
 
 export default {
   name: 'ItemBidding',

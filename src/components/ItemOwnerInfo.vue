@@ -1,11 +1,11 @@
 <template>
   <div class="item-owner-info">
     <div class="item-info-title">Info</div>
-    <p><span class="item-info-attr">Name:</span> {{item.name}}</p>
-    <p><span class="item-info-attr">Owner:</span> {{item.owner_uid}}</p>
-    <p><span class="item-info-attr">Status</span> <span v-if="item.status">Available</span><span v-else>Not Available</span></p>
-    <p><span class="item-info-attr">Location:</span> {{item.location}}</p>
-    <p><span class="item-info-attr">Time Listed:</span> {{item.timelisted}}</p>
+    <p><span class="item-info-attr">Name:</span> {{name}}</p>
+    <p><span class="item-info-attr">Owner:</span> {{owner_username}}</p>
+    <p><span class="item-info-attr">Status</span> <span v-if="status">Available</span><span v-else>Not Available</span></p>
+    <p><span class="item-info-attr">Location:</span> {{location}}</p>
+    <p><span class="item-info-attr">Time Listed:</span> {{timelisted}}</p>
   </div>
 </template>
 
@@ -13,15 +13,10 @@
 
 export default {
   name: 'ItemOwnerInfo',
-  props: ['owner', 'name', 'location', 'status', 'timelisted'],
+  props: ['owner_username', 'name', 'location', 'status', 'timelisted'],
   data() {
     return {
       item: {
-        owner_uid: 'user123',
-        status: true,
-        name: 'A book about cats, 5th edition',
-        location: 'blk 123 clementi ave west',
-        timelisted: '',
       }
     }
   }
