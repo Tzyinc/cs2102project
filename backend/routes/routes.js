@@ -24,6 +24,7 @@ router.route('/user').get(userController.getUserDetails)
 router.route('/item').put(itemController.createItem)
 router.route('/item').get(itemController.getItem)
 router.route('/item').post(itemController.updateItem)
+router.route('/item').delete(itemController.deleteItem)
 router.route('/itemInfo').get(itemController.getItemWithUser)
 
 module.exports = router
