@@ -5,15 +5,19 @@ import App from './App'
 // import NewsApp from './NewsApp'
 import router from './router'
 import VueResource from 'vue-resource'
+
 Vue.use(VueResource)
 Vue.config.productionTip = false
+
+import VueSession from 'vue-session'
+Vue.use(VueSession)
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
-  components: { App }
+  components: {App}
 })
 
 /*

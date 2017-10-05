@@ -1,0 +1,94 @@
+<template>
+<div class="myLoan">
+	<h1>My Loans</h1>
+  <!--
+	<div class="input-group">
+    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
+    <span class="input-group-btn">
+    	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
+    </span>
+
+  </div>	
+  -->
+   <br/>
+  <br/>
+  <div class="itemRow" v-for = "item in items">
+    <div class="item"> 
+    	<itemsquare
+    	  :iid = "item.iid"
+	      :name="item.name"
+	      :owner='item.owner_username'
+	      :price= 'item.minbid'
+	      :image="image"></itemsquare>
+  	</div>
+  </div>
+  <br/>
+  <!--<div><pre>data: {{$data}}</pre></div>	-->
+</div>
+</template>
+
+<script>
+import auth from '../auth/auth'
+import api_ep from '../api.json'
+import ItemSquare from './ItemGridSquare'
+var api_url = api_ep.API_URL + api_ep.ITEM
+var api_item_owner = '?item_owner='
+
+export default {
+  name: 'MyLoan',
+  components: {
+    'itemsquare' : ItemSquare,
+  },
+  data () {
+
+    return {
+    	searchQuery: '',
+    	items: [],
+      image: '/static/images/book.png',
+      login_user: ''
+    }
+  },
+  methods: {
+
+  } ,
+  created: function () {
+    /*Change here to get items by logged in user*/
+    if(!auth.isLoggedIn(this)){
+      this.$router.push('/')
+    }
+    this.login_user = auth.getUsername(this)
+    this.$http.get(api_url+api_item_owner+this.login_user)
+      .then(response => {
+        this.items = response.data;
+        console.log(this.items);
+      });
+  }
+}
+</script>
+
+<style scoped>
+.myLoan{
+    margin: 0 auto;
+    text-align: center;
+}
+
+.myLoan h1{
+    margin-top: 20px;
+}
+
+.item{
+	margin:10px;
+	display: inline-block;
+}
+
+.itemRow{
+	display: inline-block;
+}
+
+.createButton{
+  float: right;
+  margin-right: 50px;
+}
+
+</style>
+

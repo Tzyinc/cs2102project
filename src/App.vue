@@ -1,23 +1,25 @@
 <template>
-  <div class="container" id="app">
-    <!-- <img src="./assets/logo.png"> 
+  <div class="container-fluid" id="app">
+    <!-- <img src="./assets/logo.png">
 	<UserSelection v-on:sourceChanged="sourceChanged"></UserSelection>
   <Userlist v-bind:source="source"></Userlist>-->
-  <UserList></UserList>
-    <!--<router-view></router-view>-->
+  <LoginHeader></LoginHeader>
+  <router-view></router-view>
   </div>
 </template>
 
 <script>
-import UserList from './components/UserList'
-
+import LoginHeader from './components/LoginHeader'
 
 export default {
   name: 'app',
   components: {
-    UserList,
+	LoginHeader,
   },
   data () {
+    return{
+
+    }
     /* {
       source: ""
     }*/
@@ -37,6 +39,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 0px;
+}
+html, body {
+    height:100%;
 }
 </style>
