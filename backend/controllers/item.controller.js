@@ -24,6 +24,11 @@ const getItemUserByIDPS = new dbcon.PS(
   'SELECT i.iid, i.owner_username, i.name, i.imagesrc AS itemImg, i.description, i.minbid, i.timeListed, i.status, i.location, i.startdate, i.enddate, u.userrating, u.imagesrc AS userImg FROM app_item i INNER JOIN app_user u ON i.owner_username = u.username WHERE i.iid = $1'
 )
 
+const deleteItemByIDPS = new dbcon.PS(
+  'deleteItemByID',
+  'DELETE FROM app_item WHERE iid = $1'
+)
+
 function createItem(req, res){
   var itemDetails = req.body.data
   if (itemDetails != null) {
@@ -104,11 +109,26 @@ function getItem(req, res){
 function getItemWithUser(req, res){
   var itemDetails = req.query
   if (itemDetails.iid != null) {
-    console.log(itemDetails.iid)
     getItemUserByIDPS.values = [ itemDetails.iid ]
-    console.log(getItemUserByIDPS)
     dbcon.db
       .any(getItemUserByIDPS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
+  } else {
+    res.json({success: false})
+  }
+}
+
+function deleteItem(req, res){
+  var itemDetails = req.body.data
+  if (itemDetails.iid != null) {
+    deleteItemByIDPS.values = [ itemDetails.iid ]
+    dbcon.db
+      .any(deleteItemByIDPS)
       .then(result => {
         res.json(result)
       })
@@ -124,5 +144,6 @@ module.exports = {
   createItem: createItem,
   getItem: getItem,
   getItemWithUser: getItemWithUser,
-  updateItem: updateItem
+  updateItem: updateItem,
+  deleteItem: deleteItem
 }
