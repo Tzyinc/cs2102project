@@ -62,12 +62,12 @@
         $.ajax({
           url: api_del,
           type: 'DELETE',
-          data: {iid: this.$route.params.iid},
+          data: {data: {iid: this.$route.params.iid}},
           success: function(response) {
             console.log("deleting")
             if(response.hasOwnProperty('success')) {
-              alert("successfully deleted: " + item.name)
-              context.$router.push("myListing")
+              alert("successfully deleted: ")
+              context.$router.push({name: "myListing"})
             } else {
               alert("Failed to delete. Please try again.")
             }
