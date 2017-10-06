@@ -15,6 +15,11 @@ const authUserPS = new dbcon.PS(
   'SELECT password FROM app_user WHERE username = $1'
 )
 
+const getUsernamePwPS = new dbcon.PS(
+  'getUsernamePwPS',
+  'SELECT username, password FROM app_user WHERE username = $1'
+)
+
 const getUserPS = new dbcon.PS(
   'authUser',
   'SELECT username, imagesrc, isadmin, userRating FROM app_user WHERE username = $1'
@@ -41,6 +46,7 @@ function createUser(req, res) {
     })
 }
 // takes in username and (hashed) password and compares to existing username or passwor
+// TODO: deprecate this asap
 function authUser(req, res) {
   var userDetails = req.body.data
   if (userDetails != null) {
@@ -88,9 +94,17 @@ function getAllUsernames() {
   return dbcon.db.any(getUserNamesPS)
 }
 
+function getUsernamePw(username) {
+  if (username != null) {
+    getUsernamePwPS.values = [username]
+  }
+  return dbcon.db.one(getUsernamePwPS)
+}
+
 module.exports = {
   createUser: createUser,
   authUser: authUser,
   getUserDetails: getUserDetails,
-  getAllUsernames: getAllUsernames
+  getAllUsernames: getAllUsernames,
+  getUsernamePw: getUsernamePw
 }
