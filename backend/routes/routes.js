@@ -20,19 +20,17 @@ var userController = require('../controllers/user.controller.js')
 var itemController = require('../controllers/item.controller.js')
 
 // jwt implementation
-var jwtOptions = {}
-jwtOptions.jwtFromRequest = ExtractJwt.fromAuthHeaderWithScheme('jwt')
-jwtOptions.secretOrKey = cred.jwt.secret
+var jwtOptions = {
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
+  secretOrKey: cred.jwt.secret
+}
 
 var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
   console.log('payload received', jwt_payload)
-  // usually this would be a database call:
   var usernamePromise = userController.getAllUsernames()
   usernamePromise
     .then(result => {
       var user = result[_.findIndex(result, { username: jwt_payload.username })]
-
-      console.log('test', result, user, jwt_payload.username)
       if (user) {
         next(null, user)
       } else {
@@ -52,13 +50,11 @@ function jwtlogin(req, res) {
     var username = req.body.data.username
     var password = req.body.data.password
   }
-  // usually this would be a database call:
   var usernamePwPromise = userController.getUsernamePw(username)
   usernamePwPromise
     .then(result => {
       console.log(result)
       if (bcrypt.compareSync(password, result.password)) {
-        // from now on we'll identify the user by the id and the id is the only personalized value that goes into our token
         var payload = { username: result.username }
         var token = jwt.sign(payload, jwtOptions.secretOrKey)
         console.log(payload, token)
@@ -93,9 +89,8 @@ router.route('/item').get(itemController.getItem)
 router.route('/item').post(itemController.updateItem)
 router.route('/item').delete(itemController.deleteItem)
 router.route('/itemInfo').get(itemController.getItemWithUser)
-router.route('/test').post(jwtlogin)
 router
-  .route('/test2')
+  .route('/tokenValid')
   .get(passport.authenticate('jwt', { session: false }), function(req, res) {
     res.json({ success: true })
   })
