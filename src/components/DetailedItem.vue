@@ -66,7 +66,7 @@
           success: function(response) {
             console.log("deleting")
             if(response.hasOwnProperty('success')) {
-              alert("successfully deleted: ")
+              alert("successfully deleted")
               context.$router.push({name: "myListing"})
             } else {
               alert("Failed to delete. Please try again.")

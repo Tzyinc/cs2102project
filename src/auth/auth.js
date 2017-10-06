@@ -14,8 +14,8 @@ export default {
     $.ajax({
       url: api_ep.API_URL + api_ep.USER, // Your api url
       type: 'POST', // type is any HTTP method
-      data: {data: creds}, // Data as js object
-      success: function(response){
+      data: { data: creds }, // Data as js object
+      success: function(response) {
         if (response.success === true) {
           console.log('logged in')
           context.$session.start()
@@ -34,8 +34,8 @@ export default {
     $.ajax({
       url: api_ep.API_URL + api_ep.USER, // Your api url
       type: 'PUT', // type is any HTTP method
-      data: {data: creds}, // Data as js object
-      success: function(response){
+      data: { data: creds }, // Data as js object
+      success: function(response) {
         if (response.success === true) {
           console.log('success')
           context.$router.push('/Login')
