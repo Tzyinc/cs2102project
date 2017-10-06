@@ -12,9 +12,9 @@ export default {
   login(context, creds, redirect) {
     var _auth = this
     $.ajax({
-      url: api_ep.API_URL + api_ep.USER, //Your api url
-      type: 'POST', //type is any HTTP method
-      data: {data: creds}, //Data as js object
+      url: api_ep.API_URL + api_ep.USER, // Your api url
+      type: 'POST', // type is any HTTP method
+      data: {data: creds}, // Data as js object
       success: function(response){
         if (response.success === true) {
           console.log('logged in')
@@ -32,11 +32,11 @@ export default {
 
   signup(context, creds, redirect) {
     $.ajax({
-      url: api_ep.API_URL + api_ep.USER, //Your api url
-      type: 'PUT', //type is any HTTP method
-      data: {data: creds}, //Data as js object
+      url: api_ep.API_URL + api_ep.USER, // Your api url
+      type: 'PUT', // type is any HTTP method
+      data: {data: creds}, // Data as js object
       success: function(response){
-        if (response.success == true) {
+        if (response.success === true) {
           console.log('success')
           context.$router.push('/Login')
         } else {
@@ -49,8 +49,8 @@ export default {
   // To log out, we just need to remove the token
   logout(context) {
     context.$session.destroy()
-    //context.$router.push('/')
-    //this.user.authenticated = false
+    // context.$router.push('/')
+    // this.user.authenticated = false
   },
 
   isLoggedIn(context) {
