@@ -2,7 +2,7 @@
 <div class="updateItem">
 	<h1>Update Item</h1>
 	<form id="itemForm">
-		
+
 		<!-- Name -->
 		<div class="formRow">
 			<label for="name">Name: </label>
@@ -37,19 +37,19 @@
 		<div class="formRow">
 			<label for="avail">Availability: </label>
 			<input class="avail form-control" type="date" v-model="startdate" placeholder="01-10-2017">
-			<input class="avail form-control" type="date" v-model="enddate" placeholder="11-10-2017"> 
-			
+			<input class="avail form-control" type="date" v-model="enddate" placeholder="11-10-2017">
+
 		</div>
 		<br/>
 		<div class="formRow" >
 			<label></label>
 			<button type="button" class="btn btn-secondary" v-on:click="cancel()">Cancel</button>
 			<button type="button" class="btn btn-primary" v-on:click="submit($data)">Submit</button>
-		</div> 
+		</div>
         
 	</form>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
-			
+
 </div>
 </template>
 
@@ -57,8 +57,8 @@
 import auth from '../auth/auth'
 import api_ep from '../api.json'
 
-var api_url = api_ep.API_URL + api_ep.ITEM + 'Info?iid='
-var api_post_url = api_ep.API_URL + api_ep.ITEM 
+var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
+var api_post_url = api_ep.API_URL + api_ep.ITEM
 export default {
   name: 'UpdateItem',
   props: ['iid'],
@@ -96,7 +96,7 @@ export default {
 			}
 		}
     	})
-  	}, 
+  	},
   	cancel (){
   		this.$router.push('/myListing')
   	}
@@ -105,25 +105,26 @@ export default {
   		console.log(api_url + this.iid)
 	    this.$http.get(api_url + this.iid)
 	      .then(response => {
+					console.log(response.data[0])
 	        var item = response.data[0];
 	        this.name = item.name;
 	       	this.description = item.description;
-	    	this.imageSrc = item.itemimg;
-	    	this.tags = item.tags;
-	    	this.minBid = item.minbid;
-	    	this.location = item.location;
-	    	this.startdate = item.startdate;
-	    	this.enddate = item.enddate;
-	    	this.owner_username = item.owner_username;
-	    	this.timeListed = item.timelisted;
+		    	this.imageSrc = item.itemimg;
+		    	this.tags = item.tags;
+		    	this.minBid = item.minbid;
+		    	this.location = item.location;
+		    	this.startdate = item.startdate;
+		    	this.enddate = item.enddate;
+		    	this.owner_username = item.owner_username;
+		    	this.timeListed = item.timelisted;
 	    	if(auth.getUsername(this) != item.owner_username){
 		    	alert("You cannot edit this item.")
 		    	this.$router.push('/myListing')
 		    }
 	    });
-	    
 
-	}    
+
+	}
 }
 </script>
 
