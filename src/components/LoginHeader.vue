@@ -26,7 +26,7 @@ export default {
   name: 'LoginHeader',
   data () {
     return {
-      logged_in: this.$session.has('username'),
+      logged_in: auth.isLoggedIn(this),
       display_name: auth.getUsername(this)
     }
   },
@@ -39,7 +39,7 @@ export default {
   methods: {
     updateLoginStatus() {
       //if(this.$session.exists()) {
-        this.logged_in = this.$session.has('username')
+        this.logged_in = auth.isLoggedIn(this)
         this.display_name = auth.getUsername(this)
       //} else {
       //  logged_in = false;
