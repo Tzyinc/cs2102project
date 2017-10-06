@@ -2,7 +2,8 @@
   <div class="LoginHeader">
     <nav class="navbar navbar-default">
       <div class="navbar-header">
-      <router-link to="/">StuffShare</router-link>
+        <router-link to="/">StuffShare</router-link>
+        <button type="button" v-on:click="testToken()">Token</button>
       </div>
       <ul class="nav navbar-nav navbar-right">
         <template v-if="!logged_in">
@@ -44,6 +45,9 @@ export default {
       //} else {
       //  logged_in = false;
       //}
+    },
+    testToken() {
+      auth.testToken(this)
     },  
     logout() {
       auth.logout(this)
