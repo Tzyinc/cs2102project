@@ -2,6 +2,9 @@
   <div class="container detailed-item">
     <div class="btn btn-success boton" v-on:click="load(iid)">
     <span class="glyphicon glyphicon-pencil"></span> Edit </div>
+
+      <div class="btn btn-warning boton-del" v-on:click="deleteItem(iid)">
+      <span class="glyphicon glyphicon-pencil"></span> Delete </div>
     <div class = "detailed-title">Listing Details</div>
     <div class="row">
       <ItemPicture></ItemPicture>
@@ -34,6 +37,7 @@
   import ItemBidding from './ItemBidding'
 
   var api_url = api_ep.API_URL + api_ep.ITEM + 'Info?iid='
+  var api_del = api_ep.API_URL + api_ep.ITEM
 
   export default {
   name: 'DetailedItem',
@@ -52,7 +56,24 @@
   methods: {
   	load (iid){
   		this.$router.push({ name: 'UpdateItem', params: { iid: this.$route.params.iid }})
-  	}
+  	},
+    deleteItem (iid) {
+      var context = this
+        $.ajax({
+          url: api_del,
+          type: 'DELETE',
+          data: {data: {iid: this.$route.params.iid}},
+          success: function(response) {
+            console.log("deleting")
+            if(response.hasOwnProperty('success')) {
+              alert("successfully deleted: ")
+              context.$router.push({name: "myListing"})
+            } else {
+              alert("Failed to delete. Please try again.")
+            }
+          }
+        })
+    }
   },
 
   created: function () {
@@ -88,7 +109,12 @@
 
 .boton {
   position: fixed;
-  right: 10%;
+  right: 15%;
+}
+
+.boton-del {
+  position:fixed;
+  right: 5%;
 }
 
 </style>

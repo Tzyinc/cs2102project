@@ -130,7 +130,7 @@ function deleteItem(req, res){
     dbcon.db
       .any(deleteItemByIDPS)
       .then(result => {
-        res.json(result)
+        res.json({success: true})
       })
       .catch(error => {
         res.json(error)
