@@ -8,6 +8,8 @@ import CreateItem from '@/components/CreateItem.vue'
 import UpdateItem from '@/components/UpdateItem.vue'
 import BrowseItem from '@/components/BrowseItem.vue'
 import MyListing from '@/components/MyListing.vue'
+import MyLoan from '@/components/MyLoan.vue'
+import MyProfile from '@/components/MyProfile.vue'
 
 Vue.use(Router)
 
@@ -40,14 +42,25 @@ export default new Router({
       component: CreateItem
     },
     {
-      path: '/updateItem',
+      path: '/updateItem/:iid',
       name: 'UpdateItem',
-      component: UpdateItem
+      component: UpdateItem,
+      props: true
     },
     {
       path: '/myListing',
       name: 'MyListing',
       component: MyListing
+    },
+    {
+      path: '/myLoan',
+      name: 'MyLoan',
+      component: MyLoan
+    },
+    {
+      path: '/myProfile',
+      name: 'MyProfile',
+      component: MyProfile
     }
   ]
 })

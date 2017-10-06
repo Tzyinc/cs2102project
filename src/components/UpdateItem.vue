@@ -49,43 +49,48 @@
         
 	</form>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
-			<div><pre>data: {{$data}}</pre></div>
 			
 </div>
 </template>
 
 <script>
+import auth from '../auth/auth'
 import api_ep from '../api.json'
 
-var api_url = api_ep.API_URL + api_ep.ITEM
-
+var api_url = api_ep.API_URL + api_ep.ITEM + 'Info?iid='
+var api_post_url = api_ep.API_URL + api_ep.ITEM 
 export default {
   name: 'UpdateItem',
+  props: ['iid'],
   data () {
 
     return {
-    	owner_username   : 'asdf',
-	    name     : '',
+    	owner_username   : '',
+    	name     : '',
 	    description     : '',
 	    imageSrc : '',
 	    tags     : '',
-	    minBid   : 0.99,
+	    minBid   : 0,
 	    location : '',
 	    startdate   : '',
 	    enddate   : '',
-	    status   : true
+	    status   : true,
+	    timeListed: ''
     }
   },
   methods: {
 	submit (formData) {
+		var context = this
+		formData.iid = this.iid
   		$.ajax({
-    	url: api_url, //Your api url
-     	type: 'PUT', //type is any HTTP method
+    	url: api_post_url, //Your api url
+     	type: 'POST', //type is any HTTP method
      	data: {data: formData}, //Data as js object
      	success: function(response){
-	        console.log('submit')
+	        console.log('submit update')
 	        if(response.hasOwnProperty('success')){
-	        	alert("Successfully created item:\n" + formData.name)
+	        	alert("Successfully updated item:\n" + formData.name)
+	        	context.$router.push('/myListing')
 			} else{
 				alert("Failed to submit.\nPlease try again.")
 			}
@@ -93,10 +98,32 @@ export default {
     	})
   	}, 
   	cancel (){
-  		alert("Cancelling creation")
-  		location.reload()
+  		this.$router.push('/myListing')
   	}
-  } 
+  },
+  	created: function () {
+  		console.log(api_url + this.iid)
+	    this.$http.get(api_url + this.iid)
+	      .then(response => {
+	        var item = response.data[0];
+	        this.name = item.name;
+	       	this.description = item.description;
+	    	this.imageSrc = item.itemimg;
+	    	this.tags = item.tags;
+	    	this.minBid = item.minbid;
+	    	this.location = item.location;
+	    	this.startdate = item.startdate;
+	    	this.enddate = item.enddate;
+	    	this.owner_username = item.owner_username;
+	    	this.timeListed = item.timelisted;
+	    	if(auth.getUsername(this) != item.owner_username){
+		    	alert("You cannot edit this item.")
+		    	this.$router.push('/myListing')
+		    }
+	    });
+	    
+
+	}    
 }
 </script>
 

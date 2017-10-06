@@ -1,6 +1,6 @@
 <template>
-<div class="myListing">
-	<h1>My Listing</h1>
+<div class="myLoan">
+	<h1>My Loans</h1>
   <!--
 	<div class="input-group">
     <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
@@ -10,10 +10,6 @@
 
   </div>	
   -->
-  <div class="createButton">
-    
-    <button type="button" class="btn btn-info" v-on:click="go_to_create()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create New Listing</button>
-  </div>
    <br/>
   <br/>
   <div class="itemRow" v-for = "item in items">
@@ -39,7 +35,7 @@ var api_url = api_ep.API_URL + api_ep.ITEM
 var api_item_owner = '?item_owner='
 
 export default {
-  name: 'MyListing',
+  name: 'MyLoan',
   components: {
     'itemsquare' : ItemSquare,
   },
@@ -53,9 +49,7 @@ export default {
     }
   },
   methods: {
-    go_to_create (){
-      this.$router.push('createItem')
-    }
+
   } ,
   created: function () {
     /*Change here to get items by logged in user*/
@@ -73,12 +67,12 @@ export default {
 </script>
 
 <style scoped>
-.myListing{
+.myLoan{
     margin: 0 auto;
     text-align: center;
 }
 
-.myListing h1{
+.myLoan h1{
     margin-top: 20px;
 }
 

@@ -1,9 +1,16 @@
 <template>
   <div class="container detailed-item">
+    <div class="btn btn-success boton" v-on:click="load(iid)">
+    <span class="glyphicon glyphicon-pencil"></span> Edit </div>
+
+      <div class="btn btn-warning boton-del" v-on:click="deleteItem(iid)">
+      <span class="glyphicon glyphicon-pencil"></span> Delete </div>
     <div class = "detailed-title">Listing Details</div>
     <div class="row">
       <ItemPicture></ItemPicture>
-      <ItemDescription :description = "item.description"></ItemDescription>
+      <ItemDescription
+        :description = "item.description">
+      </ItemDescription>
     </div>
     <div class="row">
       <ItemOwnerInfo
@@ -11,7 +18,9 @@
           :name = "item.name"
           :location = "item.location"
           :status = "item.status"
-          :timelisted = "item.timelisted">
+          :timelisted = "item.timelisted"
+          :startdate = "item.startdate"
+          :enddate = "item.enddate">
       </ItemOwnerInfo>
       <ItemBidding></ItemBidding>
     </div>
@@ -28,6 +37,7 @@
   import ItemBidding from './ItemBidding'
 
   var api_url = api_ep.API_URL + api_ep.ITEM + 'Info?iid='
+  var api_del = api_ep.API_URL + api_ep.ITEM
 
   export default {
   name: 'DetailedItem',
@@ -42,6 +52,30 @@
         item: []
     }
   },
+
+  methods: {
+  	load (iid){
+  		this.$router.push({ name: 'UpdateItem', params: { iid: this.$route.params.iid }})
+  	},
+    deleteItem (iid) {
+      var context = this
+        $.ajax({
+          url: api_del,
+          type: 'DELETE',
+          data: {data: {iid: this.$route.params.iid}},
+          success: function(response) {
+            console.log("deleting")
+            if(response.hasOwnProperty('success')) {
+              alert("successfully deleted: ")
+              context.$router.push({name: "myListing"})
+            } else {
+              alert("Failed to delete. Please try again.")
+            }
+          }
+        })
+    }
+  },
+
   created: function () {
 
     console.log("the full url is:" + api_url + this.$route.params.iid)
@@ -71,6 +105,16 @@
   background-color: #cecece;
   font-weight:bold;
   font-size: 2em;
+}
+
+.boton {
+  position: fixed;
+  right: 15%;
+}
+
+.boton-del {
+  position:fixed;
+  right: 5%;
 }
 
 </style>
