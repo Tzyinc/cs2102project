@@ -111,7 +111,7 @@ function getItem(req, res){
   if (itemDetails.iid != null) {
     getItemPS.values = [ itemDetails.iid ]
     dbcon.db
-      .any(getItemPS)
+      .one(getItemPS)
       .then(result => {
         res.json(result)
       })

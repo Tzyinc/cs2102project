@@ -105,8 +105,7 @@ export default {
   		console.log(api_url + this.iid)
 	    this.$http.get(api_url + this.iid)
 	      .then(response => {
-					console.log(response.data[0])
-	        var item = response.data[0];
+	        var item = response.data;
 	        this.name = item.name;
 	       	this.description = item.description;
 		    	this.imageSrc = item.itemimg;
