@@ -20,7 +20,7 @@ import api_ep from '../api.json'
 import ItemGrid from './ItemGrid'
 
 var api_url = api_ep.API_URL + api_ep.ITEMS
-
+var api_url_search = api_ep.API_URL + api_ep.ITEMS + "?name_like="
 export default {
   name: 'BrowseItem',
   components: {
@@ -36,7 +36,11 @@ export default {
   },
   methods: {
   	search (query){
-  		alert("Searching for ...\n" + query)
+	    this.$http.get(api_url_search + query)
+	      .then(response => {
+	        this.items = response.data;
+	        console.log("Searching for : " + query);
+	      });
   	}
   } ,
   created: function () {
