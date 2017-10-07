@@ -48,14 +48,12 @@ export default {
 }
 </script>
 <style>
-#app {
-  text-align: center;
-}
-img {
-  width: 30%;
+.imageupload img {
+  width: 70%;
+  max-height: 300px;
   margin: auto;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .imageupload {
 	border-style: solid;
@@ -64,7 +62,7 @@ img {
     border-color: rgba(0, 0, 0, 0.15);
 }
 .displayImage{
-	padding-top: 5px;
+	padding-top: 10px;
 	padding-bottom: 5px;
 }
 </style>
