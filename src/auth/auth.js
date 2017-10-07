@@ -14,12 +14,13 @@ export default {
     $.ajax({
       url: api_ep.API_URL + api_ep.USER, // Your api url
       type: 'POST', // type is any HTTP method
-      data: { data: creds }, // Data as js object
-      success: function(response) {
+      data: {data: creds}, // Data as js object
+      success: function(response){
         if (response.success === true) {
           console.log('logged in')
           context.$session.start()
           context.$session.set('username', creds.username)
+          context.$session.set('JWT', response.token)
           _auth.user.authenticated = true
           context.$router.push('/')
         } else {
@@ -34,8 +35,8 @@ export default {
     $.ajax({
       url: api_ep.API_URL + api_ep.USER, // Your api url
       type: 'PUT', // type is any HTTP method
-      data: { data: creds }, // Data as js object
-      success: function(response) {
+      data: {data: creds}, // Data as js object
+      success: function(response){
         if (response.success === true) {
           console.log('success')
           context.$router.push('/Login')
@@ -46,10 +47,26 @@ export default {
     })
   },
 
+  testToken(context) {
+    var _auth = this
+    $.ajax({
+      url: api_ep.API_URL + 'api/tokenValid', // Your api url
+      type: 'GET', // type is any HTTP method
+      headers: _auth.getAuthHeader(context),
+      success: function(response){
+        if (response.success === true) {
+          console.log('token legit!')
+        } else {
+          console.log('token failed')
+        }
+      }
+    })
+  },
+
   // To log out, we just need to remove the token
   logout(context) {
     context.$session.destroy()
-    // context.$router.push('/')
+    context.$router.push('/')
     // this.user.authenticated = false
   },
 
@@ -66,9 +83,10 @@ export default {
   },
 
   // The object to be passed as a header for authenticated requests
-  getAuthHeader() {
+  getAuthHeader(context) {
+    //console.log(context.$session.get('JWT'))
     return {
-      Authorization: 'Bearer ' + localStorage.getItem('access_token')
+      Authorization: 'JWT ' + context.$session.get('JWT')
     }
   }
 }
