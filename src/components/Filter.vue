@@ -10,12 +10,29 @@
 	</div>
 	<transition name="fade">
 		<div v-if="isOpened" class="displayFilter row justify-content-end">
-			<div class="list col-sm-3">
-				<div class="row filterTitle"> 
-					<h2>Sort by</h2>
+			<div class="list col-sm-5">
+				<div class="row filterTitle justify-content-start"> 
+					<h3>Sort by</h3>
 				</div>
-				<div class="row filterOption">Latest Date</div>
-				<div class="row filterOption">Earliest Date</div>
+				<div class="row">
+					<div class="col filterOption">Newest</div>
+					<div class="col filterOption">Oldest</div>
+
+				</div>
+				<div class="row">
+					<div class="col filterOption">Name (A to Z)</div>
+					<div class="col filterOption">Name (Z to A)</div>
+				</div>
+				<div class="row">
+					<div class="col filterOption">
+						Price 
+						<i class="fa fa-long-arrow-up" aria-hidden="true"></i>
+					</div>
+					<div class="col filterOption">
+						Price 
+						<i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+					</div>
+				</div>
 			</div>
 		</div>
 	</transition>
@@ -61,7 +78,7 @@ export default {
 }
 .displayFilter{
 	padding-bottom :5px;
-	transition: all 1s;
+	transition: all 0.5s;
 }
 .filterRow{
 	align-content:  right;
@@ -69,13 +86,14 @@ export default {
 }
 
 .filterTitle{
-	padding: 10px 0px 10px 5px;
+	padding: 0px 0px 2px 5px;
 	color: rgba(0, 0, 0, 0.7);
 }
 
 .filterOption{
 	padding: 3px 0px 3px 10px;
 	color: rgba(0, 0, 0, 0.4);
+	text-align: left;
 }
 
 .filterOption:hover{
@@ -83,7 +101,7 @@ export default {
 }
 
 .fade-enter-active, .fade-leave-active {
-  transition: 1s
+  transition: 0.5s
 }
 .fade-enter, .fade-leave-to {
 	height: 0%;
