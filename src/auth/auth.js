@@ -66,7 +66,7 @@ export default {
   // To log out, we just need to remove the token
   logout(context) {
     context.$session.destroy()
-    // context.$router.push('/')
+    context.$router.push('/')
     // this.user.authenticated = false
   },
 
@@ -84,7 +84,7 @@ export default {
 
   // The object to be passed as a header for authenticated requests
   getAuthHeader(context) {
-    console.log(context.$session.get('JWT'))
+    //console.log(context.$session.get('JWT'))
     return {
       Authorization: 'JWT ' + context.$session.get('JWT')
     }
