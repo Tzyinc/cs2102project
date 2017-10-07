@@ -34,6 +34,12 @@ export default {
   } ,
   created: function () {
   }
+  /*,
+  watch: {
+    items: function (val) {
+      this.updateSource(val);
+    }
+  }*/
 }
 </script>
 
