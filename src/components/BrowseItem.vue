@@ -1,7 +1,7 @@
 <template>
 <div class="browseItem">
 	<h1>Browse Item</h1>
-	<div class="input-group">
+	<div class="input-group" @keyup.enter="search(searchQuery)">
     <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
     <span class="input-group-btn">
     	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
