@@ -7,10 +7,10 @@
     	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
     </span>
 
-    </div>	
+    </div>
     <br/>
     <div class="itemRow" v-for = "item in items">
-    	<div class="item"> 
+    	<div class="item">
     	<itemsquare
     	  :iid = "item.iid"
 	      :name="item.name"
@@ -27,7 +27,7 @@
 <script>
 import api_ep from '../api.json'
 import ItemSquare from './ItemGridSquare'
-var api_url = api_ep.API_URL + api_ep.ITEM
+var api_url = api_ep.API_URL + api_ep.ITEMS
 
 export default {
   name: 'BrowseItem',
@@ -77,4 +77,3 @@ export default {
 	display: inline-block;
 }
 </style>
-
