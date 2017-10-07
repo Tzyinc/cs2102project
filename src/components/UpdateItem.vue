@@ -35,9 +35,13 @@
 		</div>
 		<!-- Availability -->
 		<div class="formRow">
-			<label for="avail">Availability: </label>
-			<input class="avail form-control" type="date" v-model="startdate" placeholder="01-10-2017">
-			<input class="avail form-control" type="date" v-model="enddate" placeholder="11-10-2017">
+
+			<label for="avail">StartDate: </label>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="startdate" name="uniquename"></datepicker>
+		</div>
+		<div class="formRow">
+			<label for="avail">End Date: </label>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="enddate" name="uniquename"></datepicker>
 
 		</div>
 		<br/>
@@ -56,14 +60,19 @@
 <script>
 import auth from '../auth/auth'
 import api_ep from '../api.json'
+import Datepicker from 'vuejs-datepicker';
 
 var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
 var api_post_url = api_ep.API_URL + api_ep.ITEM
 export default {
   name: 'UpdateItem',
+	components: {
+        Datepicker
+  },
   props: ['iid'],
   data () {
-
+		var today = new Date()
+		var tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
     return {
     	owner_username   : '',
     	name     : '',
@@ -72,8 +81,8 @@ export default {
 	    tags     : '',
 	    minBid   : 0,
 	    location : '',
-	    startdate   : '',
-	    enddate   : '',
+	    startdate   : today,
+	    enddate   : tomorrow,
 	    status   : true,
 	    timeListed: ''
     }
