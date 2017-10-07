@@ -85,10 +85,10 @@ router.route('/user').put(userController.createUser)
 router.route('/user').post(jwtlogin)
 router.route('/user').get(userController.getUserDetails)
 router.route('/item').put(itemController.createItem)
-router.route('/item').get(itemController.getItem)
 router.route('/item').post(itemController.updateItem)
 router.route('/item').delete(itemController.deleteItem)
-router.route('/itemInfo').get(itemController.getItemWithUser)
+router.route('/item').get(itemController.getItem)
+router.route('/items').get(itemController.getItems)
 router
   .route('/tokenValid')
   .get(passport.authenticate('jwt', { session: false }), function(req, res) {

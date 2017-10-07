@@ -8,16 +8,16 @@
     	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
     </span>
 
-  </div>	
+  </div>
   -->
   <div class="createButton">
-    
+
     <button type="button" class="btn btn-info" v-on:click="go_to_create()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create New Listing</button>
   </div>
    <br/>
   <br/>
   <div class="itemRow" v-for = "item in items">
-    <div class="item"> 
+    <div class="item">
     	<itemsquare
     	  :iid = "item.iid"
 	      :name="item.name"
@@ -35,7 +35,7 @@
 import auth from '../auth/auth'
 import api_ep from '../api.json'
 import ItemSquare from './ItemGridSquare'
-var api_url = api_ep.API_URL + api_ep.ITEM
+var api_url_items = api_ep.API_URL + api_ep.ITEMS
 var api_item_owner = '?item_owner='
 
 export default {
@@ -63,7 +63,7 @@ export default {
       this.$router.push('/')
     }
     this.login_user = auth.getUsername(this)
-    this.$http.get(api_url+api_item_owner+this.login_user)
+    this.$http.get(api_url_items+api_item_owner+this.login_user)
       .then(response => {
         this.items = response.data;
         console.log(this.items);
@@ -97,4 +97,3 @@ export default {
 }
 
 </style>
-
