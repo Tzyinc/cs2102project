@@ -9,16 +9,7 @@
 
     </div>
     <br/>
-    <div class="itemRow" v-for = "item in items">
-    	<div class="item">
-    	<itemsquare
-    	  :iid = "item.iid"
-	      :name="item.name"
-	      :owner='item.owner_username'
-	      :price= 'item.minbid'
-	      :image="image"></itemsquare>
-    	</div>
-    </div>
+    <itemgrid :items = "items"></itemgrid>
     <br/>
     <!--<div><pre>data: {{$data}}</pre></div>	-->
 </div>
@@ -26,20 +17,20 @@
 
 <script>
 import api_ep from '../api.json'
-import ItemSquare from './ItemGridSquare'
+import ItemGrid from './ItemGrid'
+
 var api_url = api_ep.API_URL + api_ep.ITEMS
 
 export default {
   name: 'BrowseItem',
   components: {
-    'itemsquare' : ItemSquare,
+    'itemgrid' : ItemGrid,
   },
   data () {
 
     return {
     	searchQuery: '',
-    	items: [],
-      	image: '/static/images/book.png'
+    	items: []
 
     }
   },
