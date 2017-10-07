@@ -1,14 +1,17 @@
 <template>
 <div class="browseItem">
 	<h1>Browse Item</h1>
-	<div class="input-group" @keyup.enter="search(searchQuery)">
-    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
-    <span class="input-group-btn">
-    	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
-    </span>
-
+	<div class="row justify-content-center">
+		<div class="searchBar input-group col-10" @keyup.enter="search(searchQuery)">
+		    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
+		    <span class="input-group-btn">
+		    	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
+		    </span>
+		</div>
     </div>
-    <br/>
+    <div class="row justify-content-center">
+    	<browseFilter></browseFilter>
+    </div>
     <itemgrid :items = "items"></itemgrid>
     <br/>
     <!--<div><pre>data: {{$data}}</pre></div>	-->
@@ -18,6 +21,7 @@
 <script>
 import api_ep from '../api.json'
 import ItemGrid from './ItemGrid'
+import BrowseFilter from './Filter'
 
 var api_url = api_ep.API_URL + api_ep.ITEMS
 var api_url_search = api_ep.API_URL + api_ep.ITEMS + "?name_like="
@@ -25,6 +29,7 @@ export default {
   name: 'BrowseItem',
   components: {
     'itemgrid' : ItemGrid,
+    BrowseFilter
   },
   data () {
 
@@ -60,7 +65,7 @@ export default {
 }
 
 .browseItem h1{
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .item{
@@ -70,5 +75,8 @@ export default {
 
 .itemRow{
 	display: inline-block;
+}
+
+.searchBar{
 }
 </style>
