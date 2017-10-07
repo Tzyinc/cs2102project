@@ -8,7 +8,12 @@ const cn = cred.dbcred
 const db = pgp(cn)
 const ps = require('pg-promise').PreparedStatement
 
+function stringWildcard(input) {
+  return '%' + input + '%'
+}
+
 module.exports = {
   db: db,
-  PS: ps
+  PS: ps,
+  addWildcard: stringWildcard
 }
