@@ -19,6 +19,11 @@ const getItemByUserPS = new dbcon.PS(
   'SELECT * FROM app_item WHERE owner_username = $1'
 )
 
+const getItemByNamePS = new dbcon.PS(
+  'getItemByName',
+  'SELECT * FROM app_item WHERE name LIKE $1'
+)
+
 const getItemPS = new dbcon.PS(
   'getItem',
   'SELECT i.iid, i.owner_username, i.name, i.imagesrc AS itemImg, i.description, i.minbid, i.timeListed, i.status, i.location, i.startdate, i.enddate, u.userrating, u.imagesrc AS userImg FROM app_item i INNER JOIN app_user u ON i.owner_username = u.username WHERE i.iid = $1'
@@ -93,6 +98,16 @@ function getItems(req, res) {
     getItemByUserPS.values = [itemDetails.item_owner]
     dbcon.db
       .any(getItemByUserPS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
+  } else if (itemDetails.name_like != null) {
+    getItemByNamePS.values = [dbcon.addWildcard(itemDetails.name_like)]
+    dbcon.db
+      .any(getItemByNamePS)
       .then(result => {
         res.json(result)
       })
