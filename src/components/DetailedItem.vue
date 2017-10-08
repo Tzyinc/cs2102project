@@ -36,7 +36,7 @@
   import ItemDescription from './ItemDescription'
   import ItemBidding from './ItemBidding'
 
-  var api_url = api_ep.API_URL + api_ep.ITEM + 'Info?iid='
+  var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
   var api_del = api_ep.API_URL + api_ep.ITEM
 
   export default {
@@ -81,7 +81,7 @@
     console.log("the full url is:" + api_url + this.$route.params.iid)
     this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
-        this.item = response.data[0];
+        this.item = response.data;
         console.log("asdf" + this.item);
       });
     console.log("got data?")
