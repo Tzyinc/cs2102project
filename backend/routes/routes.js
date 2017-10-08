@@ -79,7 +79,7 @@ router.get('/', function(req, res) {
 trace, copy, lock, mkcol, move, purge, unlock, report,
 mkactivity, checkout, merge, m-search, notify, subscribe,
 unsubscribe, patch and search. */
-
+router.use('/img', express.static(path.join(__dirname, '../img/src')))
 router.route('/example').get(exampleController.example)
 router.route('/user').put(userController.createUser)
 router.route('/user').post(jwtlogin)
