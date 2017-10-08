@@ -1,8 +1,9 @@
 <template>
   <div>
-    <button type="button" class="btn btn-danger pull-right" v-on:click="deleteItem(iid)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-    <button type="button" class="btn btn-warning pull-right" v-on:click="load(iid)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-
+    <div v-show="isOwner()">
+      <button type="button" class="btn btn-danger pull-right" v-on:click="deleteItem(iid)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+      <button type="button" class="btn btn-warning pull-right" v-on:click="load(iid)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+    </div>
       <div class= "container">
         <div class="detailed-title">Listing Details</div>
         <div class="row">
@@ -36,12 +37,13 @@
 </template>
 
 <script>
-
+  import auth from '../auth/auth'
   import api_ep from '../api.json'
   import ItemPicture from './ItemPicture'
   import ItemOwnerInfo from './ItemOwnerInfo'
   import ItemDescription from './ItemDescription'
   import ItemBidding from './ItemBidding'
+
 
   var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
   var api_del = api_ep.API_URL + api_ep.ITEM
@@ -56,11 +58,18 @@
   },
   data() {
     return {
+        login_user: '',
         item: []
     }
   },
 
   methods: {
+    isOwner() {
+      if (this.login_user === this.item.owner_username) {
+        console.log("true")
+        return true;
+      }
+    },
   	load (iid){
   		this.$router.push({ name: 'UpdateItem', params: { iid: this.$route.params.iid }})
   	},
@@ -87,14 +96,13 @@
   },
 
   created: function () {
-
+    this.login_user = auth.getUsername(this)
     console.log("the full url is:" + api_url + this.$route.params.iid)
     this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
         this.item = response.data;
         console.log("asdf" + this.item);
       });
-    console.log("got data?")
   }
 }
 </script>
