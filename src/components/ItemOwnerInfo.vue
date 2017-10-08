@@ -27,9 +27,7 @@ export default {
 
 <style scoped>
 .item-owner-info {
-  width: 30%;
   text-align: left;
-  display:inline-block;
   /*background-color: #cecece;*/
 }
 .item-owner-info p {
