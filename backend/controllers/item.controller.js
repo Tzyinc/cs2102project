@@ -12,15 +12,20 @@ const updateItemPS = new dbcon.PS(
     'WHERE iid = $11'
 )
 
-const getAllItemPS = new dbcon.PS('getItem', 'SELECT * FROM app_item ')
+const getItemsPS = new dbcon.PS('getItems', 'SELECT * FROM app_item ')
 
 const getItemByUserPS = new dbcon.PS(
   'getItemByUser',
   'SELECT * FROM app_item WHERE owner_username = $1'
 )
 
-const getItemUserByIDPS = new dbcon.PS(
-  'getItemUserByID',
+const getItemByNamePS = new dbcon.PS(
+  'getItemByName',
+  'SELECT * FROM app_item WHERE name LIKE $1'
+)
+
+const getItemPS = new dbcon.PS(
+  'getItem',
   'SELECT i.iid, i.owner_username, i.name, i.imagesrc AS itemImg, i.description, i.minbid, i.timeListed, i.status, i.location, i.startdate, i.enddate, u.userrating, u.imagesrc AS userImg FROM app_item i INNER JOIN app_user u ON i.owner_username = u.username WHERE i.iid = $1'
 )
 
@@ -32,6 +37,8 @@ const deleteItemByIDPS = new dbcon.PS(
 function createItem(req, res){
   var itemDetails = req.body.data
   if (itemDetails != null) {
+    var startDate = new Date(itemDetails.startdate)
+    var endDate = new Date(itemDetails.enddate)
     createItemPS.values = [
       itemDetails.owner_username,
       itemDetails.name,
@@ -40,8 +47,8 @@ function createItem(req, res){
       itemDetails.status,
       itemDetails.location,
       itemDetails.description,
-      itemDetails.startdate,
-      itemDetails.enddate
+      startDate,
+      endDate
     ]
   }
   dbcon.db
@@ -50,6 +57,7 @@ function createItem(req, res){
       res.json({success: true})
     })
     .catch(error => {
+      console.log(error)
       res.json(error)
     })
 }
@@ -58,6 +66,8 @@ function updateItem(req, res){
   var itemDetails = req.body.data
   console.log('test')
   if (itemDetails != null) {
+    var startDate = new Date(itemDetails.startdate)
+    var endDate = new Date(itemDetails.enddate)
     updateItemPS.values = [
       itemDetails.owner_username,
       itemDetails.name,
@@ -67,8 +77,8 @@ function updateItem(req, res){
       itemDetails.status,
       itemDetails.location,
       itemDetails.description,
-      itemDetails.startdate,
-      itemDetails.enddate,
+      startDate,
+      endDate,
       itemDetails.iid
     ]
   }
@@ -82,7 +92,7 @@ function updateItem(req, res){
     })
 }
 
-function getItem(req, res){
+function getItems(req, res){
   var itemDetails = req.query
   if (itemDetails.item_owner != null) {
     getItemByUserPS.values = [ itemDetails.item_owner ]
@@ -94,9 +104,19 @@ function getItem(req, res){
       .catch(error => {
         res.json(error)
       })
+  } else if (itemDetails.name_like != null) {
+    getItemByNamePS.values = [ dbcon.addWildcard(itemDetails.name_like) ]
+    dbcon.db
+      .any(getItemByNamePS)
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        res.json(error)
+      })
   } else {
     dbcon.db
-      .any(getAllItemPS)
+      .any(getItemsPS)
       .then(result => {
         res.json(result)
       })
@@ -106,12 +126,12 @@ function getItem(req, res){
   }
 }
 
-function getItemWithUser(req, res){
+function getItem(req, res){
   var itemDetails = req.query
   if (itemDetails.iid != null) {
-    getItemUserByIDPS.values = [ itemDetails.iid ]
+    getItemPS.values = [ itemDetails.iid ]
     dbcon.db
-      .any(getItemUserByIDPS)
+      .one(getItemPS)
       .then(result => {
         res.json(result)
       })
@@ -142,8 +162,8 @@ function deleteItem(req, res){
 
 module.exports = {
   createItem: createItem,
+  getItems: getItems,
   getItem: getItem,
-  getItemWithUser: getItemWithUser,
   updateItem: updateItem,
   deleteItem: deleteItem
 }

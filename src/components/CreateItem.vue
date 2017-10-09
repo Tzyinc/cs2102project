@@ -2,7 +2,7 @@
 <div class="createItem">
 	<h1>Create Item</h1>
 	<form id="itemForm">
-		
+
 		<!-- Name -->
 		<div class="formRow">
 			<label for="name">Name: </label>
@@ -35,34 +35,42 @@
 		</div>
 		<!-- Availability -->
 		<div class="formRow">
-			<label for="avail">Availability: </label>
-			<input class="avail form-control" type="date" v-model="startdate" placeholder="01-10-2017">
-			<input class="avail form-control" type="date" v-model="enddate" placeholder="11-10-2017"> 
-			
+			<label for="avail">StartDate: </label>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="startdate" name="uniquename"></datepicker>
 		</div>
+		<div class="formRow">
+			<label for="avail">End Date: </label>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="enddate" name="uniquename"></datepicker>
+		</div>
+
 		<br/>
 		<div class="formRow" >
 			<label></label>
 			<button type="button" class="btn btn-secondary" v-on:click="cancel()">Cancel</button>
 			<button type="button" class="btn btn-primary" v-on:click="submit($data)">Submit</button>
-		</div> 
+		</div>
         
 	</form>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
-			
+
 </div>
 </template>
 
 <script>
 import auth from '../auth/auth'
 import api_ep from '../api.json'
+import Datepicker from 'vuejs-datepicker';
 
 var api_url = api_ep.API_URL + api_ep.ITEM
 
 export default {
   name: 'CreateItem',
+	components: {
+        Datepicker
+  },
   data () {
-
+		var today = new Date()
+		var tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
     return {
     	owner_username   : '',
 	    name     : '',
@@ -71,20 +79,21 @@ export default {
 	    tags     : '',
 	    minBid   : 0.99,
 	    location : '',
-	    startdate   : '',
-	    enddate   : '',
+	    startdate   : today,
+	    enddate   : tomorrow,
 	    status   : true
     }
   },
   methods: {
 	submit (formData) {
 		var context = this
+		console.log('submitting',formData)
   		$.ajax({
     	url: api_url, //Your api url
      	type: 'PUT', //type is any HTTP method
      	data: {data: formData}, //Data as js object
      	success: function(response){
-	        console.log('submit')
+	        //console.log(formData)
 	        if(response.hasOwnProperty('success')){
 	        	alert("Successfully created item:\n" + formData.name)
 	        	context.$router.push('myListing')
@@ -94,7 +103,7 @@ export default {
 			}
 		}
     	})
-  	}, 
+  	},
   	cancel (){
   		this.$router.push('myListing')
   	}
@@ -102,8 +111,7 @@ export default {
   created: function () {
     /*Change here to get items by logged in user*/
     this.owner_username = auth.getUsername(this);
-
-  } 
+  }
 }
 </script>
 

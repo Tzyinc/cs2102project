@@ -16,13 +16,12 @@ export default {
       type: 'POST', // type is any HTTP method
       data: {data: creds}, // Data as js object
       statusCode: {
-        401: function () {
-            //console.log('failed login')
-            context.setLoginMsg('Incorrect username/password!')
+        401: function(){
+          //console.log('failed login')
+          context.setLoginMsg('Incorrect username/password!')
         }
       },
       success: function(response){
-        console.log("Checking")
         if (response.success === true) {
           //console.log('logged in')
           context.$session.start()
@@ -32,7 +31,6 @@ export default {
           context.$router.push('/')
         }
       }
-
     })
   },
 
