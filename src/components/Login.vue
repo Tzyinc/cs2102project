@@ -21,7 +21,7 @@
       >
     </div>
     <button class="btn btn-primary" @click="submit()">Log in</button>
-	  <p style="color:red">{{login_msg}}</p>
+	  <p>{{login_msg}}</p>
   </div>
 </template>
 
@@ -74,5 +74,10 @@
 
 .loginPage h1{
     margin-top: 20px;
+}
+
+.loginPage p{
+  color: red;
+  margin-top: 20px;
 }
 </style>

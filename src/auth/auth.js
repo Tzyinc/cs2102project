@@ -15,7 +15,14 @@ export default {
       url: api_ep.API_URL + api_ep.USER, // Your api url
       type: 'POST', // type is any HTTP method
       data: {data: creds}, // Data as js object
+      statusCode: {
+        401: function () {
+            //console.log('failed login')
+            context.setLoginMsg('Incorrect username/password!')
+        }
+      },
       success: function(response){
+        console.log("Checking")
         if (response.success === true) {
           //console.log('logged in')
           context.$session.start()
@@ -23,11 +30,9 @@ export default {
           context.$session.set('JWT', response.token)
           _auth.user.authenticated = true
           context.$router.push('/')
-        } else {
-          console.log('failed login')
-          context.setLoginMsg('Incorrect username/password!')
         }
       }
+
     })
   },
 
