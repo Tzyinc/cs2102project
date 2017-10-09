@@ -17,7 +17,7 @@ export default {
       data: {data: creds}, // Data as js object
       success: function(response){
         if (response.success === true) {
-          console.log('logged in')
+          //console.log('logged in')
           context.$session.start()
           context.$session.set('username', creds.username)
           context.$session.set('JWT', response.token)
@@ -25,7 +25,7 @@ export default {
           context.$router.push('/')
         } else {
           console.log('failed login')
-          return 'Incorrect username/password!'
+          context.setLoginMsg('Incorrect username/password!')
         }
       }
     })
@@ -38,10 +38,11 @@ export default {
       data: {data: creds}, // Data as js object
       success: function(response){
         if (response.success === true) {
-          console.log('success')
+          //console.log('success')
           context.$router.push('/Login')
         } else {
-          console.log('fail')
+          //console.log('fail')
+          context.setRegisterMsg('Username already taken!')
         }
       }
     })
