@@ -14,18 +14,21 @@ export default {
     $.ajax({
       url: api_ep.API_URL + api_ep.USER, // Your api url
       type: 'POST', // type is any HTTP method
-      data: { data: creds }, // Data as js object
-      success: function(response) {
+      data: {data: creds}, // Data as js object
+      statusCode: {
+        401: function(){
+          //console.log('failed login')
+          context.setLoginMsg('Incorrect username/password!')
+        }
+      },
+      success: function(response){
         if (response.success === true) {
-          console.log('logged in')
+          //console.log('logged in')
           context.$session.start()
           context.$session.set('username', creds.username)
           context.$session.set('JWT', response.token)
           _auth.user.authenticated = true
           context.$router.push('/')
-        } else {
-          console.log('failed login')
-          return 'Incorrect username/password!'
         }
       }
     })
@@ -35,13 +38,14 @@ export default {
     $.ajax({
       url: api_ep.API_URL + api_ep.USER, // Your api url
       type: 'PUT', // type is any HTTP method
-      data: { data: creds }, // Data as js object
-      success: function(response) {
+      data: {data: creds}, // Data as js object
+      success: function(response){
         if (response.success === true) {
-          console.log('success')
+          //console.log('success')
           context.$router.push('/Login')
         } else {
-          console.log('fail')
+          //console.log('fail')
+          context.setRegisterMsg('Username already taken!')
         }
       }
     })
