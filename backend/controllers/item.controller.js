@@ -35,7 +35,7 @@ const deleteItemByIDPS = new dbcon.PS(
   'DELETE FROM app_item WHERE iid = $1'
 )
 
-function createItem(req, res){
+function createItem(req, res) {
   var itemDetails = req.body.data
   if (itemDetails != null) {
     var startDate = new Date(itemDetails.startdate)
@@ -57,7 +57,7 @@ function createItem(req, res){
     .then(result => {
       console.log(result)
       imageSaver.saveToFile(itemDetails.imageBin, result.iid)
-      res.json({success: true})
+      res.json({ success: true })
     })
     .catch(error => {
       console.log(error)
@@ -65,7 +65,7 @@ function createItem(req, res){
     })
 }
 
-function updateItem(req, res){
+function updateItem(req, res) {
   var itemDetails = req.body.data
   console.log('test')
   if (itemDetails != null) {
@@ -74,7 +74,7 @@ function updateItem(req, res){
     updateItemPS.values = [
       itemDetails.owner_username,
       itemDetails.name,
-      itemDetails.imageSrc,
+      'error.png',
       itemDetails.minBid,
       itemDetails.timeListed,
       itemDetails.status,
@@ -86,19 +86,20 @@ function updateItem(req, res){
     ]
   }
   dbcon.db
-    .any(updateItemPS)
+    .none(updateItemPS)
     .then(result => {
-      res.json({success: true})
+      imageSaver.saveToFile(itemDetails.imageBin, itemDetails.iid)
+      res.json({ success: true })
     })
     .catch(error => {
       res.json(error)
     })
 }
 
-function getItems(req, res){
+function getItems(req, res) {
   var itemDetails = req.query
   if (itemDetails.item_owner != null) {
-    getItemByUserPS.values = [ itemDetails.item_owner ]
+    getItemByUserPS.values = [itemDetails.item_owner]
     dbcon.db
       .any(getItemByUserPS)
       .then(result => {
@@ -108,7 +109,7 @@ function getItems(req, res){
         res.json(error)
       })
   } else if (itemDetails.name_like != null) {
-    getItemByNamePS.values = [ dbcon.addWildcard(itemDetails.name_like) ]
+    getItemByNamePS.values = [dbcon.addWildcard(itemDetails.name_like)]
     dbcon.db
       .any(getItemByNamePS)
       .then(result => {
@@ -129,10 +130,10 @@ function getItems(req, res){
   }
 }
 
-function getItem(req, res){
+function getItem(req, res) {
   var itemDetails = req.query
   if (itemDetails.iid != null) {
-    getItemPS.values = [ itemDetails.iid ]
+    getItemPS.values = [itemDetails.iid]
     dbcon.db
       .one(getItemPS)
       .then(result => {
@@ -142,24 +143,24 @@ function getItem(req, res){
         res.json(error)
       })
   } else {
-    res.json({success: false})
+    res.json({ success: false })
   }
 }
 
-function deleteItem(req, res){
+function deleteItem(req, res) {
   var itemDetails = req.body.data
   if (itemDetails.iid != null) {
-    deleteItemByIDPS.values = [ itemDetails.iid ]
+    deleteItemByIDPS.values = [itemDetails.iid]
     dbcon.db
       .any(deleteItemByIDPS)
       .then(result => {
-        res.json({success: true})
+        res.json({ success: true })
       })
       .catch(error => {
         res.json(error)
       })
   } else {
-    res.json({success: false})
+    res.json({ success: false })
   }
 }
 
