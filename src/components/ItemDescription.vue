@@ -36,4 +36,8 @@ export default {
   font-size:2em;
   padding-bottom: 2%;
 }
+.item-desc-text {
+  max-height:inherit;
+  overflow-y: scroll;
+}
 </style>

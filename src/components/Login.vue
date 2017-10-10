@@ -21,7 +21,7 @@
       >
     </div>
     <button class="btn btn-primary" @click="submit()">Log in</button>
-	  <p style="color:red">{{login_msg}}</p>
+	  <p>{{login_msg}}</p>
   </div>
 </template>
 
@@ -51,6 +51,9 @@
         // We need to pass the component's this context
         // to properly make use of http in the auth service
         this.login_msg = auth.login(this, credentials, '/Register')
+      },
+      setLoginMsg(msg) {
+        this.login_msg = msg
       }
     },
     created: function () {
@@ -71,5 +74,10 @@
 
 .loginPage h1{
     margin-top: 20px;
+}
+
+.loginPage p{
+  color: red;
+  margin-top: 20px;
 }
 </style>

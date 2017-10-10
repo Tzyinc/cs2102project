@@ -58,7 +58,6 @@
         
 	</form>
 			<!--<div><pre>data: {{$data}}</pre></div>-->
-			{{$data}}
 
 </div>
 </template>
