@@ -1,9 +1,10 @@
 var dbcon = require('../dbcon/database.js')
+var imageSaver = require('../img/image.controller.js')
 
 const createItemPS = new dbcon.PS(
   'createItem',
   'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location, description, startdate, enddate) ' +
-    'VALUES($1, $2, $3, $4, now(), $5, $6, $7, $8, $9)'
+    'VALUES($1, $2, $3, $4, now(), $5, $6, $7, $8, $9) RETURNING iid'
 )
 
 const updateItemPS = new dbcon.PS(
@@ -42,7 +43,7 @@ function createItem(req, res){
     createItemPS.values = [
       itemDetails.owner_username,
       itemDetails.name,
-      itemDetails.imageSrc,
+      'error.png',
       itemDetails.minBid,
       itemDetails.status,
       itemDetails.location,
@@ -52,8 +53,10 @@ function createItem(req, res){
     ]
   }
   dbcon.db
-    .any(createItemPS)
+    .one(createItemPS)
     .then(result => {
+      console.log(result)
+      imageSaver.saveToFile(itemDetails.imageBin, result.iid)
       res.json({success: true})
     })
     .catch(error => {

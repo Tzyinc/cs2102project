@@ -10,18 +10,9 @@
 
   </div>
   -->
-   <br/>
   <br/>
-  <div class="itemRow" v-for = "item in items">
-    <div class="item">
-    	<itemsquare
-    	  :iid = "item.iid"
-	      :name="item.name"
-	      :owner='item.owner_username'
-	      :price= 'item.minbid'
-	      :image="image"></itemsquare>
-  	</div>
-  </div>
+  <br/>
+  <itemgrid :items = "items"></itemgrid>
   <br/>
   <!--<div><pre>data: {{$data}}</pre></div>	-->
 </div>
@@ -30,21 +21,20 @@
 <script>
 import auth from '../auth/auth'
 import api_ep from '../api.json'
-import ItemSquare from './ItemGridSquare'
+import ItemGrid from './ItemGrid'
 var api_url_items = api_ep.API_URL + api_ep.ITEMS
 var api_item_owner = '?item_owner='
 
 export default {
   name: 'MyLoan',
   components: {
-    'itemsquare' : ItemSquare,
+    'itemgrid' : ItemGrid,
   },
   data () {
 
     return {
     	searchQuery: '',
     	items: [],
-      image: '/static/images/book.png',
       login_user: ''
     }
   },

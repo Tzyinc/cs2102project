@@ -1,24 +1,18 @@
 <template>
 <div class="browseItem">
 	<h1>Browse Item</h1>
-	<div class="input-group">
-    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
-    <span class="input-group-btn">
-    	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
-    </span>
-
+	<div class="row justify-content-center">
+		<div class="searchBar input-group col-10" @keyup.enter="search(searchQuery)">
+		    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
+		    <span class="input-group-btn">
+		    	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
+		    </span>
+		</div>
     </div>
-    <br/>
-    <div class="itemRow" v-for = "item in items">
-    	<div class="item">
-    	<itemsquare
-    	  :iid = "item.iid"
-	      :name="item.name"
-	      :owner='item.owner_username'
-	      :price= 'item.minbid'
-	      :image="image"></itemsquare>
-    	</div>
+    <div class="row justify-content-center">
+    	<browseFilter></browseFilter>
     </div>
+    <itemgrid :items = "items"></itemgrid>
     <br/>
     <!--<div><pre>data: {{$data}}</pre></div>	-->
 </div>
@@ -26,26 +20,32 @@
 
 <script>
 import api_ep from '../api.json'
-import ItemSquare from './ItemGridSquare'
-var api_url = api_ep.API_URL + api_ep.ITEMS
+import ItemGrid from './ItemGrid'
+import BrowseFilter from './Filter'
 
+var api_url = api_ep.API_URL + api_ep.ITEMS
+var api_url_search = api_ep.API_URL + api_ep.ITEMS + "?name_like="
 export default {
   name: 'BrowseItem',
   components: {
-    'itemsquare' : ItemSquare,
+    'itemgrid' : ItemGrid,
+    BrowseFilter
   },
   data () {
 
     return {
     	searchQuery: '',
-    	items: [],
-      	image: '/static/images/book.png'
+    	items: []
 
     }
   },
   methods: {
   	search (query){
-  		alert("Searching for ...\n" + query)
+	    this.$http.get(api_url_search + query)
+	      .then(response => {
+	        this.items = response.data;
+	        console.log("Searching for : " + query);
+	      });
   	}
   } ,
   created: function () {
@@ -65,7 +65,7 @@ export default {
 }
 
 .browseItem h1{
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .item{
@@ -75,5 +75,8 @@ export default {
 
 .itemRow{
 	display: inline-block;
+}
+
+.searchBar{
 }
 </style>
