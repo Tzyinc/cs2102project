@@ -53,7 +53,6 @@
         
 	</form>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
-{{$data}}
 </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
 <div class="itemsquare" v-on:click="load(iid)">
 	<div id='image'>
-		<img :src="image">
+		<img class="img-thumbnail" :src="image">
 	</div>
 	<div class='info'>
 		<div id='name'>{{name}}</div>
@@ -52,6 +52,7 @@ img {
 	height: 150px;
 	background-size: auto 100%;
 	padding: 5px 5px 0px 5px;
+
 }
 #name{
 	padding-left: 10px;
