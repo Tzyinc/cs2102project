@@ -7,7 +7,7 @@
       :name = "item.name"
       :owner = "item.owner_username"
       :price = "item.minbid"
-      :image = "image"></itemsquare>
+      :image = "retrieveImageUrl(item.imagesrc)"></itemsquare>
   	</div>
   </div>  
 </div>
@@ -16,7 +16,7 @@
 <script>
 import api_ep from '../api.json'
 import ItemSquare from './ItemGridSquare'
-
+var api_url = api_ep.API_URL + api_ep.IMAGE + '/'
 export default {
   name: 'ItemGrid',
   components: {
@@ -31,6 +31,10 @@ export default {
     }
   },
   methods: {
+    retrieveImageUrl(source){
+      var itemImage = api_url+source;
+      return itemImage;
+    }
   } ,
   created: function () {
   }

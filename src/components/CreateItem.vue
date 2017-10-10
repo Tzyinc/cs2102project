@@ -103,6 +103,7 @@ export default {
   		$.ajax({
     	url: api_url, //Your api url
      	type: 'PUT', //type is any HTTP method
+     	headers: auth.getAuthHeader(this),
      	data: {data: formData}, //Data as js object
      	success: function(response){
 	        //console.log(formData)
