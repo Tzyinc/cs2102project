@@ -70,6 +70,9 @@ export default {
         console.log('Password mismatch')
         this.register_msg = 'Passwords do not match!'
       }
+    },
+    setRegisterMsg(msg) {
+      this.register_msg = msg
     }
   },
   created: function () {
