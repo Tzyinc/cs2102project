@@ -81,6 +81,7 @@ export default {
     	name     : '',
 	    description     : '',
 	    imageSrc : '',
+	    imageBin : '',
 	    tags     : '',
 	    minBid   : 0,
 	    location : '',
