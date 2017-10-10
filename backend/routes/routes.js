@@ -25,12 +25,12 @@ var jwtOptions = {
   secretOrKey: cred.jwt.secret
 }
 
-var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next){
+var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
   console.log('payload received', jwt_payload)
   var usernamePromise = userController.getAllUsernames()
   usernamePromise
     .then(result => {
-      var user = result[_.findIndex(result, {username: jwt_payload.username})]
+      var user = result[_.findIndex(result, { username: jwt_payload.username })]
       if (user) {
         next(null, user)
       } else {
@@ -45,7 +45,7 @@ var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next){
 express().use(passport.initialize())
 passport.use(strategy)
 
-function jwtlogin(req, res){
+function jwtlogin(req, res) {
   if (req.body.data) {
     var username = req.body.data.username
     var password = req.body.data.password
@@ -55,22 +55,22 @@ function jwtlogin(req, res){
     .then(result => {
       console.log(result)
       if (bcrypt.compareSync(password, result.password)) {
-        var payload = {username: result.username}
+        var payload = { username: result.username }
         var token = jwt.sign(payload, jwtOptions.secretOrKey)
         console.log(payload, token)
-        res.json({success: true, token: token})
+        res.json({ success: true, token: token })
       } else {
-        res.status(401).json({message: 'passwords did not match'})
+        res.status(401).json({ message: 'passwords did not match' })
       }
     })
     .catch(error => {
       console.error(error)
-      res.status(401).json({message: 'no such user found', error: error})
+      res.status(401).json({ message: 'no such user found', error: error })
     })
 }
 
-router.get('/', function(req, res){
-  res.json({message: 'API entry point is /api/<object>'})
+router.get('/', function(req, res) {
+  res.json({ message: 'API entry point is /api/<object>' })
 })
 
 // for every new schema, write routes for them
@@ -86,8 +86,9 @@ router
     passport.authenticate('jwt', { session: false }),
     exampleController.example
   )
+router.route('/login').post(jwtlogin)
 router.route('/user').put(userController.createUser)
-router.route('/user').post(jwtlogin)
+// router.route('/user').post(jwtlogin)
 router.route('/user').get(userController.getUserDetails)
 router
   .route('/item')
@@ -111,8 +112,8 @@ router.route('/item').get(itemController.getItem)
 router.route('/items').get(itemController.getItems)
 router
   .route('/tokenValid')
-  .get(passport.authenticate('jwt', {session: false}), function(req, res){
-    res.json({success: true})
+  .get(passport.authenticate('jwt', { session: false }), function(req, res) {
+    res.json({ success: true })
   })
 
 module.exports = router
