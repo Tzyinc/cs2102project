@@ -33,6 +33,7 @@ export default {
   methods: {
     retrieveImageUrl(source){
       var itemImage = api_url+source;
+      console.log(source);
       return itemImage;
     }
   } ,
