@@ -13,6 +13,7 @@
 <script>
 export default {
   	name: 'ImageUpload',
+  	props: ['oldImage'],
 	data () {
 		return {
 	    	image: ''
@@ -43,8 +44,23 @@ export default {
 		},
 		removeImage: function (e) {
 		  	this.image = '';
-		}
-	}
+		},
+  		retrieveImageUrl(source){
+	  		if(source != ''){
+	  			this.image = source;
+		    	console.log(this.image);
+	  		}
+
+	    }
+	},
+	watch: { 
+      		oldImage: function(newVal, oldVal) { // watch it
+          	if(newVal != ''){
+		  		this.retrieveImageUrl(this.oldImage);
+	  		}
+        }
+      }
+
 }
 </script>
 <style>

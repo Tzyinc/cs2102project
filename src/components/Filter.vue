@@ -71,14 +71,14 @@ export default {
 <style>
 
 .browseFilter{
-	border-bottom: 1px solid;
-	border-color: rgba(0, 0, 0, 0.15);
 	padding-bottom: 5px;
 	margin-bottom: 10px;
 }
 .displayFilter{
 	padding-bottom :5px;
-	transition: all 0.5s;
+	/*transition: all 0.5s;*/
+	border-bottom: 1px solid;
+	border-color: rgba(0, 0, 0, 0.15);
 }
 .filterRow{
 	align-content:  right;
@@ -100,13 +100,14 @@ export default {
 	color: rgba(0, 0, 0, 0.8);
 }
 
+/*
 .fade-enter-active, .fade-leave-active {
   transition: 0.5s
 }
 .fade-enter, .fade-leave-to {
 	height: 0%;
 }
-.fade-enter-to, .fade-leave /* .fade-leave-active below version 2.1.8 */ {
+.fade-enter-to, .fade-leave /* .fade-leave-active below version 2.1.8  {
 	height: 100%;
-}
+}*/
 </style>

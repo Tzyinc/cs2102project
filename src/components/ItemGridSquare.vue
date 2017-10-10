@@ -51,7 +51,7 @@ img {
 	width :100%;
 	height: 150px;
 	background-size: auto 100%;
-	padding-top: 5px;
+	padding: 5px 5px 0px 5px;
 }
 #name{
 	padding-left: 10px;

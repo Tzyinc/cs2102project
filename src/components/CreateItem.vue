@@ -21,7 +21,7 @@
 			
 			<upload-image url="url" name="" :max_files=1></upload-image>
 			-->
-			<imageupload @changed="loadImage"></imageupload>
+			<imageupload :oldImage="empty" @changed="loadImage"></imageupload>
 			
 		</div>
 		<!-- Tags -->
@@ -92,7 +92,8 @@ export default {
 	    location : '',
 	    startdate   : today,
 	    enddate   : tomorrow,
-	    status   : true
+	    status   : true,
+	    empty : ''
     }
   },
   methods: {

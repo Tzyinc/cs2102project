@@ -16,7 +16,7 @@
 		<!-- Image -->
 		<div class="formRow">
 			<label for="image">Image: </label>
-			<input class="image form-control" type="text" v-model="imageSrc" placeholder="Image link">
+			<imageupload :oldImage="oldImage" @changed="loadImage"></imageupload>
 		</div>
 		<!-- Tags -->
 		<div class="formRow">
@@ -53,21 +53,24 @@
         
 	</form>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
-
+{{$data}}
 </div>
 </template>
 
 <script>
 import auth from '../auth/auth'
 import api_ep from '../api.json'
-import Datepicker from 'vuejs-datepicker';
+import Datepicker from 'vuejs-datepicker'
+import ImageUpload from './ImageUpload'
 
 var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
 var api_post_url = api_ep.API_URL + api_ep.ITEM
+var api_url_image = api_ep.API_URL + api_ep.IMAGE + '/'
 export default {
   name: 'UpdateItem',
 	components: {
-        Datepicker
+        Datepicker,
+        'imageupload' : ImageUpload
   },
   props: ['iid'],
   data () {
@@ -84,7 +87,8 @@ export default {
 	    startdate   : today,
 	    enddate   : tomorrow,
 	    status   : true,
-	    timeListed: ''
+	    timeListed: '',
+	    oldImage : ''
     }
   },
   methods: {
@@ -94,6 +98,7 @@ export default {
   		$.ajax({
     	url: api_post_url, //Your api url
      	type: 'POST', //type is any HTTP method
+     	headers: auth.getAuthHeader(this),
      	data: {data: formData}, //Data as js object
      	success: function(response){
 	        console.log('submit update')
@@ -108,6 +113,10 @@ export default {
   	},
   	cancel (){
   		this.$router.push('/myListing')
+  	},
+  	loadImage(value){
+  		this.imageSrc = value.name
+  		this.imageBin = value.image
   	}
   },
   	created: function () {
@@ -117,7 +126,7 @@ export default {
 	        var item = response.data;
 	        this.name = item.name;
 	       	this.description = item.description;
-		    	this.imageSrc = item.itemimg;
+		    	this.oldImage = api_url_image+ item.itemimg;
 		    	this.tags = item.tags;
 		    	this.minBid = item.minbid;
 		    	this.location = item.location;
