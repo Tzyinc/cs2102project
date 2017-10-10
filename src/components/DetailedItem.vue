@@ -1,8 +1,8 @@
 <template>
   <div>
     <div v-show="isOwner()">
-      <button type="button" class="btn btn-danger pull-right" v-on:click="deleteItem(iid)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-      <button type="button" class="btn btn-warning pull-right" v-on:click="load(iid)"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+      <button type="button" class="btn btn-danger pull-right" v-on:click="deleteItem()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+      <button type="button" class="btn btn-warning pull-right" v-on:click="load()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
     </div>
       <div class= "container">
         <div class="detailed-title">Listing Details</div>
@@ -70,10 +70,10 @@
         return true;
       }
     },
-  	load (iid){
+  	load (){
   		this.$router.push({ name: 'UpdateItem', params: { iid: this.$route.params.iid }})
   	},
-    deleteItem (iid) {
+    deleteItem () {
 
       if (confirm("Are you sure you want to delete this?")) {
       var context = this
