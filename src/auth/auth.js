@@ -12,16 +12,16 @@ export default {
   login(context, creds, redirect) {
     var _auth = this
     $.ajax({
-      url: api_ep.API_URL + api_ep.USER, // Your api url
+      url: api_ep.API_URL + api_ep.LOGIN, // Your api url
       type: 'POST', // type is any HTTP method
-      data: {data: creds}, // Data as js object
+      data: { data: creds }, // Data as js object
       statusCode: {
-        401: function(){
+        401: function() {
           //console.log('failed login')
           context.setLoginMsg('Incorrect username/password!')
         }
       },
-      success: function(response){
+      success: function(response) {
         if (response.success === true) {
           //console.log('logged in')
           context.$session.start()
@@ -38,8 +38,8 @@ export default {
     $.ajax({
       url: api_ep.API_URL + api_ep.USER, // Your api url
       type: 'PUT', // type is any HTTP method
-      data: {data: creds}, // Data as js object
-      success: function(response){
+      data: { data: creds }, // Data as js object
+      success: function(response) {
         if (response.success === true) {
           //console.log('success')
           context.$router.push('/Login')
@@ -57,7 +57,7 @@ export default {
       url: api_ep.API_URL + 'api/tokenValid', // Your api url
       type: 'GET', // type is any HTTP method
       headers: _auth.getAuthHeader(context),
-      success: function(response){
+      success: function(response) {
         if (response.success === true) {
           console.log('token legit!')
         } else {
