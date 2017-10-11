@@ -2,15 +2,15 @@
 <div class="browseFilter col-11">
 	<div class="row filterRow justify-content-end">
 		<div class="col-2 align-self-end">
-			<button type="button" class="filterbtn btn btn-light" v-on:click="isOpened = !isOpened">
+			<button type="button" class="filterbtn btn btn-light" data-toggle="collapse" data-target="#collaspeContent" aria-expanded="false" aria-controls="collaspeContent">
 				<i class="fa fa-filter" aria-hidden="true"></i>
 				Filter
 			</button>
 		</div>
 	</div>
-	<transition name="fade">
-		<div v-if="isOpened" class="displayFilter row justify-content-end">
-			<div class="list col-sm-5">
+	<div class="collapse" id="collaspeContent">
+		<div class="row justify-content-end" id="displayFilter">
+			<div class="list col-sm-4">
 				<div class="row filterTitle justify-content-start"> 
 					<h3>Sort by</h3>
 				</div>
@@ -35,7 +35,7 @@
 				</div>
 			</div>
 		</div>
-	</transition>
+	</div>
 </div>
 </template>
 
@@ -74,7 +74,7 @@ export default {
 	padding-bottom: 5px;
 	margin-bottom: 10px;
 }
-.displayFilter{
+#displayFilter{
 	padding-bottom :5px;
 	/*transition: all 0.5s;*/
 	border-bottom: 1px solid;
