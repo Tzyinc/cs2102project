@@ -1,19 +1,19 @@
 <template>
   <div class="LoginHeader">
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-dark bg-dark">
       <div class="navbar-header">
-        <router-link to="/">StuffShare</router-link>
+        <router-link to="/" class="nav-link">StuffShare</router-link>
         <!--<button type="button" v-on:click="testToken()">Token</button>-->
       </div>
       <ul class="nav navbar-nav navbar-right">
         <template v-if="!logged_in">
-          <li><router-link to="/Login">Login</router-link></li>
-          <li><router-link to="/Register">Sign Up</router-link></li>
+          <li><router-link to="/Login" class="nav-link">Login</router-link></li>
+          <li><router-link to="/Register" class="nav-link">Sign Up</router-link></li>
         </template>
         <template v-else>
-          <li><router-link to="/myListing">Lent</router-link></li>
-          <li><router-link to="/myLoan">Borrowed</router-link></li>
-          <li><router-link to="/myProfile">{{display_name}}</router-link></li>
+          <li><router-link to="/myListing" class="nav-link">Lent</router-link></li>
+          <li><router-link to="/myLoan" class="nav-link">Borrowed</router-link></li>
+          <li><router-link to="/myProfile" class="nav-link">{{display_name}}</router-link></li>
           <li><button type="button" v-on:click="logout()">Logout</button></li>
         </template>
       </ul>
