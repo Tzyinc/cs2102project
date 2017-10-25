@@ -12,7 +12,7 @@ export default {
   login(context, creds, redirect) {
     var _auth = this
     $.ajax({
-      url: api_ep.API_URL + api_ep.USER, // Your api url
+      url: api_ep.API_URL + api_ep.LOGIN, // Your api url
       type: 'POST', // type is any HTTP method
       data: {data: creds}, // Data as js object
       statusCode: {

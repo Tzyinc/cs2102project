@@ -16,7 +16,13 @@
 		<!-- Image -->
 		<div class="formRow">
 			<label for="image">Image: </label>
+			<!--
 			<input class="image form-control" type="text" v-model="imageSrc" placeholder="Image link">
+			
+			<upload-image url="url" name="" :max_files=1></upload-image>
+			-->
+			<imageupload :oldImage="empty" @changed="loadImage"></imageupload>
+			
 		</div>
 		<!-- Tags -->
 		<div class="formRow">
@@ -36,11 +42,11 @@
 		<!-- Availability -->
 		<div class="formRow">
 			<label for="avail">StartDate: </label>
-			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="startdate" name="uniquename"></datepicker>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="startdate" name="uniquename" style="margin-bottom: 5px;"></datepicker>
 		</div>
 		<div class="formRow">
 			<label for="avail">End Date: </label>
-			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="enddate" name="uniquename"></datepicker>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="enddate" name="uniquename" ></datepicker>
 		</div>
 
 		<br/>
@@ -51,7 +57,7 @@
 		</div>
         
 	</form>
-			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
+			<!--<div><pre>data: {{$data}}</pre></div>-->
 
 </div>
 </template>
@@ -59,14 +65,18 @@
 <script>
 import auth from '../auth/auth'
 import api_ep from '../api.json'
-import Datepicker from 'vuejs-datepicker';
+import Datepicker from 'vuejs-datepicker'
+//import UploadImage from 'vue-upload-image';
+import ImageUpload from './ImageUpload'
+//import PictureInput from 'vue-picture-input'
 
 var api_url = api_ep.API_URL + api_ep.ITEM
 
 export default {
   name: 'CreateItem',
 	components: {
-        Datepicker
+        Datepicker,
+        'imageupload' : ImageUpload
   },
   data () {
 		var today = new Date()
@@ -76,12 +86,14 @@ export default {
 	    name     : '',
 	    description     : '',
 	    imageSrc : '',
+	    imageBin : '',
 	    tags     : '',
 	    minBid   : 0.99,
 	    location : '',
 	    startdate   : today,
 	    enddate   : tomorrow,
-	    status   : true
+	    status   : true,
+	    empty : ''
     }
   },
   methods: {
@@ -91,6 +103,7 @@ export default {
   		$.ajax({
     	url: api_url, //Your api url
      	type: 'PUT', //type is any HTTP method
+     	headers: auth.getAuthHeader(this),
      	data: {data: formData}, //Data as js object
      	success: function(response){
 	        //console.log(formData)
@@ -106,6 +119,10 @@ export default {
   	},
   	cancel (){
   		this.$router.push('myListing')
+  	},
+  	loadImage(value){
+  		this.imageSrc = value.name
+  		this.imageBin = value.image
   	}
   },
   created: function () {
@@ -122,8 +139,8 @@ export default {
     text-align: center;
 }
 
-.createItem input, textarea{
-	width : 80% ;
+.createItem input, textarea, .avail{
+	width : 100% ;
 	display: block;
 	vertical-align: top;
 	margin-bottom: 5px;
@@ -171,4 +188,5 @@ export default {
 	vertical-align:middle;
 	margin-top: 20px;
 }
+
 </style>

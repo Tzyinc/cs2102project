@@ -80,13 +80,36 @@ trace, copy, lock, mkcol, move, purge, unlock, report,
 mkactivity, checkout, merge, m-search, notify, subscribe,
 unsubscribe, patch and search. */
 
+router
+  .route('/example')
+  .get(
+    passport.authenticate('jwt', {session: false}),
+    exampleController.example
+  )
+router.route('/login').post(jwtlogin)
+router.use('/img', express.static(path.join(__dirname, '../img/src')))
 router.route('/example').get(exampleController.example)
 router.route('/user').put(userController.createUser)
-router.route('/user').post(jwtlogin)
+// router.route('/user').post(jwtlogin)
 router.route('/user').get(userController.getUserDetails)
-router.route('/item').put(itemController.createItem)
-router.route('/item').post(itemController.updateItem)
-router.route('/item').delete(itemController.deleteItem)
+router
+  .route('/item')
+  .put(
+    passport.authenticate('jwt', {session: false}),
+    itemController.createItem
+  )
+router
+  .route('/item')
+  .post(
+    passport.authenticate('jwt', {session: false}),
+    itemController.updateItem
+  )
+router
+  .route('/item')
+  .delete(
+    passport.authenticate('jwt', {session: false}),
+    itemController.deleteItem
+  )
 router.route('/item').get(itemController.getItem)
 router.route('/items').get(itemController.getItems)
 router

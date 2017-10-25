@@ -22,12 +22,10 @@ export default {
 
 <style scoped>
 .item-picture {
+  /*
   width: 30%;
-  display: inline-block;
+  display: inline-block;*/
   /*background-color: #cecece;*/
-  text-align:left;
-  vertical-align: top;
-  height: 270px;
 }
 
 .item-picture img {
