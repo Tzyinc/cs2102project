@@ -1,4 +1,5 @@
 var dbcon = require('../dbcon/database.js')
+var imageSaver = require('../img/image.controller.js')
 
 const getUserNamesPS = new dbcon.PS(
   'getUserNames',
@@ -66,6 +67,13 @@ function getUserDetails(req, res) {
   }
 }
 
+function updateUserImg(req, res) {
+  var userDetails = req.query
+  if (userDetails != null) {
+    imageSave.saveUserToFile(userDetails.imageBin, userDetails.username)
+  }
+}
+
 // get all usernames (to be used in router)
 function getAllUsernames() {
   return dbcon.db.any(getUserNamesPS)
@@ -83,5 +91,6 @@ module.exports = {
   createUser: createUser,
   getUserDetails: getUserDetails,
   getAllUsernames: getAllUsernames,
-  getUsernamePw: getUsernamePw
+  getUsernamePw: getUsernamePw,
+  updateUserImg: updateUserImg
 }

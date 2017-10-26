@@ -67,7 +67,7 @@ const createNotiQuery =
   'FOREIGN KEY (username) REFERENCES app_user(username)' +
   ');'
 
-const insertUserQuery = `INSERT INTO app_user VALUES ('qwer', 'asdimg', '$2a$08$zc0NLLSrVblCjAQpAD5Ll.P9eEFwN3YUJUHlxwTb9Z1RhJApKjFhO', DEFAULT, 100)`
+const insertUserQuery = `INSERT INTO app_user VALUES ('qwer', 'defaultProfile.jpg', '$2a$08$zc0NLLSrVblCjAQpAD5Ll.P9eEFwN3YUJUHlxwTb9Z1RhJApKjFhO', DEFAULT, 100)`
 
 const insertItemQuery =
   'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location) ' +
