@@ -61,7 +61,6 @@ export default {
   		retrieveImageUrl(source){
 	  		if(source != ''){
 	  			this.image = source;
-		    	console.log(this.image);
 	  		}
 
 	    }
@@ -69,7 +68,6 @@ export default {
 	watch: { 
       		oldImage: function(newVal, oldVal) { // watch it
           	if(newVal != ''){
-          		console.log(this.oldImage)
 		  		this.retrieveImageUrl(this.oldImage);
 	  		}
         }

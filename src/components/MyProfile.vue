@@ -3,7 +3,7 @@
     <div class="container profile">
         <div class="row cover">
             <div class="cover"></div>
-            <div><h1 class="displayName">{{profile_owner}}</h1></div> 
+            <div><h1 class="displayName">{{displayPic.username}}</h1></div> 
         </div>
         <div class="row profileNav">
 
@@ -26,7 +26,7 @@
         <div class="row listingHeader"><div class="container">Listings</div></div>
         <div class="row listing">
             <div v-if="items.length === 0" class="container">
-                {{profile_owner}} has no listings
+                {{displayPic.username}} has no listings
             </div>
             <div v-else>
                 <itemgrid :items = "items"></itemgrid>
@@ -41,7 +41,8 @@ import auth from '../auth/auth'
 import api_ep from '../api.json'
 import DisplayPic from './DisplayPic'
 import ItemGrid from './ItemGrid'
-var api_url_userDetails = api_ep.API_URL + api_ep.USER + '?username=';
+var api_url_user = api_ep.API_URL + api_ep.USER;
+var api_user_owner = '?username=';
 var api_url_items = api_ep.API_URL + api_ep.ITEMS
 var api_item_owner = '?item_owner='
 
@@ -54,10 +55,10 @@ export default {
     data () {
         return {
             login_user : '',
-            profile_owner: '',
             displayPic: {
-              imageSrc: '',
-              imageBin: ''
+                username: '',
+                imageSrc: '',
+                imageBin: ''
             },
             rating : '?',
             empty : '',
@@ -67,9 +68,20 @@ export default {
         }
     },
     methods: {
+        
         loadImage(value){
-            this.displayPic.imageSrc = value.name
             this.displayPic.imageBin = value.image
+            this.displayPic.imageSrc = value.name
+
+            $.ajax({
+            url: api_url_user, //Your api url
+            type: 'POST', //type is any HTTP method
+            headers: auth.getAuthHeader(this),
+            data: {data: this.displayPic}, //Data as js object
+            success: function(response){
+                console.log('profile pic updated')
+            }
+            })
         }
     },
     created: function () {
@@ -79,11 +91,11 @@ export default {
         }
         this.login_user = auth.getUsername(this)
 
-        this.$http.get(api_url_userDetails + this.login_user)
+        this.$http.get(api_url_user + api_user_owner + this.login_user)
           .then(response => {
             var userInfo = response.data;
-            this.profile_owner = userInfo.username;
-            this.description = userInfo.imagesrc;
+            this.displayPic.username = userInfo.username;
+            this.displayPic.imageSrc = userInfo.imagesrc;
             this.rating = userInfo.userrating;
             if(auth.getUsername(this) == userInfo.username){
                 //For visiting other people's profile
@@ -92,7 +104,7 @@ export default {
             }
         });
 
-        this.$http.get(api_url_items+api_item_owner+this.login_user)
+        this.$http.get(api_url_items+api_item_owner+this.displayPic.username)
         .then(response => {
             this.items = response.data;
         });
