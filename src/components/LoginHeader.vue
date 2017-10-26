@@ -14,7 +14,7 @@
           <li><router-link to="/myListing" class="nav-link">Lent</router-link></li>
           <li><router-link to="/myLoan" class="nav-link">Borrowed</router-link></li>
           <li><router-link to="/myProfile" class="nav-link">{{display_name}}</router-link></li>
-          <li><button type="button" v-on:click="logout()">Logout</button></li>
+          <li><button type="button" class="btn btn-dark" style="border-color:#1d2124" v-on:click="logout()">Logout</button></li>
         </template>
       </ul>
   </nav>
