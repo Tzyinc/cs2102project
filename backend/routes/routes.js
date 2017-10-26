@@ -88,6 +88,7 @@ router
   )
 router.route('/login').post(jwtlogin)
 router.use('/img', express.static(path.join(__dirname, '../img/src')))
+router.use('/uimg', express.static(path.join(__dirname, '../img/usrc')))
 router.route('/example').get(exampleController.example)
 router.route('/user').put(userController.createUser)
 // router.route('/user').post(jwtlogin)
