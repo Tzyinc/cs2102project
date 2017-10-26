@@ -1,6 +1,5 @@
 .DS_Store
 credentials.json
-backend/img/src/
 node_modules/
 dist/
 npm-debug.log*
