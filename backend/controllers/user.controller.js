@@ -68,9 +68,9 @@ function getUserDetails(req, res) {
 }
 
 function updateUserImg(req, res) {
-  var userDetails = req.query
+  var userDetails = req.body.data
   if (userDetails != null) {
-    imageSave.saveUserToFile(userDetails.imageBin, userDetails.username)
+    imageSaver.saveUserToFile(userDetails.imageBin, userDetails.username)
   }
 }
 
