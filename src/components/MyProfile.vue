@@ -3,13 +3,13 @@
     <div class="container profile">
         <div class="row cover">
             <div class="cover"></div>
-            <div><h1 class="displayName">{{login_user}}</h1></div> 
+            <div><h1 class="displayName">{{profile_owner}}</h1></div> 
         </div>
         <div class="row profileNav">
 
         </div>
         <div class="row">
-            <div class="displayPic"><displaypic :oldImage="empty" @changed="loadImage"></displaypic></div>
+            <div class="displayPic"><displaypic :oldImage="displayPic.imageSrc" @changed="loadImage"></displaypic></div>
         </div>
         <div>
             <div class="rating">
@@ -25,7 +25,12 @@
         <!--class container is to get the freaking listings word to center, bloody bootstrap-->
         <div class="row listingHeader"><div class="container">Listings</div></div>
         <div class="row listing">
-            <itemgrid :items = "items"></itemgrid>
+            <div v-if="items.length === 0" class="container">
+                {{profile_owner}} has no listings
+            </div>
+            <div v-else>
+                <itemgrid :items = "items"></itemgrid>
+            </div>
         </div>
     </div>
 </div>
@@ -36,6 +41,7 @@ import auth from '../auth/auth'
 import api_ep from '../api.json'
 import DisplayPic from './DisplayPic'
 import ItemGrid from './ItemGrid'
+var api_url_userDetails = api_ep.API_URL + api_ep.USER + '?username=';
 var api_url_items = api_ep.API_URL + api_ep.ITEMS
 var api_item_owner = '?item_owner='
 
@@ -48,12 +54,14 @@ export default {
     data () {
         return {
             login_user : '',
+            profile_owner: '',
             displayPic: {
               imageSrc: '',
               imageBin: ''
             },
             rating : '?',
             empty : '',
+            isSelf : false,
             items: [],
             profile_pic : '/static/images/default_profile.jpg'
         }
@@ -70,10 +78,23 @@ export default {
             this.$router.push('/')
         }
         this.login_user = auth.getUsername(this)
+
+        this.$http.get(api_url_userDetails + this.login_user)
+          .then(response => {
+            var userInfo = response.data;
+            this.profile_owner = userInfo.username;
+            this.description = userInfo.imagesrc;
+            this.rating = userInfo.userrating;
+            if(auth.getUsername(this) == userInfo.username){
+                //For visiting other people's profile
+                console.log("Is mine")
+                this.isSelf = true;
+            }
+        });
+
         this.$http.get(api_url_items+api_item_owner+this.login_user)
         .then(response => {
             this.items = response.data;
-            console.log(this.items);
         });
     }
 }
