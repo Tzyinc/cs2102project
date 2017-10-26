@@ -67,7 +67,7 @@ function createItem(req, res) {
 
 function updateItem(req, res) {
   var itemDetails = req.body.data
-  console.log('test')
+  //console.log('update item test')
   if (itemDetails != null) {
     var startDate = new Date(itemDetails.startdate)
     var endDate = new Date(itemDetails.enddate)
@@ -85,13 +85,16 @@ function updateItem(req, res) {
       itemDetails.iid
     ]
   }
+  //console.log('update item test 3')
   dbcon.db
     .none(updateItemPS)
     .then(result => {
+      // console.log('update item test 2')
       imageSaver.saveToFile(itemDetails.imageBin, itemDetails.iid)
       res.json({ success: true })
     })
     .catch(error => {
+      console.log(error)
       res.json(error)
     })
 }
