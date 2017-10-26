@@ -13,6 +13,12 @@ const updateItemPS = new dbcon.PS(
     'WHERE iid = $11'
 )
 
+const updateItemNoImgPS = new dbcon.PS(
+  'updateItemNoImg',
+  'UPDATE app_item SET owner_username = $1, name = $2, minbid = $3, timeListed = $4, status = $5, location = $6, description = $7, startdate = $8, enddate = $9 ' +
+    'WHERE iid = $10'
+)
+
 const getItemsPS = new dbcon.PS('getItems', 'SELECT * FROM app_item ')
 
 const getItemByUserPS = new dbcon.PS(
@@ -67,8 +73,9 @@ function createItem(req, res) {
 
 function updateItem(req, res) {
   var itemDetails = req.body.data
-  console.log('test')
-  if (itemDetails != null) {
+  console.log('imageBin', itemDetails.imageBin)
+  //console.log('update item test')
+  if (itemDetails != null && itemDetails.imageBin != '') {
     var startDate = new Date(itemDetails.startdate)
     var endDate = new Date(itemDetails.enddate)
     updateItemPS.values = [
@@ -84,16 +91,47 @@ function updateItem(req, res) {
       endDate,
       itemDetails.iid
     ]
+    dbcon.db
+      .none(updateItemPS)
+      .then(result => {
+        // console.log('update item test 2')
+        imageSaver.saveToFile(itemDetails.imageBin, itemDetails.iid)
+        res.json({ success: true })
+      })
+      .catch(error => {
+        console.log(error)
+        res.json(error)
+      })
+  } else if (itemDetails != null && itemDetails.imageBin === '') {
+    console.log('testaroo')
+    // updateItemNoImgPS
+    var startDate = new Date(itemDetails.startdate)
+    var endDate = new Date(itemDetails.enddate)
+    updateItemNoImgPS.values = [
+      itemDetails.owner_username,
+      itemDetails.name,
+      itemDetails.minBid,
+      itemDetails.timeListed,
+      itemDetails.status,
+      itemDetails.location,
+      itemDetails.description,
+      startDate,
+      endDate,
+      itemDetails.iid
+    ]
+    dbcon.db
+      .none(updateItemNoImgPS)
+      .then(result => {
+        res.json({ success: true })
+      })
+      .catch(error => {
+        console.log(error)
+        res.json(error)
+      })
+  } else {
+    res.json({ error: 'no data' })
   }
-  dbcon.db
-    .none(updateItemPS)
-    .then(result => {
-      imageSaver.saveToFile(itemDetails.imageBin, itemDetails.iid)
-      res.json({ success: true })
-    })
-    .catch(error => {
-      res.json(error)
-    })
+  //console.log('update item test 3'
 }
 
 function getItems(req, res) {
