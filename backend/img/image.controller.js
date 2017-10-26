@@ -33,7 +33,7 @@ function saveToFile(imageBin, iid) {
 function saveUserToFile(imageBin, username) {
   console.log('saveUToFileCalled')
   console.log(imageBin, username)
-  base64en.img(imageBin, path.join(__dirname, 'src'), username, function(
+  base64en.img(imageBin, path.join(__dirname, 'usrc'), username, function(
     err,
     filepath
   ) {
