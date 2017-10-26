@@ -5,7 +5,7 @@
 	</div>
 	<div class="row editBtn">
 	<label class="btn btn-info">
-		<input type="file" @change="onFileChange">
+		<input type="file" id="displayimageinput" @change="onFileChange">
 		<i class="fa fa-camera" aria-hidden="true"></i>
 	</label>
 	</div>
@@ -88,7 +88,7 @@ export default {
     margin: auto;
 }
 
-input[type="file"] {
+#displayimageinput{
     display: none;
 }
 
