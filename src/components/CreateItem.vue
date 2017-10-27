@@ -113,8 +113,6 @@ export default {
 			console.log(vm)
 		  vm.$validator.validateAll();
 		});
-		console.log("validate: ",!this.errors.any() )
-		console.log("validatedate: ",this.validateDate() )
 		if (!this.errors.any() && this.validateDate()) {
 			console.log('submitting',formData)
 	  		$.ajax({
