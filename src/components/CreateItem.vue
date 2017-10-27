@@ -74,9 +74,7 @@
 import auth from '../auth/auth'
 import api_ep from '../api.json'
 import Datepicker from 'vuejs-datepicker'
-//import UploadImage from 'vue-upload-image';
 import ImageUpload from './ImageUpload'
-//import PictureInput from 'vue-picture-input'
 
 var api_url = api_ep.API_URL + api_ep.ITEM
 

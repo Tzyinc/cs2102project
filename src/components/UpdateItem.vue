@@ -111,7 +111,6 @@ export default {
 		var context = this
 		this.$validator.validateAll()
 		this.$children.forEach(vm => {
-			console.log(vm)
 		  vm.$validator.validateAll()
 		});
 		if (!this.errors.any() && this.validateDate()) {
@@ -130,7 +129,7 @@ export default {
 					alert("Failed to submit.\nPlease try again.")
 				}
 			}
-		})
+			})
     	}
   	},
   	cancel (){
@@ -142,13 +141,13 @@ export default {
   	},
   	validateDate(){
   		if(this.enddate<=this.startdate){
-  			return false;
+  			return false
   		}
-  		return true;
+  		return true
   	}
   },
   	created: function () {
-  		console.log(api_url + this.iid)
+  		console.log("Loading update: ",api_url + this.iid)
 	    this.$http.get(api_url + this.iid)
 	      .then(response => {
 	        var item = response.data;
