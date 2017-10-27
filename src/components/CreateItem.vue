@@ -106,12 +106,17 @@ export default {
   methods: {
 	submit (formData) {
 		var context = this
+		var isChildValidated = true;
 		this.$validator.validateAll()
 		this.$children.forEach(vm => {
 			console.log(vm)
 		  vm.$validator.validateAll();
+		  if(vm.errors.any()){
+		  	isChildValidated = false;
+		  	console.log("Not validated in ", vm)
+		  }
 		});
-		if (!this.errors.any() && this.validateDate()) {
+		if (!this.errors.any() && this.validateDate() && isChildValidated) {
 			console.log('submitting',formData)
 	  		$.ajax({
 	    	url: api_url, //Your api url
@@ -137,6 +142,7 @@ export default {
   	loadImage(value){
   		this.imageSrc = value.name
   		this.imageBin = value.image
+  		return false
   	},
   	validateDate(){
   		if(this.enddate<=this.startdate){

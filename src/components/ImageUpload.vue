@@ -47,6 +47,7 @@ export default {
 		},
 		removeImage: function (e) {
 		  	this.image = '';
+		  	return false;
 		},
   		retrieveImageUrl(source){
 	  		if(source != ''){
