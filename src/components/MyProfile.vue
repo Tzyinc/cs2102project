@@ -73,7 +73,7 @@ export default {
         loadImage(value){
             this.displayPic.imageBin = value.image
             this.displayPic.imageSrc = value.name
-            console.log("Image loaded: " + value.name)
+            console.log(this.displayPic.imageBin)
 
             $.ajax({
             url: api_url_user, //Your api url

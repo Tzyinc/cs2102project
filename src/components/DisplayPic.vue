@@ -38,8 +38,6 @@ export default {
 			if (!files.length)
 				return;
 			this.createImage(files[0]);
-			
-			
 		},
 		createImage(file) {
 			var image = new Image();
@@ -57,6 +55,8 @@ export default {
 		},
 		removeImage: function (e) {
 		  	this.image = '';
+		  	var value = {name:'', image:null};
+			this.$emit('changed', value);
 		},
   		retrieveImageUrl(source){
 	  		if(source != ''){
