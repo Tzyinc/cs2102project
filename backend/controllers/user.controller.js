@@ -74,8 +74,10 @@ function getUserDetails(req, res) {
 
 function updateUserImg(req, res) {
   var userDetails = req.body.data
+  //console.log(userDetails)
   if (userDetails != null) {
-    if (userDetails.imageBin === null) {
+    if (userDetails.imageBin === null || userDetails.imageBin === '') {
+      //console.log('entered here')
       removeUserImgSrcPS.values = [userDetails.username]
       dbcon.db
         .one(removeUserImgSrcPS)
