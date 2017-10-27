@@ -3,14 +3,13 @@
     <div class="container profile">
         <div class="row cover">
             <div class="cover"></div>
-            <div><h1 class="displayName">{{username}}</h1></div> 
+            <div><h1 class="displayName">{{displayPic.username}}</h1></div> 
         </div>
         <div class="row profileNav">
 
         </div>
         <div class="row">
-            <!--<div class="displayPic"><displaypic :oldImage="displayPic.imageSrc" @changed="loadImage"></displaypic></div>-->
-            <div class="displayPic"><imageupload :oldImage="empty" @changed="loadImage"></imageupload></div>
+            <div class="displayPic"><displaypic :oldImage="loadedProfilePic" @changed="loadImage"></displaypic></div>
         </div>
         <div>
             <div class="rating">
@@ -21,13 +20,13 @@
               </div>
         </div>
 
-        <div class="row spacer"><button type="button" class="btn btn-primary" v-on:click="submit($data)">Submit</button></div>
+        <div class="row spacer"><button type="button" class="btn btn-primary" v-on:click="submit()">Submit</button></div>
 
         <!--class container is to get the freaking listings word to center, bloody bootstrap-->
         <div class="row listingHeader"><div class="container">Listings</div></div>
         <div class="row listing">
             <div v-if="items.length === 0" class="container">
-                {{username}} has no listings
+                {{displayPic.username}} has no listings
             </div>
             <div v-else>
                 <itemgrid :items = "items"></itemgrid>
@@ -41,7 +40,6 @@
 import auth from '../auth/auth'
 import api_ep from '../api.json'
 import DisplayPic from './DisplayPic'
-import ImageUpload from './ImageUpload'
 import ItemGrid from './ItemGrid'
 var api_url_user = api_ep.API_URL + api_ep.USER;
 var api_user_owner = '?username=';
@@ -52,19 +50,18 @@ export default {
     name: 'MyProfile',
     components: {
         'displaypic' : DisplayPic,
-        'imageupload' : ImageUpload,
         'itemgrid' : ItemGrid
     },
     data () {
         return {
             login_user : '',
-            //displayPic: {
+            displayPic: {
                 username: '',
                 imageSrc: '',
-                imageBin: '',
-            //},
+                imageBin: ''
+            },
+            loadedProfilePic: '',
             rating : '?',
-            empty : '',
             isSelf : false,
             items: [],
             profile_pic : '/static/images/default_profile.jpg'
@@ -73,16 +70,18 @@ export default {
     methods: {
         
         loadImage(value){
-            this.imageBin = value.image
-            this.imageSrc = value.name
+            this.displayPic.imageBin = value.image
+            this.displayPic.imageSrc = "/uimg/" + value.name
             console.log("Image loaded: " + value.name)
+
+            
         },
-        submit(formdata){
+        submit(){
             $.ajax({
             url: api_url_user, //Your api url
             type: 'POST', //type is any HTTP method
             headers: auth.getAuthHeader(this),
-            data: {data: formdata}, //Data as js object
+            data: {data: this.displayPic}, //Data as js object
             success: function(response){
                 console.log('profile pic updated')
             }
@@ -100,10 +99,10 @@ export default {
           .then(response => {
 
             var userInfo = response.data;
-            console.log(userInfo.imagesrc);
-            this.username = userInfo.username;
+            console.log("Profile pic URL: " + userInfo.imagesrc);
+            this.displayPic.username = userInfo.username;
             //console.log(userInfo.username);
-            this.imageSrc = userInfo.imagesrc;
+            this.loadedProfilePic = userInfo.imagesrc;
             
             this.rating = userInfo.userrating;
             if(auth.getUsername(this) == userInfo.username){
