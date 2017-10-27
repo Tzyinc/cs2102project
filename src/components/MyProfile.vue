@@ -168,6 +168,8 @@ export default {
 .cover {
   background-color: black;
   height:205px;
+  opacity: 0.8;
+  filter: alpha(opacity=80);
 }
 
 .profileNav {
@@ -182,7 +184,7 @@ export default {
 }
 
 .listingHeader {
-    background-color: #AAA;
+    background-color: #BBB;
     border-radius: 5px 5px 0px 0px;
     border: 1px inset #AAA;
 }

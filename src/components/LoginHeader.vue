@@ -2,7 +2,7 @@
   <div class="LoginHeader">
     <nav class="navbar navbar-dark bg-dark">
       <div class="navbar-header">
-        <router-link to="/" class="nav-link">StuffShare</router-link>
+        <router-link to="/" class="nav-link"><h4>StuffShare</h4></router-link>
         <!--<button type="button" v-on:click="testToken()">Token</button>-->
       </div>
       <ul class="nav navbar-nav navbar-right">
@@ -84,6 +84,7 @@ nav ul li {
   vertical-align:middle;
   list-style: none;
   text-align: center;
+  font-size: larger;
 }
 nav > ul > li > router-link {
   color: #aaa;
@@ -105,6 +106,8 @@ nav > ul > li:hover > router-link {
       margin-bottom: 0;
       font-size: 12px;
       letter-spacing: 5px;
+      opacity: 0.75;
+      filter: alpha(opacity=75);
   }
 
 </style>
