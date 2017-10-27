@@ -74,9 +74,7 @@
 import auth from '../auth/auth'
 import api_ep from '../api.json'
 import Datepicker from 'vuejs-datepicker'
-//import UploadImage from 'vue-upload-image';
 import ImageUpload from './ImageUpload'
-//import PictureInput from 'vue-picture-input'
 
 var api_url = api_ep.API_URL + api_ep.ITEM
 
@@ -108,14 +106,17 @@ export default {
   methods: {
 	submit (formData) {
 		var context = this
+		var isChildValidated = true;
 		this.$validator.validateAll()
 		this.$children.forEach(vm => {
 			console.log(vm)
 		  vm.$validator.validateAll();
+		  if(vm.errors.any()){
+		  	isChildValidated = false;
+		  	console.log("Not validated in ", vm)
+		  }
 		});
-		console.log("validate: ",!this.errors.any() )
-		console.log("validatedate: ",this.validateDate() )
-		if (!this.errors.any() && this.validateDate()) {
+		if (!this.errors.any() && this.validateDate() && isChildValidated) {
 			console.log('submitting',formData)
 	  		$.ajax({
 	    	url: api_url, //Your api url
@@ -141,6 +142,7 @@ export default {
   	loadImage(value){
   		this.imageSrc = value.name
   		this.imageBin = value.image
+  		return false
   	},
   	validateDate(){
   		if(this.enddate<=this.startdate){
