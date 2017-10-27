@@ -100,7 +100,11 @@ export default {
             console.log("Profile pic URL: " + userInfo.imagesrc);
             this.displayPic.username = userInfo.username;
             //console.log(userInfo.username);
-            this.loadedProfilePic = api_url_uimage + userInfo.imagesrc;
+            if(userInfo.imagesrc == '' || userInfo.imagesrc == null) {
+                this.loadedProfilePic = '';    
+            } else {
+                this.loadedProfilePic = api_url_uimage + userInfo.imagesrc;
+            }
             
             this.rating = userInfo.userrating;
             if(auth.getUsername(this) == userInfo.username){
