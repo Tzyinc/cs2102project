@@ -18,7 +18,7 @@ var cred = JSON.parse(
 var exampleController = require('../controllers/example.controller.js')
 var userController = require('../controllers/user.controller.js')
 var itemController = require('../controllers/item.controller.js')
-var brController = require('../controllers/bidding-loan.controller.js')
+var blController = require('../controllers/bidding-loan.controller.js')
 
 // jwt implementation
 var jwtOptions = {
@@ -118,5 +118,8 @@ router
   .get(passport.authenticate('jwt', { session: false }), function(req, res) {
     res.json({ success: true })
   })
-
+router
+  .route('/bid')
+  .put(passport.authenticate('jwt', { session: false }), blController.createBid)
+router.route('/bids').get(blController.getBidsByIid)
 module.exports = router
