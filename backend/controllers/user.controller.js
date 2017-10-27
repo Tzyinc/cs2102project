@@ -26,6 +26,11 @@ const getAllUserPS = new dbcon.PS(
   'SELECT username, imagesrc, isadmin, userRating FROM app_user'
 )
 
+const removeUserImgSrcPS = new dbcon.PS(
+  'removeUserImgSrc',
+  "UPDATE app_user SET imagesrc = ''" + 'WHERE username = $1'
+)
+
 // takes in unique username and (hashed) password and stores in database.
 function createUser(req, res) {
   var userDetails = req.body.data
@@ -70,7 +75,20 @@ function getUserDetails(req, res) {
 function updateUserImg(req, res) {
   var userDetails = req.body.data
   if (userDetails != null) {
-    imageSaver.saveUserToFile(userDetails.imageBin, userDetails.username)
+    if (userDetails.imageBin === null) {
+      removeUserImgSrcPS.values = [userDetails.username]
+      dbcon.db
+        .one(removeUserImgSrcPS)
+        .then(result => {
+          res.json({ success: true })
+        })
+        .catch(error => {
+          res.json(error)
+        })
+    } else {
+      imageSaver.saveUserToFile(userDetails.imageBin, userDetails.username)
+      res.json({ success: true })
+    }
   }
 }
 
