@@ -4,9 +4,13 @@
 	<form id="itemForm">
 
 		<!-- Name -->
-		<div class="formRow">
+		<div class="formRow" >
 			<label for="name">Name: </label>
-			<input class="name form-control" type="text" v-model="name" placeholder="Item Name" >
+			<p class="control has-icon has-icon-right">
+				<input class="form-control has-icon has-icon-right" type="text" v-model="name" placeholder="Item Name" name="Name" v-validate="{ rules: {required: true, regex: /^[\w\-\s]+$/} }" :class="{'input': true,'is-danger': errors.has('Name')}">
+				<i v-show="errors.has('Name')" class="fa fa-warning"></i>
+				<span class="help text-danger" v-show="errors.has('Name')">{{ errors.first('Name') }}</span>
+			</p>
 		</div>
 		<!-- Desc -->
 		<div class="formRow">
@@ -16,13 +20,7 @@
 		<!-- Image -->
 		<div class="formRow">
 			<label for="image">Image: </label>
-			<!--
-			<input class="image form-control" type="text" v-model="imageSrc" placeholder="Image link">
-			
-			<upload-image url="url" name="" :max_files=1></upload-image>
-			-->
 			<imageupload :oldImage="empty" @changed="loadImage"></imageupload>
-			
 		</div>
 		<!-- Tags -->
 		<div class="formRow">
@@ -32,12 +30,20 @@
 		<!-- Min Price -->
 		<div class="formRow">
 			<label for="minbid">Minimum Price: </label>
-			<input class="minbid form-control" v-model="minBid" number placeholder="1.50">
+			<p class="control has-icon has-icon-right">
+				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2'" :class="{'input': true,'is-danger': errors.has('price')}">
+				<i v-show="errors.has('price')" class="fa fa-warning"></i>
+				<span class="help text-danger" v-show="errors.has('price')">{{ errors.first('price') }}</span>
+			</p>
 		</div>
 		<!-- Location -->
 		<div class="formRow">
 			<label for="location">Location: </label>
-			<input class="location form-control" type="text" v-model="location" placeholder="Kent Ridge">
+			<p class="control has-icon has-icon-right">
+				<input class="location form-control" type="text" v-model="location" placeholder="Kent Ridge" name="Location" v-validate="{ rules: {required: true, regex: /^[\w\-\s]+$/} }" :class="{'input': true,'is-danger': errors.has('Location')}">
+				<i v-show="errors.has('Location')" class="fa fa-warning"></i>
+				<span class="help text-danger" v-show="errors.has('Location')">{{ errors.first('Location') }}</span>
+			</p>
 		</div>
 		<!-- Availability -->
 		<div class="formRow">
@@ -47,6 +53,8 @@
 		<div class="formRow">
 			<label for="avail">End Date: </label>
 			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="enddate" name="uniquename" ></datepicker>
+			<i v-show="!validateDate()" class="fa fa-warning"></i>
+			<span class="help text-danger" v-show="!validateDate()">{{ errorDate }}</span>
 		</div>
 
 		<br/>
@@ -93,36 +101,52 @@ export default {
 	    startdate   : today,
 	    enddate   : tomorrow,
 	    status   : true,
-	    empty : ''
+	    empty : '',
+	    errorDate : 'End date must be after Start Date.'
     }
   },
   methods: {
 	submit (formData) {
 		var context = this
-		console.log('submitting',formData)
-  		$.ajax({
-    	url: api_url, //Your api url
-     	type: 'PUT', //type is any HTTP method
-     	headers: auth.getAuthHeader(this),
-     	data: {data: formData}, //Data as js object
-     	success: function(response){
-	        //console.log(formData)
-	        if(response.hasOwnProperty('success')){
-	        	alert("Successfully created item:\n" + formData.name)
-	        	context.$router.push('myListing')
-	        	//redirect(this)
-			} else{
-				alert("Failed to submit.\nPlease try again.")
+		this.$validator.validateAll()
+		this.$children.forEach(vm => {
+			console.log(vm)
+		  vm.$validator.validateAll();
+		});
+		console.log("validate: ",!this.errors.any() )
+		console.log("validatedate: ",this.validateDate() )
+		if (!this.errors.any() && this.validateDate()) {
+			console.log('submitting',formData)
+	  		$.ajax({
+	    	url: api_url, //Your api url
+	     	type: 'PUT', //type is any HTTP method
+	     	headers: auth.getAuthHeader(this),
+	     	data: {data: formData}, //Data as js object
+	     	success: function(response){
+		        //console.log(formData)
+		        if(response.hasOwnProperty('success')){
+		        	alert("Successfully created item:\n" + formData.name)
+		        	context.$router.push({name: "MyListing"})
+		        	//redirect(this)
+				} else{
+					alert("Failed to submit.\nPlease try again.")
+				}
 			}
-		}
-    	})
+	    	})
+  		}
   	},
   	cancel (){
-  		this.$router.push('myListing')
+  		this.$router.push({ path: '/myListing' })
   	},
   	loadImage(value){
   		this.imageSrc = value.name
   		this.imageBin = value.image
+  	},
+  	validateDate(){
+  		if(this.enddate<=this.startdate){
+  			return false;
+  		}
+  		return true;
   	}
   },
   created: function () {

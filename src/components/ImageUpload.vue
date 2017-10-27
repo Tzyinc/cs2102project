@@ -1,7 +1,9 @@
 <template>
 <div class="imageupload form-group">
 	<div v-if="!image">
-		<input class="form-control" type="file" @change="onFileChange">
+			<input class="form-control" type="file" @change="onFileChange" name="img" v-validate="'required'" :class="{'input': true,'is-danger': errors.has('img')}">
+			<i v-show="errors.has('img')" class="fa fa-warning"></i>
+			<span class="help text-danger" v-show="errors.has('img')">{{ errors.first('img') }}</span>
 	</div>
 	<div v-else class="displayImage">
 		<img :src="image" />
