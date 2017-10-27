@@ -51,6 +51,22 @@ export default {
     })
   },
 
+  changePw(context, creds) {
+    $.ajax({
+      url: api_ep.API_URL + api_ep.USER + '/pwchange', // Your api url
+      type: 'PUT', // type is any HTTP method
+      data: {data: creds}, // Data as js object
+      success: function(response){
+        if (response.success === true) {
+          //console.log('success')
+        } else {
+          //console.log('fail')
+          context.setRegisterMsg('Old password incorrect!')
+        }
+      }
+    })
+  },
+
   testToken(context) {
     var _auth = this
     $.ajax({

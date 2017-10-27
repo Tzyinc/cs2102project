@@ -1,5 +1,50 @@
 <template>
 <div class="myPage">
+    <!-- Modal -->
+    <div class="modal fade" id="passwordChangeModal" tabindex="-1" role="dialog" aria-labelledby="passwordChangeModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="passwordChangeModalLabel">Password Change</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+                <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Old Password"
+                    v-model="credentials.oldPassword"
+                >
+            </div>
+            <div class="form-group">
+                <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Password"
+                    v-model="credentials.password"
+                >
+            </div>
+            <div class="form-group">
+                <input
+                    type="password"
+                    class="form-control"
+                    placeholder="Confirm Password"
+                    v-model="confirmPassword"
+                >
+            </div>
+          </div>
+          <div class="modal-footer">
+            <p style="width:100%; align:left; color:red">{{pwChange_msg}}</p>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container profile">
         <div class="row cover">
             <div class="cover"></div>
@@ -19,10 +64,17 @@
                 </div>
               </div>
         </div>
+        <div>
+            <div class ="pwChange">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#passwordChangeModal">
+                  Change password
+                </button>
+            </div>
+        </div>
 
         <div class="row spacer"></div>
 
-        <!--class container is to get the freaking listings word to center, bloody bootstrap-->
+        <!--class container is to get the listings word to center, because of bootstrap-->
         <div class="row listingHeader"><div class="container">Listings</div></div>
         <div class="row listing">
             <div v-if="items.length === 0" class="container">
@@ -65,6 +117,14 @@ export default {
             rating : '?',
             isSelf : false,
             items: [],
+            
+            credentials: {
+                oldPassword: '',
+                password: ''
+            },
+            confirmPassword: '',
+            pwChange_msg: '',
+
             profile_pic : '/static/images/default_profile.jpg'
         }
     },
@@ -85,6 +145,26 @@ export default {
             }
             })
         },
+        submit() {
+            var bcrypt = require('bcryptjs');
+            var hash = bcrypt.hashSync(this.credentials.password, 8);
+            var ohash = bcrypt.hashSync(this.credentials.oldPassword, 8);
+            var credentials = {
+                username: this.login_user,
+                password: hash,
+                oldPassword: ohash
+            }
+            if(this.confirmPassword == this.credentials.password) {
+                this.pwChange_msg = auth.changePw(this, credentials, '/')
+            } else {
+                console.log('Password mismatch')
+                this.pwChange_msg = 'Passwords do not match!'
+            }
+        },
+
+        setPwChangeMsg(msg) {
+          this.pwChange_msg = msg
+        }
     },
     created: function () {
         /*Change here to get items by logged in user*/
@@ -132,6 +212,14 @@ export default {
     margin-right: 5px;
     float:right;
     color: white;
+}
+
+.pwChange {
+    margin-top: -120px;
+    margin-right: 8px;
+    float:right;
+    color: white;
+    position:relative;
 }
 
 .displayPic {
