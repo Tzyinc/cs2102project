@@ -20,7 +20,7 @@
               </div>
         </div>
 
-        <div class="row spacer"><button type="button" class="btn btn-primary" v-on:click="submit()">Submit</button></div>
+        <div class="row spacer"></div>
 
         <!--class container is to get the freaking listings word to center, bloody bootstrap-->
         <div class="row listingHeader"><div class="container">Listings</div></div>
@@ -45,6 +45,7 @@ var api_url_user = api_ep.API_URL + api_ep.USER;
 var api_user_owner = '?username=';
 var api_url_items = api_ep.API_URL + api_ep.ITEMS
 var api_item_owner = '?item_owner='
+var api_url_uimage = api_ep.API_URL + api_ep.UIMAGE + '/'
 
 export default {
     name: 'MyProfile',
@@ -71,12 +72,9 @@ export default {
         
         loadImage(value){
             this.displayPic.imageBin = value.image
-            this.displayPic.imageSrc = "/uimg/" + value.name
+            this.displayPic.imageSrc = value.name
             console.log("Image loaded: " + value.name)
 
-            
-        },
-        submit(){
             $.ajax({
             url: api_url_user, //Your api url
             type: 'POST', //type is any HTTP method
@@ -86,7 +84,7 @@ export default {
                 console.log('profile pic updated')
             }
             })
-        }
+        },
     },
     created: function () {
         /*Change here to get items by logged in user*/
@@ -102,7 +100,7 @@ export default {
             console.log("Profile pic URL: " + userInfo.imagesrc);
             this.displayPic.username = userInfo.username;
             //console.log(userInfo.username);
-            this.loadedProfilePic = userInfo.imagesrc;
+            this.loadedProfilePic = api_url_uimage + userInfo.imagesrc;
             
             this.rating = userInfo.userrating;
             if(auth.getUsername(this) == userInfo.username){
