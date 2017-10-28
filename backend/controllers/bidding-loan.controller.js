@@ -4,7 +4,10 @@ const createBidPS = new dbcon.PS(
   'INSERT INTO app_bidding (bidder_username, iid, price, time) VALUES ($1, $2, $3, now())'
 )
 
-const selectBidsPS = new dbcon.PS('selectBids', 'SELECT * FROM WHERE iid = $1')
+const selectBidsPS = new dbcon.PS(
+  'selectBids',
+  'SELECT * FROM app_bidding WHERE iid = $1'
+)
 
 function createBid(req, res) {
   var bidDetails = req.body.data
