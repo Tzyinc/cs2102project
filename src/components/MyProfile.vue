@@ -17,6 +17,7 @@
                     class="form-control"
                     placeholder="Old Password"
                     v-model="credentials.oldPassword"
+                    v-bind:class="{ errorBorder: wrongPassword }"
                 >
             </div>
             <div class="form-group">
@@ -25,6 +26,7 @@
                     class="form-control"
                     placeholder="Password"
                     v-model="credentials.password"
+                    v-bind:class="{ errorBorder: passwordMismatch }"
                 >
             </div>
             <div class="form-group">
@@ -33,11 +35,12 @@
                     class="form-control"
                     placeholder="Confirm Password"
                     v-model="confirmPassword"
+                    v-bind:class="{ errorBorder: passwordMismatch }"
                 >
             </div>
           </div>
           <div class="modal-footer">
-            <p style="width:100%; align:left; color:red">{{pwChange_msg}}</p>
+            <p class="errorColor" v-bind:class="{ successColor: pwChangeSuccess }">{{pwChange_msg}}</p>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" @click="submit()">Submit</button>
           </div>
@@ -129,6 +132,9 @@ export default {
             },
             confirmPassword: '',
             pwChange_msg: '',
+            pwChangeSuccess: false,
+            passwordMismatch: false,
+            wrongPassword: false,
 
             profile_pic : '/static/images/default_profile.jpg'
         }
@@ -158,17 +164,18 @@ export default {
             if(this.isSelf) {
                 var bcrypt = require('bcryptjs');
                 var hash = bcrypt.hashSync(this.credentials.password, 8);
-                var ohash = bcrypt.hashSync(this.credentials.oldPassword, 8);
                 var credentials = {
                     username: this.login_user,
                     password: hash,
-                    oldPassword: ohash
+                    oldPassword: this.credentials.oldPassword
                 }
                 if(this.confirmPassword == this.credentials.password) {
                     this.pwChange_msg = auth.changePw(this, credentials, '/')
                 } else {
                     console.log('Password mismatch')
                     this.pwChange_msg = 'Passwords do not match!'
+                    this.passwordMismatch = true
+                    this.wrongPassword = false;
                 }
             } else {
                 alert("You do not have permission to do this, please reload the page")
@@ -177,6 +184,27 @@ export default {
 
         setPwChangeMsg(msg) {
           this.pwChange_msg = msg
+        },
+
+        incorrectPasswordFeedback () {
+            this.wrongPassword = true
+            this.passwordMismatch = false;
+        },
+
+        closePasswordChangeModal (duration, msg) {
+            var context = this;
+            this.pwChange_msg = msg;
+            this.pwChangeSuccess = true;
+            this.wrongPassword = false;
+            this.passwordMismatch = false;
+            setTimeout(function() {
+                $('#passwordChangeModal').modal('hide');
+                context.credentials.oldPassword = '';
+                context.confirmPassword = '';
+                context.credentials.password = '';
+                context.pwChange_msg = '';
+                context.pwChangeSuccess = false;
+            }, duration);
         },
 
         populateProfilePage() {
@@ -221,6 +249,19 @@ export default {
 </script>
 
 <style scoped>
+.errorBorder {
+    border-color: red;
+}
+
+.errorColor {
+    width:100%;
+    align:left;
+    color:red;
+}
+
+.successColor {
+    color:green;
+}
 
 .errorMsg {
     margin-top: 40px;

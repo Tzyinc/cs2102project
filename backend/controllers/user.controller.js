@@ -1,5 +1,6 @@
 var dbcon = require('../dbcon/database.js')
 var imageSaver = require('../img/image.controller.js')
+var bcrypt = require('bcryptjs')
 
 const getUserNamesPS = new dbcon.PS(
   'getUserNames',
@@ -113,13 +114,11 @@ function getUsernamePw(username){
 }
 
 function updatePassword(req, res){
-  var userDetails = req.query
+  var userDetails = req.body.data
   getUsernamePw(userDetails.username)
     .then(result => {
-      if (
-        userDatails.username === result.username &&
-        userDetails.oldPassword === result.password
-      ) {
+      if (bcrypt.compareSync(userDetails.oldPassword, result.password)) {
+        console.log('Passwords matched')
         updatePwPS.values = [ userDetails.password, userDetails.username ]
         dbcon.db
           .none(updatePwPS)
@@ -130,6 +129,7 @@ function updatePassword(req, res){
             res.json(error)
           })
       } else {
+        console.log('Password dont match')
         res.json({error: "old password doesn't match"})
       }
     })

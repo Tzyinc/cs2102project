@@ -54,7 +54,8 @@ function jwtlogin(req, res){
   var usernamePwPromise = userController.getUsernamePw(username)
   usernamePwPromise
     .then(result => {
-      console.log(result)
+      console.log('Old password: ' + password)
+      console.log('Saved password: ' + result.password)
       if (bcrypt.compareSync(password, result.password)) {
         var payload = {username: result.username}
         var token = jwt.sign(payload, jwtOptions.secretOrKey)
