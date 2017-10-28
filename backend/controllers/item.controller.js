@@ -1,4 +1,5 @@
 var dbcon = require('../dbcon/database.js')
+var tagController = require('../controllers/tag.controller.js')
 var imageSaver = require('../img/image.controller.js')
 
 const createItemPS = new dbcon.PS(
@@ -202,10 +203,39 @@ function deleteItem(req, res) {
   }
 }
 
+function updateItemTags(req, res) {
+  var itemDetails = req.body.data
+  console.log('entered updateItemTags ', req.body)
+  if (itemDetails != null) {
+    tagController
+      .deleteItemTags(itemDetails.iid)
+      .then(result => {
+        var promiseArr = tagController.createItemTags(
+          itemDetails.tags,
+          itemDetails.iid
+        )
+        Promise.all(promiseArr)
+          .then(result => {
+            console.log('updateItemTags success')
+            res.json({ success: true })
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+      })
+      .catch(error => {
+        console.log(error)
+        res.json(error)
+      })
+  }
+}
+
 module.exports = {
   createItem: createItem,
   getItems: getItems,
   getItem: getItem,
   updateItem: updateItem,
-  deleteItem: deleteItem
+  deleteItem: deleteItem,
+  updateItemTags: updateItemTags
 }

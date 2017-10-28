@@ -1,22 +1,37 @@
 var dbcon = require('../dbcon/database.js')
 
-const selectTopNTagsPS = new dbcon.PS(
+const selectTopNTagCountsPS = new dbcon.PS(
   'selectTopNTags',
-  'SELECT * FROM app_tag ORDER BY count DESC LIMIT $1'
+  'SELECT * FROM app_tag_count ORDER BY count DESC LIMIT $1'
 )
 
-const selectAllTagsPS = new dbcon.PS(
+const selectAllTagCountPS = new dbcon.PS(
   'selectAllTags',
-  'SELECT * FROM app_tag ORDER BY count DESC'
+  'SELECT * FROM app_tag_count ORDER BY count DESC'
 )
 
 const addTagCountPS = new dbcon.PS(
   'addTagCount',
-  'INSERT INTO app_tag (tag, count) VALUES ($1, 0) ON CONFLICT (tag) DO UPDATE SET count = app_tag.count + 1'
+  'INSERT INTO app_tag_count (tag, count) VALUES ($1, 0) ON CONFLICT (tag) DO UPDATE SET count = app_tag_count.count + 1'
+)
+
+const getAllExistingTagsPS = new dbcon.PS(
+  'getAllExistingTags',
+  'SELECT DISTINCT tag FROM app_tag_relation'
+)
+
+const createItemTagsPS = new dbcon.PS(
+  'createItemTags',
+  'INSERT INTO app_tag_relation (tag, iid) VALUES ($1, $2)'
+)
+
+const deleteItemTagsPS = new dbcon.PS(
+  'deleteItemTags',
+  'DELETE FROM app_tag_relation WHERE iid = $1'
 )
 
 // GET request to /api/tags?topN=__ OR /api/tags
-function getTopTags(req, res) {
+function getTopTagCounts(req, res) {
   var tagValue = req.query
   if (tagValue != null) {
     selectTopNTagsPS.values = [tagValue.topN]
@@ -49,7 +64,50 @@ function addTagCount(tag) {
   }
 }
 
+// returns array of promises
+function addMultipleTagCount(tags) {
+  var promiseArr = []
+  for (let index in tags) {
+    var tag = tags[index]
+    promiseArr.push(addTagCount(tag))
+  }
+  return promiseArr
+}
+
+function deleteItemTags(iid) {
+  deleteItemTagsPS.values = [iid]
+  console.log('deleteing' + iid)
+  return dbcon.db.none(deleteItemTagsPS)
+}
+
+function createItemTags(tags, iid) {
+  var promiseArr = []
+  for (var i = 0; i < tags.length; i++) {
+    var tag = tags[i]
+    console.log('creating', tag, i, 'with', iid)
+    // createItemTagsPS.values = [tags[i], iid]
+    promiseArr.push(dbcon.db.none(createItemTagsPS, [tag, iid]))
+  }
+  return promiseArr
+}
+
+function getAllTags(req, res) {
+  dbcon.db
+    .any(getAllExistingTagsPS)
+    .then(result => {
+      res.json(result)
+    })
+    .catch(error => {
+      console.error(error)
+      res.json(error)
+    })
+}
+
 module.exports = {
-  getTopTags: getTopTags,
-  addTagCount: addTagCount
+  getTopTagCounts: getTopTagCounts,
+  addTagCount: addTagCount,
+  addMultipleTagCount: addMultipleTagCount,
+  deleteItemTags: deleteItemTags,
+  createItemTags: createItemTags,
+  getAllTags: getAllTags
 }

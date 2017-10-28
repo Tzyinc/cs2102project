@@ -5,7 +5,7 @@ const cn = cred.dbcred
 const db = pgp(cn)
 
 const dropQuery =
-  'DROP TABLE IF EXISTS app_user, app_item, app_bidding, app_loan, app_notification, app_tag;'
+  'DROP TABLE IF EXISTS app_user, app_item, app_bidding, app_loan, app_notification, app_tag_count, app_tag_relation;'
 const createUserQuery =
   'CREATE TABLE app_user ' +
   '(username      TEXT,' +
@@ -23,7 +23,6 @@ const createItemQuery =
   'name           TEXT          NOT NULL,' +
   'imagesrc       TEXT          NOT NULL,' +
   'description    TEXT,' +
-  'tags           TEXT,' +
   'minbid         NUMERIC       NOT NULL,' +
   'timeListed     TIMESTAMP          NOT NULL,' +
   'status         BOOLEAN       NOT NULL,' +
@@ -67,8 +66,16 @@ const createNotiQuery =
   'FOREIGN KEY (username) REFERENCES app_user(username)' +
   ');'
 
-const createTagQuery =
-  'CREATE TABLE app_tag ' +
+const createTagRelationQuery =
+  'CREATE TABLE app_tag_relation ' +
+  '(tag      TEXT,' +
+  'iid     INTEGER,' +
+  'PRIMARY KEY (tag, iid),' +
+  'FOREIGN KEY (iid) REFERENCES app_item(iid)' +
+  ');'
+
+const createTagCountQuery =
+  'CREATE TABLE app_tag_count ' +
   '(tag      TEXT,' +
   'count     INTEGER   NOT NULL,' +
   'PRIMARY KEY (tag)' +
@@ -90,7 +97,8 @@ db
     queries.push(t.any(createBiddingQuery))
     queries.push(t.any(createLoanQuery))
     queries.push(t.any(createNotiQuery))
-    queries.push(t.any(createTagQuery))
+    queries.push(t.any(createTagCountQuery))
+    queries.push(t.any(createTagRelationQuery))
     queries.push(t.any(insertUserQuery))
     queries.push(t.any(insertItemQuery))
     queries.push(t.any('SELECT * FROM app_item'))

@@ -112,6 +112,7 @@ router
   .get(passport.authenticate('jwt', { session: false }), function(req, res) {
     res.json({ success: true })
   })
-router.route('/tags').get(tagController.getTopTags)
+router.route('/tags').put(itemController.updateItemTags)
+router.route('/tags').get(tagController.getAllTags)
 
 module.exports = router
