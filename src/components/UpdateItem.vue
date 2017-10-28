@@ -109,12 +109,16 @@ export default {
   methods: {
 	submit (formData) {
 		var context = this
+		var isChildValidated = true;
 		this.$validator.validateAll()
 		this.$children.forEach(vm => {
-			console.log(vm)
 		  vm.$validator.validateAll()
+		  if(vm.errors.any()){
+		  	isChildValidated = false;
+		  	console.log("Not validated in ", vm)
+		  }
 		});
-		if (!this.errors.any() && this.validateDate()) {
+		if (!this.errors.any() && this.validateDate() && isChildValidated) {
 			formData.iid = this.iid
 	  		$.ajax({
 	    	url: api_post_url, //Your api url
@@ -130,7 +134,7 @@ export default {
 					alert("Failed to submit.\nPlease try again.")
 				}
 			}
-		})
+			})
     	}
   	},
   	cancel (){
@@ -139,16 +143,17 @@ export default {
   	loadImage(value){
   		this.imageSrc = value.name
   		this.imageBin = value.image
+
   	},
   	validateDate(){
   		if(this.enddate<=this.startdate){
-  			return false;
+  			return false
   		}
-  		return true;
+  		return true
   	}
   },
   	created: function () {
-  		console.log(api_url + this.iid)
+  		console.log("Loading update: ",api_url + this.iid)
 	    this.$http.get(api_url + this.iid)
 	      .then(response => {
 	        var item = response.data;

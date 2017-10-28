@@ -24,6 +24,7 @@ export default {
 	methods: {
 		onFileChange(e) {
 			var files = e.target.files || e.dataTransfer.files;
+			console.log("on change file: ", files)
 			if (!files.length)
 				return;
 			this.createImage(files[0]);
@@ -46,6 +47,7 @@ export default {
 		},
 		removeImage: function (e) {
 		  	this.image = '';
+		  	return false;
 		},
   		retrieveImageUrl(source){
 	  		if(source != ''){
