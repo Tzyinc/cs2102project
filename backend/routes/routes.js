@@ -19,6 +19,8 @@ var exampleController = require('../controllers/example.controller.js')
 var userController = require('../controllers/user.controller.js')
 var itemController = require('../controllers/item.controller.js')
 var tagController = require('../controllers/tag.controller.js')
+var blController = require('../controllers/bidding-loan.controller.js')
+
 // jwt implementation
 var jwtOptions = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
@@ -114,5 +116,10 @@ router
   })
 router.route('/tags').put(itemController.updateItemTags)
 router.route('/tags').get(tagController.getAllTags)
+
+router
+  .route('/bid')
+  .put(passport.authenticate('jwt', { session: false }), blController.createBid)
+router.route('/bids').get(blController.getBidsByIid)
 
 module.exports = router
