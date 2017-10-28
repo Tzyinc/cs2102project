@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col-md-3">
             <ItemPicture
-              :imagesrc = "item.imagesrc"></ItemPicture>
+              :imagesrc = "retrieveImageUrl(item.itemimg)"></ItemPicture>
           </div>
           <div class="col-md-9">
           <ItemDescription
@@ -47,6 +47,7 @@
 
 
   var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
+  var api_itemimg = api_ep.API_URL + api_ep.IMAGE + '/'
   var api_del = api_ep.API_URL + api_ep.ITEM
 
   export default {
@@ -71,6 +72,12 @@
         return true;
       }
     },
+    retrieveImageUrl(source){
+      var itemImage = api_itemimg + source + "?timestamp=" + new Date().getTime();
+      console.log(source);
+      return itemImage;
+    },
+
   	load (){
   		this.$router.push({ name: 'UpdateItem', params: { iid: this.$route.params.iid }})
   	},
