@@ -6,7 +6,7 @@ const createBidPS = new dbcon.PS(
 
 const selectBidsPS = new dbcon.PS(
   'selectBids',
-  'SELECT * FROM app_bidding WHERE iid = $1'
+  'SELECT * FROM app_bidding WHERE iid = $1 ORDER BY price DESC'
 )
 
 function createBid(req, res) {
