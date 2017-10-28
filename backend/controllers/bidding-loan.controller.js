@@ -38,6 +38,8 @@ function getBidsByIid(req, res) {
         console.log(error)
         res.json(error)
       })
+  } else {
+    res.json({ error: 'no iid found' })
   }
 }
 
