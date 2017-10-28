@@ -114,7 +114,12 @@ router
   .get(passport.authenticate('jwt', { session: false }), function(req, res) {
     res.json({ success: true })
   })
-router.route('/tags').put(itemController.updateItemTags)
+router
+  .route('/tags')
+  .put(
+    passport.authenticate('jwt', { session: false }),
+    itemController.updateItemTags
+  )
 router.route('/tags').get(tagController.getAllTags)
 
 router
