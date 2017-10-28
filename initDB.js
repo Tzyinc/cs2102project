@@ -5,7 +5,7 @@ const cn = cred.dbcred
 const db = pgp(cn)
 
 const dropQuery =
-  'DROP TABLE IF EXISTS app_user, app_item, app_bidding, app_loan, app_notification;'
+  'DROP TABLE IF EXISTS app_user, app_item, app_bidding, app_loan, app_notification, app_tag;'
 const createUserQuery =
   'CREATE TABLE app_user ' +
   '(username      TEXT,' +
@@ -69,7 +69,7 @@ const createNotiQuery =
 
 const createTagQuery =
   'CREATE TABLE app_tag ' +
-  '(Tag      TEXT,' +
+  '(tag      TEXT,' +
   'count     INTEGER   NOT NULL,' +
   'PRIMARY KEY (tag)' +
   ');'
