@@ -12,9 +12,13 @@
       </tr>
     </thead>
     <tbody>
+      <tr v-for = "item in bids">
+          <td>{{item.bidder_username}}</td>
+          <td>${{item.price}}</td>
+      </tr>
       <tr>
-        <td>username here.</td> <!-- need to fix td width-->
-        <td>{{item.minBid}}</td>
+        <td>---</td> <!-- need to fix td width-->
+        <td>${{item.minBid}}</td>
       </tr>
     </tbody>
   </table>
@@ -23,7 +27,7 @@
     <form class="form-inline">
      <div class="form-group">
        <label>Enter your bid:</label>
-       <input class="form-control" v-model="bid_amt" placeholder="0">
+       <input class="form-control" v-model="bid_amt" placeholder="0"> <!-- check for > latest bid-->
      </div>
      <button type="submit" class="btn btn-secondary" v-on:click="submitBid()">Submit</button>
    </form>
@@ -39,16 +43,18 @@ import api_ep from '../api.json'
 
 var api_itemBid = api_ep.API_URL + 'api/bid' + '?iid='
 
+
 export default {
   name: 'ItemBidding',
-  props: ['iid', 'minBid'],
+  props: ['iid', 'minBid', 'bids'],
   data () {
     return {
         login_user: '',
         bid_amt: '',
+        //bids: [],
         item: {
           minBid : 0.99
-        },
+        }
 
     }
   },
@@ -70,7 +76,7 @@ export default {
             data: {data: {bidder_username: this.login_user, iid: this.iid, price: this.bid_amt}},
             success: function(response) {
               if(response.hasOwnProperty('success')) {
-                alert("successfully made a bid")
+                alert("successfully made a bid!")
               } else {
                 alert("failed to bid")
               }
@@ -83,7 +89,10 @@ export default {
   },
   created: function () {
     this.login_user = auth.getUsername(this)
+    //console.log("item iid is" + this.iid);
+
     console.log("logged in user is: " + this.login_user)
+
   }
 }
 </script>

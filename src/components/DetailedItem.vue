@@ -32,7 +32,8 @@
         <div class="col-md-9">
           <span v-show="!isOwner()"><ItemBidding
                                       :iid = "item.iid"
-                                      :minBid = "item.minbid"></ItemBidding></span>
+                                      :minBid = "item.minbid"
+                                      :bids = "itemBids"></ItemBidding></span>
           <span v-show="isOwner()"><ItemBiddingOwner></ItemBiddingOwner></span>
         </div>
       </div>
@@ -53,6 +54,7 @@
   var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
   var api_itemimg = api_ep.API_URL + api_ep.IMAGE + '/'
   var api_del = api_ep.API_URL + api_ep.ITEM
+  var api_bids = api_ep.API_URL + 'api/bids' + '?iid='
 
   export default {
   name: 'DetailedItem',
@@ -66,7 +68,8 @@
   data() {
     return {
         login_user: '',
-        item: []
+        item: [],
+        itemBids: []
     }
   },
 
@@ -78,8 +81,7 @@
       }
     },
     retrieveImageUrl(source){
-      var itemImage = api_itemimg + source + "?timestamp=" + new Date().getTime();
-      console.log(source);
+      var itemImage = api_itemimg + source /*+ "?timestamp=" + new Date().getTime()*/;
       return itemImage;
     },
 
@@ -111,11 +113,17 @@
 
   created: function () {
     this.login_user = auth.getUsername(this)
-    console.log("the full url is:" + api_url + this.$route.params.iid)
+    //console.log("the full url is:" + api_url + this.$route.params.iid)
     this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
         this.item = response.data;
         //console.log("asdf" + this.item);
+      });
+    console.log ("getting bid info for " + this.$route.params.iid)
+    this.$http.get(api_bids + this.$route.params.iid)
+      .then(response => {
+       this.itemBids = response.data;
+       console.log(this.itemBids)
       });
   }
 }
