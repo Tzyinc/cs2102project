@@ -15,6 +15,11 @@ const getUsernamePwPS = new dbcon.PS(
   'SELECT username, password FROM app_user WHERE username = $1'
 )
 
+const updatePwPS = new dbcon.PS(
+  'updatePw',
+  'UPDATE app_user SET password = $1 WHERE username = $2'
+)
+
 const getUserPS = new dbcon.PS(
   'getUser',
   'SELECT username, imagesrc, isadmin, userRating FROM app_user WHERE username = $1'
@@ -79,9 +84,37 @@ function getUsernamePw(username) {
   return dbcon.db.one(getUsernamePwPS)
 }
 
+function updatePassword(req, res) {
+  var userDetails = req.query
+  getUsernamePw(userDetails.username)
+    .then(result => {
+      if (
+        userDatails.username === result.username &&
+        userDetails.oldPassword === result.password
+      ) {
+        updatePwPS.values = [userDetails.password, userDetails.username]
+        dbcon.db
+          .none(updatePwPS)
+          .then(result => {
+            res.json({ success: true })
+          })
+          .catch(error => {
+            res.json(error)
+          })
+      } else {
+        res.json({ error: "old password doesn't match" })
+      }
+    })
+    .catch(error => {
+      console.error(error)
+      res.json(error)
+    })
+}
+
 module.exports = {
   createUser: createUser,
   getUserDetails: getUserDetails,
   getAllUsernames: getAllUsernames,
-  getUsernamePw: getUsernamePw
+  getUsernamePw: getUsernamePw,
+  updatePassword: updatePassword
 }

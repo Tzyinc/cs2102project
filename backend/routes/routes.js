@@ -91,7 +91,12 @@ router.route('/login').post(jwtlogin)
 router.use('/img', express.static(path.join(__dirname, '../img/src')))
 router.route('/example').get(exampleController.example)
 router.route('/user').put(userController.createUser)
-// router.route('/user').post(jwtlogin)
+router
+  .route('/user')
+  .post(
+    passport.authenticate('jwt', { session: false }),
+    userController.updatePassword
+  )
 router.route('/user').get(userController.getUserDetails)
 router
   .route('/item')
