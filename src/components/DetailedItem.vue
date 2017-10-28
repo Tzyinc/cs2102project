@@ -30,7 +30,10 @@
           </ItemOwnerInfo>
         </div>
         <div class="col-md-9">
-          <ItemBidding></ItemBidding>
+          <span v-show="!isOwner()"><ItemBidding
+                                      :iid = "item.iid"
+                                      :minBid = "item.minbid"></ItemBidding></span>
+          <span v-show="isOwner()"><ItemBiddingOwner></ItemBiddingOwner></span>
         </div>
       </div>
     </div>
@@ -44,6 +47,7 @@
   import ItemOwnerInfo from './ItemOwnerInfo'
   import ItemDescription from './ItemDescription'
   import ItemBidding from './ItemBidding'
+  import ItemBiddingOwner from './ItemBiddingOwner'
 
 
   var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
@@ -56,7 +60,8 @@
     ItemPicture,
     ItemDescription,
     ItemOwnerInfo,
-    ItemBidding
+    ItemBidding,
+    ItemBiddingOwner
   },
   data() {
     return {
@@ -68,7 +73,7 @@
   methods: {
     isOwner() {
       if (this.login_user === this.item.owner_username) {
-        console.log("true")
+        console.log("this is the owner")
         return true;
       }
     },
@@ -109,7 +114,7 @@
     this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
         this.item = response.data;
-        console.log("asdf" + this.item);
+        //console.log("asdf" + this.item);
       });
   }
 }
