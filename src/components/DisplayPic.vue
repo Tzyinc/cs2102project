@@ -3,7 +3,7 @@
 	<div  class="displayimageupload">
 		<img :src="defaultPic" />
 	</div>
-	<div class="row editBtn">
+	<div class="row editBtn" v-show="editPermission">
 	<label class="btn btn-info">
 		<input type="file" id="displayimageinput" @change="onFileChange">
 		<i class="fa fa-camera" aria-hidden="true"></i>
@@ -14,7 +14,7 @@
 	<div  class="displayimageupload">
 		<img :src="image" />
 	</div>
-	<div class="row editBtn">
+	<div class="row editBtn" v-show="editPermission">
 	<button class="btn btn-danger" @click="removeImage">
 		<i class="fa fa-times" aria-hidden="true"></i>
 	</button>
@@ -25,7 +25,7 @@
 <script>
 export default {
   	name: 'DisplayPic',
-  	props: ['oldImage'],
+  	props: ['oldImage', 'editPermission'],
 	data () {
 		return {
 	    	image: '',
@@ -66,12 +66,14 @@ export default {
 	    }
 	},
 	watch: { 
-      		oldImage: function(newVal, oldVal) { // watch it
-          	if(newVal != ''){
-		  		this.retrieveImageUrl(this.oldImage);
+  		oldImage: function(newVal, oldVal) { // watch it
+	      	if(newVal == '' || newVal == null){
+		  		this.image = ''
+	  		} else {
+	  			this.retrieveImageUrl(this.oldImage);
 	  		}
-        }
-      }
+   		}
+  	}
 
 }
 </script>

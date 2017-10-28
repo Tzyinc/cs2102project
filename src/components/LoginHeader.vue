@@ -13,7 +13,7 @@
         <template v-else>
           <li><router-link to="/myListing" class="nav-link">Lent</router-link></li>
           <li><router-link to="/myLoan" class="nav-link">Borrowed</router-link></li>
-          <li><router-link to="/myProfile" class="nav-link">{{display_name}}</router-link></li>
+          <li><router-link :to="profile_link" class="nav-link">{{display_name}}</router-link></li>
           <li><button type="button" class="btn btn-dark" style="border-color:#1d2124" v-on:click="logout()">Logout</button></li>
         </template>
       </ul>
@@ -28,6 +28,7 @@ export default {
   data () {
     return {
       logged_in: auth.isLoggedIn(this),
+      profile_link: "/user/" + auth.getUsername(this),
       display_name: auth.getUsername(this)
     }
   },
@@ -42,6 +43,7 @@ export default {
       //if(this.$session.exists()) {
         this.logged_in = auth.isLoggedIn(this)
         this.display_name = auth.getUsername(this)
+        this.profile_link = "/user/" + auth.getUsername(this)
       //} else {
       //  logged_in = false;
       //}

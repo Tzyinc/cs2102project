@@ -59,9 +59,10 @@ export default new Router({
       component: MyLoan
     },
     {
-      path: '/myProfile',
+      path: '/user/:uid',
       name: 'MyProfile',
-      component: MyProfile
+      component: MyProfile,
+      props: true
     }
   ]
 })

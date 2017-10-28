@@ -98,7 +98,7 @@ export default {
     if (context.$session.has('username')) {
       return context.$session.get('username')
     } else {
-      return 'DEFAULT_USER'
+      return ''
     }
   },
 

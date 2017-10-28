@@ -54,7 +54,7 @@
 
         </div>
         <div class="row">
-            <div class="displayPic"><displaypic :oldImage="loadedProfilePic" @changed="loadImage"></displaypic></div>
+            <div class="displayPic"><displaypic :oldImage="loadedProfilePic" :editPermission="isSelf" @changed="loadImage"></displaypic></div>
         </div>
         <div>
             <div class="rating">
@@ -64,7 +64,7 @@
                 </div>
               </div>
         </div>
-        <div>
+        <div v-show="isSelf">
             <div class ="pwChange">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#passwordChangeModal">
                   Change password
@@ -131,72 +131,81 @@ export default {
     methods: {
         
         loadImage(value){
-            this.displayPic.imageBin = value.image
-            this.displayPic.imageSrc = value.name
-            console.log(this.displayPic.imageBin)
-
-            $.ajax({
-            url: api_url_user, //Your api url
-            type: 'POST', //type is any HTTP method
-            headers: auth.getAuthHeader(this),
-            data: {data: this.displayPic}, //Data as js object
-            success: function(response){
-                console.log('profile pic updated')
+             if(this.isSelf) {
+                this.displayPic.imageBin = value.image
+                this.displayPic.imageSrc = value.name
+                //console.log(this.displayPic.imageBin)
+           
+                $.ajax({
+                url: api_url_user, //Your api url
+                type: 'POST', //type is any HTTP method
+                headers: auth.getAuthHeader(this),
+                data: {data: this.displayPic}, //Data as js object
+                success: function(response){
+                    console.log('profile pic updated')
+                }
+                })
+            } else {
+                alert("You do not have permission to do this, please reload the page")
             }
-            })
         },
         submit() {
-            var bcrypt = require('bcryptjs');
-            var hash = bcrypt.hashSync(this.credentials.password, 8);
-            var ohash = bcrypt.hashSync(this.credentials.oldPassword, 8);
-            var credentials = {
-                username: this.login_user,
-                password: hash,
-                oldPassword: ohash
-            }
-            if(this.confirmPassword == this.credentials.password) {
-                this.pwChange_msg = auth.changePw(this, credentials, '/')
+            if(this.isSelf) {
+                var bcrypt = require('bcryptjs');
+                var hash = bcrypt.hashSync(this.credentials.password, 8);
+                var ohash = bcrypt.hashSync(this.credentials.oldPassword, 8);
+                var credentials = {
+                    username: this.login_user,
+                    password: hash,
+                    oldPassword: ohash
+                }
+                if(this.confirmPassword == this.credentials.password) {
+                    this.pwChange_msg = auth.changePw(this, credentials, '/')
+                } else {
+                    console.log('Password mismatch')
+                    this.pwChange_msg = 'Passwords do not match!'
+                }
             } else {
-                console.log('Password mismatch')
-                this.pwChange_msg = 'Passwords do not match!'
+                alert("You do not have permission to do this, please reload the page")
             }
         },
 
         setPwChangeMsg(msg) {
           this.pwChange_msg = msg
+        },
+
+        populateProfilePage() {
+            this.$http.get(api_url_user + api_user_owner + this.$route.params.uid)
+            .then(response => {
+                var userInfo = response.data;
+                console.log("Profile pic URL: " + userInfo.imagesrc);
+                this.displayPic.username = userInfo.username;
+                //console.log(userInfo.username);
+                if(userInfo.imagesrc == '' || userInfo.imagesrc == null) {
+                    this.loadedProfilePic = '';    
+                } else {
+                    this.loadedProfilePic = api_url_uimage + userInfo.imagesrc;
+                }
+                
+                this.rating = userInfo.userrating;
+                if(auth.getUsername(this) == userInfo.username){
+                    //For visiting other people's profile
+                    this.isSelf = true;
+                }
+            });
+
+            this.$http.get(api_url_items+api_item_owner+this.$route.params.uid)
+            .then(response => {
+                this.items = response.data;
+            });
         }
     },
     created: function () {
-        /*Change here to get items by logged in user*/
-        if(!auth.isLoggedIn(this)){
-            this.$router.push('/')
-        }
         this.login_user = auth.getUsername(this)
-        console.log("test")
-        this.$http.get(api_url_user + api_user_owner + this.login_user)
-          .then(response => {
-
-            var userInfo = response.data;
-            console.log("Profile pic URL: " + userInfo.imagesrc);
-            this.displayPic.username = userInfo.username;
-            //console.log(userInfo.username);
-            if(userInfo.imagesrc == '' || userInfo.imagesrc == null) {
-                this.loadedProfilePic = '';    
-            } else {
-                this.loadedProfilePic = api_url_uimage + userInfo.imagesrc;
-            }
-            
-            this.rating = userInfo.userrating;
-            if(auth.getUsername(this) == userInfo.username){
-                //For visiting other people's profile
-                this.isSelf = true;
-            }
-        });
-
-        this.$http.get(api_url_items+api_item_owner+this.login_user)
-        .then(response => {
-            this.items = response.data;
-        });
+        this.populateProfilePage()
+    },
+    watch: { 
+        '$route': 'populateProfilePage'
     }
 }
 </script>
