@@ -1,7 +1,9 @@
 <template>
 <div class="imageupload form-group">
 	<div v-if="!image">
-		<input class="form-control" type="file" @change="onFileChange">
+			<input class="form-control" type="file" @change="onFileChange" name="img" v-validate="'required'" :class="{'input': true,'is-danger': errors.has('img')}">
+			<i v-show="errors.has('img')" class="fa fa-warning"></i>
+			<span class="help text-danger" v-show="errors.has('img')">{{ errors.first('img') }}</span>
 	</div>
 	<div v-else class="displayImage">
 		<img :src="image" />
@@ -13,6 +15,7 @@
 <script>
 export default {
   	name: 'ImageUpload',
+  	props: ['oldImage'],
 	data () {
 		return {
 	    	image: ''
@@ -21,6 +24,7 @@ export default {
 	methods: {
 		onFileChange(e) {
 			var files = e.target.files || e.dataTransfer.files;
+			console.log("on change file: ", files)
 			if (!files.length)
 				return;
 			this.createImage(files[0]);
@@ -43,8 +47,24 @@ export default {
 		},
 		removeImage: function (e) {
 		  	this.image = '';
-		}
-	}
+		  	return false;
+		},
+  		retrieveImageUrl(source){
+	  		if(source != ''){
+	  			this.image = source;
+		    	console.log(this.image);
+	  		}
+
+	    }
+	},
+	watch: { 
+      		oldImage: function(newVal, oldVal) { // watch it
+          	if(newVal != ''){
+		  		this.retrieveImageUrl(this.oldImage);
+	  		}
+        }
+      }
+
 }
 </script>
 <style>

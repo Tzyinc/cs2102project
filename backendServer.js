@@ -6,8 +6,8 @@ var cors = require('cors')
 
 app.use(cors())
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }))
+app.use(bodyParser.json({ limit: '5mb' }))
 
 // port can be overwritten here
 var port = process.env.PORT || 8080

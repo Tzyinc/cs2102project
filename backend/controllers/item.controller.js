@@ -13,6 +13,12 @@ const updateItemPS = new dbcon.PS(
     'WHERE iid = $11'
 )
 
+const updateItemNoImgPS = new dbcon.PS(
+  'updateItemNoImg',
+  'UPDATE app_item SET owner_username = $1, name = $2, minbid = $3, timeListed = $4, status = $5, location = $6, description = $7, startdate = $8, enddate = $9 ' +
+    'WHERE iid = $10'
+)
+
 const getItemsPS = new dbcon.PS('getItems', 'SELECT * FROM app_item ')
 
 const getItemByUserPS = new dbcon.PS(
@@ -35,7 +41,7 @@ const deleteItemByIDPS = new dbcon.PS(
   'DELETE FROM app_item WHERE iid = $1'
 )
 
-function createItem(req, res){
+function createItem(req, res) {
   var itemDetails = req.body.data
   if (itemDetails != null) {
     var startDate = new Date(itemDetails.startdate)
@@ -57,7 +63,7 @@ function createItem(req, res){
     .then(result => {
       console.log(result)
       imageSaver.saveToFile(itemDetails.imageBin, result.iid)
-      res.json({success: true})
+      res.json({ success: true })
     })
     .catch(error => {
       console.log(error)
@@ -65,16 +71,17 @@ function createItem(req, res){
     })
 }
 
-function updateItem(req, res){
+function updateItem(req, res) {
   var itemDetails = req.body.data
-  console.log('test')
-  if (itemDetails != null) {
+  console.log('imageBin', itemDetails.imageBin)
+  //console.log('update item test')
+  if (itemDetails != null && itemDetails.imageBin != '') {
     var startDate = new Date(itemDetails.startdate)
     var endDate = new Date(itemDetails.enddate)
     updateItemPS.values = [
       itemDetails.owner_username,
       itemDetails.name,
-      itemDetails.imageSrc,
+      'error.png',
       itemDetails.minBid,
       itemDetails.timeListed,
       itemDetails.status,
@@ -84,21 +91,53 @@ function updateItem(req, res){
       endDate,
       itemDetails.iid
     ]
+    dbcon.db
+      .none(updateItemPS)
+      .then(result => {
+        // console.log('update item test 2')
+        imageSaver.saveToFile(itemDetails.imageBin, itemDetails.iid)
+        res.json({ success: true })
+      })
+      .catch(error => {
+        console.log(error)
+        res.json(error)
+      })
+  } else if (itemDetails != null && itemDetails.imageBin === '') {
+    console.log('testaroo')
+    // updateItemNoImgPS
+    var startDate = new Date(itemDetails.startdate)
+    var endDate = new Date(itemDetails.enddate)
+    updateItemNoImgPS.values = [
+      itemDetails.owner_username,
+      itemDetails.name,
+      itemDetails.minBid,
+      itemDetails.timeListed,
+      itemDetails.status,
+      itemDetails.location,
+      itemDetails.description,
+      startDate,
+      endDate,
+      itemDetails.iid
+    ]
+    dbcon.db
+      .none(updateItemNoImgPS)
+      .then(result => {
+        res.json({ success: true })
+      })
+      .catch(error => {
+        console.log(error)
+        res.json(error)
+      })
+  } else {
+    res.json({ error: 'no data' })
   }
-  dbcon.db
-    .any(updateItemPS)
-    .then(result => {
-      res.json({success: true})
-    })
-    .catch(error => {
-      res.json(error)
-    })
+  //console.log('update item test 3'
 }
 
-function getItems(req, res){
+function getItems(req, res) {
   var itemDetails = req.query
   if (itemDetails.item_owner != null) {
-    getItemByUserPS.values = [ itemDetails.item_owner ]
+    getItemByUserPS.values = [itemDetails.item_owner]
     dbcon.db
       .any(getItemByUserPS)
       .then(result => {
@@ -108,7 +147,7 @@ function getItems(req, res){
         res.json(error)
       })
   } else if (itemDetails.name_like != null) {
-    getItemByNamePS.values = [ dbcon.addWildcard(itemDetails.name_like) ]
+    getItemByNamePS.values = [dbcon.addWildcard(itemDetails.name_like)]
     dbcon.db
       .any(getItemByNamePS)
       .then(result => {
@@ -129,10 +168,10 @@ function getItems(req, res){
   }
 }
 
-function getItem(req, res){
+function getItem(req, res) {
   var itemDetails = req.query
   if (itemDetails.iid != null) {
-    getItemPS.values = [ itemDetails.iid ]
+    getItemPS.values = [itemDetails.iid]
     dbcon.db
       .one(getItemPS)
       .then(result => {
@@ -142,24 +181,24 @@ function getItem(req, res){
         res.json(error)
       })
   } else {
-    res.json({success: false})
+    res.json({ success: false })
   }
 }
 
-function deleteItem(req, res){
+function deleteItem(req, res) {
   var itemDetails = req.body.data
   if (itemDetails.iid != null) {
-    deleteItemByIDPS.values = [ itemDetails.iid ]
+    deleteItemByIDPS.values = [itemDetails.iid]
     dbcon.db
       .any(deleteItemByIDPS)
       .then(result => {
-        res.json({success: true})
+        res.json({ success: true })
       })
       .catch(error => {
         res.json(error)
       })
   } else {
-    res.json({success: false})
+    res.json({ success: false })
   }
 }
 
