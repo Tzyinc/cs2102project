@@ -1,6 +1,6 @@
 <template>
   <div class="LoginHeader">
-    <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-dark" id="bootstrapPaddingOverwrite">
       <div class="navbar-header">
         <router-link to="/" class="nav-link"><h4>StuffShare</h4></router-link>
         <!--<button type="button" v-on:click="testToken()">Token</button>-->
@@ -61,6 +61,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+#bootstrapPaddingOverwrite {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
 
 nav {
   background-color: #cecece;
