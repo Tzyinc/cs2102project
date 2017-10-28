@@ -8,7 +8,8 @@
         <div class="detailed-title">Listing Details</div>
         <div class="row">
           <div class="col-md-3">
-            <ItemPicture></ItemPicture>
+            <ItemPicture
+              :imagesrc = "item.imagesrc"></ItemPicture>
           </div>
           <div class="col-md-9">
           <ItemDescription
