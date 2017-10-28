@@ -38,7 +38,7 @@ const createBiddingQuery =
   'CREATE TABLE app_bidding ' +
   '(bidder_username    TEXT,' +
   'iid                 INTEGER,' +
-  'price               INTEGER       NOT NULL,' +
+  'price               NUMERIC       NOT NULL,' +
   'time           TIMESTAMP,' +
   'PRIMARY KEY (bidder_username, iid),' +
   'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
