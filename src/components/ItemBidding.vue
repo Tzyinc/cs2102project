@@ -60,7 +60,7 @@ export default {
         return
       }
       if (confirm("Are you sure you want to place a bid of $" + this.bid_amt + "?")) {
-        console.log(this.login_user + " || " + this.iid)
+        console.log(this.login_user + " making a bid of " + this.bid_amt + " on " + this.iid)
 
         var context = this
           $.ajax({

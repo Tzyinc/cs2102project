@@ -93,6 +93,7 @@
         $.ajax({
           url: api_del,
           type: 'DELETE',
+          headers: auth.getAuthHeader(this),
           data: {data: {iid: this.$route.params.iid}},
           success: function(response) {
             console.log("deleting")
