@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div class="container profile">
+    <div class="container profile" v-if="validProfile">
         <div class="row cover">
             <div class="cover"></div>
             <div><h1 class="displayName">{{displayPic.username}}</h1></div> 
@@ -85,6 +85,10 @@
             </div>
         </div>
     </div>
+
+    <div v-else>
+        <h1 class="errorMsg">Error 404: User not found</h1>
+    </div>
 </div>
 </template>
 
@@ -107,6 +111,7 @@ export default {
     },
     data () {
         return {
+            validProfile : false,
             login_user : '',
             displayPic: {
                 username: '',
@@ -178,19 +183,24 @@ export default {
             this.$http.get(api_url_user + api_user_owner + this.$route.params.uid)
             .then(response => {
                 var userInfo = response.data;
-                console.log("Profile pic URL: " + userInfo.imagesrc);
-                this.displayPic.username = userInfo.username;
-                //console.log(userInfo.username);
-                if(userInfo.imagesrc == '' || userInfo.imagesrc == null) {
-                    this.loadedProfilePic = '';    
+                if(!(userInfo.username == '' || userInfo.username == null)) {
+                    this.validProfile = true;
+                    this.displayPic.username = userInfo.username;
+                    //console.log(userInfo.username);
+                    if(userInfo.imagesrc == '' || userInfo.imagesrc == null) {
+                        this.loadedProfilePic = '';    
+                    } else {
+                        this.loadedProfilePic = api_url_uimage + userInfo.imagesrc;
+                    }
+                    
+                    this.rating = userInfo.userrating;
+                    if(auth.getUsername(this) == userInfo.username){
+                        //For visiting other people's profile
+                        this.isSelf = true;
+                    }
                 } else {
-                    this.loadedProfilePic = api_url_uimage + userInfo.imagesrc;
-                }
-                
-                this.rating = userInfo.userrating;
-                if(auth.getUsername(this) == userInfo.username){
-                    //For visiting other people's profile
-                    this.isSelf = true;
+                    //For profile to profile jump
+                    this.validProfile = false;
                 }
             });
 
@@ -211,7 +221,12 @@ export default {
 </script>
 
 <style scoped>
-.myPage{
+
+.errorMsg {
+    margin-top: 40px;
+}
+
+.myPage {
     margin: 0 auto;
     text-align: center;
 }
