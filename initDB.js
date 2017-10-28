@@ -67,6 +67,13 @@ const createNotiQuery =
   'FOREIGN KEY (username) REFERENCES app_user(username)' +
   ');'
 
+const createTagQuery =
+  'CREATE TABLE app_tag ' +
+  '(Tag      TEXT,' +
+  'count     INTEGER   NOT NULL,' +
+  'PRIMARY KEY (tag)' +
+  ');'
+
 const insertUserQuery = `INSERT INTO app_user VALUES ('qwer', 'asdimg', '$2a$08$zc0NLLSrVblCjAQpAD5Ll.P9eEFwN3YUJUHlxwTb9Z1RhJApKjFhO', DEFAULT, 100)`
 
 const insertItemQuery =
@@ -83,6 +90,7 @@ db
     queries.push(t.any(createBiddingQuery))
     queries.push(t.any(createLoanQuery))
     queries.push(t.any(createNotiQuery))
+    queries.push(t.any(createTagQuery))
     queries.push(t.any(insertUserQuery))
     queries.push(t.any(insertItemQuery))
     queries.push(t.any('SELECT * FROM app_item'))
