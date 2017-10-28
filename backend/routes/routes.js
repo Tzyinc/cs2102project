@@ -92,7 +92,7 @@ router.use('/img', express.static(path.join(__dirname, '../img/src')))
 router.route('/example').get(exampleController.example)
 router.route('/user').put(userController.createUser)
 router
-  .route('/user')
+  .route('/password')
   .post(
     passport.authenticate('jwt', { session: false }),
     userController.updatePassword
