@@ -18,7 +18,7 @@
       </tr>
       <tr>
         <td>---</td> <!-- need to fix td width-->
-        <td>${{item.minBid}}</td>
+        <td>${{minBid}}</td>
       </tr>
     </tbody>
   </table>
@@ -53,7 +53,7 @@ export default {
         bid_amt: '',
         //bids: [],
         item: {
-          minBid : 0.99
+          minBid : 0.17
         }
 
     }

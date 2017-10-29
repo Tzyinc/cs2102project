@@ -34,7 +34,10 @@
                                       :iid = "item.iid"
                                       :minBid = "item.minbid"
                                       :bids = "itemBids"></ItemBidding></span>
-          <span v-show="isOwner()"><ItemBiddingOwner></ItemBiddingOwner></span>
+          <span v-show="isOwner()"><ItemBiddingOwner
+                                      :iid = "item.iid"
+                                      :minBid = "item.minbid"
+                                      :bids = "itemBids"></ItemBiddingOwner></span>
         </div>
       </div>
     </div>
