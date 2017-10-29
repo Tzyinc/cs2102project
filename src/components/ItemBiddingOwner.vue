@@ -14,7 +14,7 @@
         </thead>
         <tbody>
           <tr v-for = "item in bids">
-            <td><input type="radio" :value="item" v-model="selected"></td>
+            <td><input type="radio" :value="item" v-model="selected" :disabled="isDisabled()"></td>
             <td>{{item.bidder_username}}</td>
             <td>${{item.price}}</td>
           </tr>
@@ -27,30 +27,62 @@
       </table>
     </div>
 
-     <button type="submit" class="btn btn-secondary choose-button" v-on:click="choose()" :disabled="isDisabled()">Choose winning bid</button>
+     <button type="submit" class="btn btn-secondary choose-button" v-on:click="choose(iid)" :disabled="isDisabled()">Choose winning bid</button>
   </div>
 </template>
 
 <script>
+
+import auth from '../auth/auth'
+import api_ep from '../api.json'
+
+var api_loan = api_ep.API_URL + 'api/loan'
+
 export default {
   name: 'ItemBiddingOwner',
-  props: ['iid', 'minBid', 'bids'],
+  props: ['iid', 'minBid', 'bids', 'status'],
   data() {
     return {
       selected: [],
+      bidder_username: '',
+      price: '',
       item: {}
     }
   },
   methods: {
     isDisabled() {
-      //console.log (this.bids.length)
-      return this.bids.length === 0
+      console.log ("HELLO" + this.bids.length + this.status + " hm ")
+      return (this.bids.length === 0 || this.status === false)
     },
 
-    choose() {
+    choose(iid) {
       console.log("selected: " + this.selected.bidder_username + this.selected.price)
-      if (confirm("Do you want to choose " + this.selected.bidder_username + "'s bid of $" + this.selected.price + " as the winning bid?")) {
+      this.bidder_username = this.selected.bidder_username
+      this.price = this.selected.price
+      //console.log(this.bidder_username + this.price + " ... " + typeof(this.price) + isNaN(this.price))
 
+      if (isNaN(this.price)) {
+        alert("Please choose a winning bid")
+        return
+      }
+
+
+      if (confirm("Do you want to choose " + this.selected.bidder_username + "'s bid of $" + this.selected.price + " as the winning bid?")) {
+        var context = this
+          $.ajax({
+            url: api_loan,
+            type: 'PUT',
+            headers: auth.getAuthHeader(this),
+            data: {data: {iid: this.iid, bidder_username: this.bidder_username, price: this.price}},
+            success: function(response) {
+              if(response.hasOwnProperty('success')) {
+                alert("Success!")
+              } else {
+                alert("Failed to award bid")
+              }
+            }
+          })
+          alert("awarding bid...")
       }
     }
   }

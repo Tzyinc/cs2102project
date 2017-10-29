@@ -27,9 +27,9 @@
     <form class="form-inline">
      <div class="form-group submit-bid">
        <label>Enter your bid: </label>
-       <input class="form-control" v-model="bid_amt" placeholder="0"> <!-- check for > latest bid-->
+       <input class="form-control" v-model="bid_amt" placeholder="0" :disabled="isDisabled()"> <!-- check for > latest bid-->
      </div>
-     <button type="submit" class="btn btn-secondary submit-bid-button" v-on:click="submitBid()">Submit</button>
+     <button type="submit" class="btn btn-secondary submit-bid-button" v-on:click="submitBid()" :disabled="isDisabled()">Submit</button>
    </form>
   <!--  <div class="input-group">
       <input class="form-control" name="enterbid"  v-model="bid_amt" placeholder="Enter your bid"/>
@@ -46,7 +46,7 @@ var api_itemBid = api_ep.API_URL + 'api/bid' + '?iid='
 
 export default {
   name: 'ItemBidding',
-  props: ['iid', 'minBid', 'bids'],
+  props: ['iid', 'minBid', 'bids', 'status'],
   data () {
     return {
         login_user: '',
@@ -59,12 +59,19 @@ export default {
     }
   },
   methods: {
+    isDisabled() {
+      return this.status === false
+    },
+
     submitBid() {
       console.log("submitting bid")
-      if (this.login_user == 'DEFAULT_USER') {
-        console.log("not logged in")
+      console.log("is bid not a number? " + isNaN(this.bid_amt))
+
+      if (isNaN(this.bid_amt)) {
+        alert("Please enter a valid amount")
         return
       }
+
       if (confirm("Are you sure you want to place a bid of $" + this.bid_amt + "?")) {
         console.log(this.login_user + " making a bid of " + this.bid_amt + " on " + this.iid)
 
@@ -82,7 +89,8 @@ export default {
               }
             }
           })
-          //alert("something...")
+          //sleep(100)
+          alert("making a bid...")
 
     }
   }

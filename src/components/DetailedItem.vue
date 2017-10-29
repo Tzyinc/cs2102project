@@ -33,11 +33,13 @@
           <span v-show="!isOwner()"><ItemBidding
                                       :iid = "item.iid"
                                       :minBid = "item.minbid"
-                                      :bids = "itemBids"></ItemBidding></span>
+                                      :bids = "itemBids"
+                                      :status = "item.status"></ItemBidding></span>
           <span v-show="isOwner()"><ItemBiddingOwner
                                       :iid = "item.iid"
                                       :minBid = "item.minbid"
-                                      :bids = "itemBids"></ItemBiddingOwner></span>
+                                      :bids = "itemBids"
+                                      :status = "item.status"></ItemBiddingOwner></span>
         </div>
       </div>
     </div>
@@ -79,7 +81,7 @@
   methods: {
     isOwner() {
       if (this.login_user === this.item.owner_username) {
-        console.log("this is the owner")
+        //console.log("this is the owner")
         return true;
       }
     },
