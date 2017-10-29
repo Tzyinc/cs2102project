@@ -27,7 +27,7 @@
       </table>
     </div>
 
-     <button type="submit" class="btn btn-secondary" v-on:click="choose()">Choose winning bid</button>
+     <button type="submit" class="btn btn-secondary" v-on:click="choose()" :disabled="isDisabled()">Choose winning bid</button>
   </div>
 </template>
 
@@ -42,10 +42,15 @@ export default {
     }
   },
   methods: {
+    isDisabled() {
+      //console.log (this.bids.length)
+      return this.bids.length === 0
+    },
+
     choose() {
       console.log("selected: " + this.selected.bidder_username + this.selected.price)
       if (confirm("Do you want to choose " + this.selected.bidder_username + "'s bid of $" + this.selected.price + " as the winning bid?")) {
-        
+
       }
     }
   }
