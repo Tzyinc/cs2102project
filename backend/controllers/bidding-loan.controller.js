@@ -6,14 +6,18 @@ const createBidPS = new dbcon.PS(
 
 const selectBidsPS = new dbcon.PS('selectBids', 'SELECT * FROM WHERE iid = $1')
 
-function createBid(req, res) {
+function createBid(req, res){
   var bidDetails = req.body.data
   if (bidDetails != null) {
-    createBidPs.values = [bidDetails.username, bidDetails.iid, bidDetails.price]
+    createBidPs.values = [
+      bidDetails.username,
+      bidDetails.iid,
+      bidDetails.price
+    ]
     dbcon.db
       .none(createBidPS)
       .then(result => {
-        res.json({ success: true })
+        res.json({success: true})
       })
       .catch(error => {
         console.log('ERROR:', error)
@@ -22,10 +26,10 @@ function createBid(req, res) {
   }
 }
 
-function getBidsByIid(req, res) {
+function getBidsByIid(req, res){
   var bidDetails = req.query
   if (bidDetails != null) {
-    selectBidsPS.values = [bidDetails.iid]
+    selectBidsPS.values = [ bidDetails.iid ]
     dbcon.db
       .any(selectBidsPS)
       .then(result => {

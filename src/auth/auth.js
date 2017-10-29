@@ -51,6 +51,26 @@ export default {
     })
   },
 
+  changePw(context, creds) {
+    var _auth = this
+    $.ajax({
+      url: api_ep.API_URL + api_ep.PASSWORD, // Your api url
+      type: 'POST', // type is any HTTP method
+      data: {data: creds}, // Data as js object
+      headers: _auth.getAuthHeader(context),
+      success: function(response){
+        if (response.success === true) {
+          //console.log('success')
+          context.closePasswordChangeModal(2000, 'Successful password change')
+        } else {
+          //console.log('fail')
+          context.setPwChangeMsg('Old password incorrect!')
+          context.incorrectPasswordFeedback()
+        }
+      }
+    })
+  },
+
   testToken(context) {
     var _auth = this
     $.ajax({
@@ -82,7 +102,7 @@ export default {
     if (context.$session.has('username')) {
       return context.$session.get('username')
     } else {
-      return 'DEFAULT_USER'
+      return ''
     }
   },
 
