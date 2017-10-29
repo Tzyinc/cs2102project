@@ -88,9 +88,6 @@
   },
 
   methods: {
-    itemExists() {
-      return true
-    },
     isOwner() {
       if (this.login_user === this.item.owner_username) {
         //console.log("this is the owner")
@@ -108,7 +105,7 @@
     deleteItem () {
 
       if (confirm("Are you sure you want to delete this?")) {
-      var context = this
+        var context = this
         $.ajax({
           url: api_del,
           type: 'DELETE',
@@ -117,13 +114,15 @@
           success: function(response) {
             console.log("deleting")
             if(response.hasOwnProperty('success')) {
-              alert("successfully deleted")
-              context.$router.push({name: "myListing"})
+              alert("Successfully deleted!")
+              context.$router.push({name: "MyListing"})
             } else {
               alert("Failed to delete. Please try again.")
             }
           }
         })
+
+
       }
     }
   },
@@ -152,10 +151,12 @@
 </script>
 
 <style scoped>
+
 .detailed-item {
   width: 80%;
   margin: 0 auto;
   /*background-color: #efefef; /*to remove later*/
+  padding-bottom: 100px;
 
 }
 
