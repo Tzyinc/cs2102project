@@ -88,9 +88,6 @@
   },
 
   methods: {
-    itemExists() {
-      return true
-    },
     isOwner() {
       if (this.login_user === this.item.owner_username) {
         //console.log("this is the owner")
