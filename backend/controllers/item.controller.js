@@ -41,6 +41,11 @@ const deleteItemByIDPS = new dbcon.PS(
   'DELETE FROM app_item WHERE iid = $1'
 )
 
+const changeItemStatusPS = new dbcon.PS(
+  'changeItemStatus',
+  'UPDATE app_item SET status = $1 WHERE iid = $2'
+)
+
 function createItem(req, res) {
   var itemDetails = req.body.data
   if (itemDetails != null) {
@@ -202,10 +207,16 @@ function deleteItem(req, res) {
   }
 }
 
+function changeItemStatus(itemStatus, iid) {
+  changeItemStatusPS.values = [itemStatus, iid]
+  return dbcon.db.none(changeItemStatusPS)
+}
+
 module.exports = {
   createItem: createItem,
   getItems: getItems,
   getItem: getItem,
   updateItem: updateItem,
-  deleteItem: deleteItem
+  deleteItem: deleteItem,
+  changeItemStatus: changeItemStatus
 }

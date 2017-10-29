@@ -85,7 +85,7 @@ const insertUserQuery = `INSERT INTO app_user VALUES ('qwer', 'defaultProfile.jp
 
 const insertItemQuery =
   'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location) ' +
-  `VALUES('qwer','some default name','error.png', 10 ,now(), FALSE,'somewhere')`
+  `VALUES('qwer','some default name','error.png', 10 ,now(), TRUE,'somewhere')`
 
 db
   .tx(t => {
