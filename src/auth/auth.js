@@ -2,6 +2,9 @@ import router from '@/router'
 import api_ep from '../api.json'
 // URL and endpoint constants
 
+var api_url_user = api_ep.API_URL + api_ep.USER
+var api_user_owner = '?username='
+
 export default {
   // User object will let us check authentication status
   user: {
@@ -28,8 +31,25 @@ export default {
           context.$session.set('username', creds.username)
           context.$session.set('JWT', response.token)
           _auth.user.authenticated = true
-          context.$router.push('/')
+          _auth.loadAdminStatus(context, creds, redirect)
         }
+      }
+    })
+  },
+
+  loadAdminStatus(context, creds, redirect) {
+    $.ajax({
+      url: api_url_user + api_user_owner + creds.username, // Your api url
+      type: 'GET', // type is any HTTP method
+      data: {data: creds}, // Data as js object
+      success: function(response){
+        var userInfo = response
+        if (!(userInfo.username == '' || userInfo.username == null)) {
+          context.$session.set('isAdmin', userInfo.isadmin)
+        } else {
+          console.log("Error, unable to load exisiting user's user data")
+        }
+        context.$router.push('/')
       }
     })
   },
@@ -103,6 +123,14 @@ export default {
       return context.$session.get('username')
     } else {
       return ''
+    }
+  },
+
+  isUserAdmin(context) {
+    if (context.$session.has('isAdmin')) {
+      return context.$session.get('isAdmin')
+    } else {
+      return false
     }
   },
 
