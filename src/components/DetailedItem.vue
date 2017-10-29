@@ -1,12 +1,13 @@
 <template>
   <div>
     <div v-if="itemExists">
-      <div v-show="isOwner()">
-        <button type="button" class="btn btn-danger pull-right" v-on:click="deleteItem()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-        <button type="button" class="btn btn-warning pull-right" v-on:click="load()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-      </div>
           <div class= "detailed-item">
-          <div class="detailed-title">Listing Details<hr/></div>
+          <div class="detailed-title">Listing Details
+            <span v-if="isOwner()">
+              <button type="button" class="btn btn-warning" :disabled="!item.status" v-on:click="load()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+              <button type="button" class="btn btn-danger" :disabled="!item.status" v-on:click="deleteItem()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+            </span>
+          <hr/></div>
           <div v-if="item.status"></div>
           <div v-else class="alert alert-danger" role="alert">This item has already been loaned out.</div>
             <div class="row detailed-row">

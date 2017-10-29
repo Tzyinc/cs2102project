@@ -73,6 +73,7 @@ export default {
             url: api_loan,
             type: 'PUT',
             headers: auth.getAuthHeader(this),
+            async: false,
             data: {data: {iid: this.iid, bidder_username: this.bidder_username, price: this.price}},
             success: function(response) {
               if(response.hasOwnProperty('success')) {
@@ -82,7 +83,7 @@ export default {
               }
             }
           })
-          alert("awarding bid...")
+          //alert("awarding bid...")
       }
     }
   }

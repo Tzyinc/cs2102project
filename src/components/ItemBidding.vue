@@ -80,6 +80,7 @@ export default {
             url: api_itemBid,
             type: 'PUT',
             headers: auth.getAuthHeader(this),
+            async: false,
             data: {data: {bidder_username: this.login_user, iid: this.iid, price: this.bid_amt}},
             success: function(response) {
               if(response.hasOwnProperty('success')) {
@@ -90,7 +91,7 @@ export default {
             }
           })
           //sleep(100)
-          alert("making a bid...")
+          //alert("making a bid...")
 
     }
   }
