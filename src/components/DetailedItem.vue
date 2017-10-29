@@ -152,10 +152,12 @@
 </script>
 
 <style scoped>
+
 .detailed-item {
   width: 80%;
   margin: 0 auto;
   /*background-color: #efefef; /*to remove later*/
+  padding-bottom: 100px;
 
 }
 

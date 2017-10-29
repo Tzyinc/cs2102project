@@ -22,13 +22,19 @@
   </table>
     </div>
 
-    <form class="form-inline">
-     <div class="form-group submit-bid">
-       <label>Enter your bid: </label>
-       <input class="form-control" v-model="bid_amt" placeholder="0" :disabled="isDisabled()"> <!-- check for > latest bid-->
-     </div>
-     <button type="submit" class="btn btn-secondary submit-bid-button" v-on:click="submitBid()" :disabled="isDisabled()">Submit</button>
-   </form>
+    <form>
+      <div class="form-group row">
+        <div class="col-sm-2"></div>
+        <label class="col-sm-2 col-form-label" for="bidInput">Enter your bid:</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="bidInput" v-model="bid_amt" placeholder="0" :disabled="isDisabled()"> <!-- check for > latest bid-->
+        </div>
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-secondary submit-bid-button" v-on:click="submitBid()" :disabled="isDisabled()">Submit</button>
+        </div>
+      </div>
+    </form>
+
   <!--  <div class="input-group">
       <input class="form-control" name="enterbid"  v-model="bid_amt" placeholder="Enter your bid"/>
     </div>-->
@@ -127,6 +133,7 @@ export default {
 .submit-bid {
   margin: auto;
   padding: 3%;
+  display: inline-block;
 }
 
 .submit-bid-button {
