@@ -50,12 +50,12 @@ export default {
   },
   methods: {
     isDisabled() {
-      console.log ("HELLO" + this.bids.length + this.status + " hm ")
+      //console.log ("HELLO" + this.bids.length + this.status)
       return (this.bids.length === 0 || this.status === false)
     },
 
     choose(iid) {
-      console.log("selected: " + this.selected.bidder_username + this.selected.price)
+      //console.log("selected: " + this.selected.bidder_username + this.selected.price)
       this.bidder_username = this.selected.bidder_username
       this.price = this.selected.price
       //console.log(this.bidder_username + this.price + " ... " + typeof(this.price) + isNaN(this.price))
@@ -83,6 +83,7 @@ export default {
             }
           })
           //alert("awarding bid...")
+          window.location.reload() // is there another way to this
       }
     }
   }
