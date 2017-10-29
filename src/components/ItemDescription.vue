@@ -1,7 +1,9 @@
 <template>
-  <div class="item-desc">
-    <div class="item-desc-title">Description</div>
-    <div class="item-desc-text">{{description}}</div>
+  <div class="item-desc card">
+    <div class="item-desc-title card-header"><i class="fa fa-file-text-o" aria-hidden="true"></i> Description</div>
+    <div class="item-desc-text card-body">{{description}}</div>
+    <div><hr/></div>
+    <div class="item-desc-tags card-body">{{item.tags}}</div>
     <hr/>
   </div>
 </template>
@@ -24,20 +26,25 @@ export default {
 
 <style scoped>
 .item-desc {
-  width: 70%;
+  width: 100%;
   text-align: left;
-  display: inline-block;
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
+  height: 350px;
 }
 .item-desc-title {
   font-weight:bold;
-  font-size:2em;
+  font-size:1.5em;
   padding-bottom: 2%;
 }
 .item-desc-text {
   max-height:inherit;
+  overflow-y: scroll;
+}
+
+.item-desc-tags {
+  height: 10%;
   overflow-y: scroll;
 }
 </style>

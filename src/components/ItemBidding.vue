@@ -1,9 +1,7 @@
 <template>
-  <div class="item-bidding">
-    <div class="item-bidding-title">
-      Bidding Info
-    </div>
-    <div class="table-responsive">
+  <div class="item-bidding card">
+    <div class="item-bidding-title card-header"><i class="fa fa-gavel" aria-hidden="true"></i> Bidding Info</div>
+    <div class="table-responsive card-body">
       <table class="table table-condensed">
     <thead>
       <tr>
@@ -24,13 +22,19 @@
   </table>
     </div>
 
-    <form class="form-inline">
-     <div class="form-group">
-       <label>Enter your bid:</label>
-       <input class="form-control" v-model="bid_amt" placeholder="0"> <!-- check for > latest bid-->
-     </div>
-     <button type="submit" class="btn btn-secondary" v-on:click="submitBid()">Submit</button>
-   </form>
+    <form>
+      <div class="form-group row">
+        <div class="col-sm-2"></div>
+        <label class="col-sm-2 col-form-label" for="bidInput">Enter your bid:</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" id="bidInput" v-model="bid_amt" placeholder="0" :disabled="isDisabled()"> <!-- check for > latest bid-->
+        </div>
+        <div class="col-sm-2">
+            <button type="submit" class="btn btn-secondary submit-bid-button" v-on:click="submitBid()" :disabled="isDisabled()">Submit</button>
+        </div>
+      </div>
+    </form>
+
   <!--  <div class="input-group">
       <input class="form-control" name="enterbid"  v-model="bid_amt" placeholder="Enter your bid"/>
     </div>-->
@@ -46,7 +50,7 @@ var api_itemBid = api_ep.API_URL + 'api/bid' + '?iid='
 
 export default {
   name: 'ItemBidding',
-  props: ['iid', 'minBid', 'bids'],
+  props: ['iid', 'minBid', 'bids', 'status'],
   data () {
     return {
         login_user: '',
@@ -59,12 +63,19 @@ export default {
     }
   },
   methods: {
+    isDisabled() {
+      return this.status === false
+    },
+
     submitBid() {
       console.log("submitting bid")
-      if (this.login_user == 'DEFAULT_USER') {
-        console.log("not logged in")
+      console.log("is bid not a number? " + isNaN(this.bid_amt))
+
+      if (isNaN(this.bid_amt)) {
+        alert("Please enter a valid amount")
         return
       }
+
       if (confirm("Are you sure you want to place a bid of $" + this.bid_amt + "?")) {
         console.log(this.login_user + " making a bid of " + this.bid_amt + " on " + this.iid)
 
@@ -73,16 +84,18 @@ export default {
             url: api_itemBid,
             type: 'PUT',
             headers: auth.getAuthHeader(this),
+            async: false,
             data: {data: {bidder_username: this.login_user, iid: this.iid, price: this.bid_amt}},
             success: function(response) {
               if(response.hasOwnProperty('success')) {
-                alert("successfully made a bid!")
+                alert("Successfully made a bid!")
               } else {
-                alert("failed to bid")
+                alert("Failed to bid, have you already bid before?")
               }
             }
           })
-          //alert("something...")
+          //sleep(100)
+          //alert("making a bid...")
 
     }
   }
@@ -99,20 +112,32 @@ export default {
 
 <style scoped>
 .item-bidding {
-  width: 70%;
+  width: 100%;
   text-align: left;
-  display: inline-block;
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
+  height: 500px;
 }
 
 .item-bidding-title {
   font-weight:bold;
-  font-size:2em;
+  font-size:1.5em;
+  padding-bottom: 2%;
 }
 
 .table-responsive {
   overflow-y: scroll;
 }
+
+.submit-bid {
+  margin: auto;
+  padding: 3%;
+  display: inline-block;
+}
+
+.submit-bid-button {
+  margin: auto;
+}
+
 </style>
