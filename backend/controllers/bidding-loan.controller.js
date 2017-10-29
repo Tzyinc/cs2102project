@@ -4,13 +4,16 @@ const createBidPS = new dbcon.PS(
   'INSERT INTO app_bidding (bidder_username, iid, price, time) VALUES ($1, $2, $3, now())'
 )
 
-const selectBidsPS = new dbcon.PS('selectBids', 'SELECT * FROM WHERE iid = $1')
+const selectBidsPS = new dbcon.PS(
+  'selectBids',
+  'SELECT * FROM app_bidding WHERE iid = $1 ORDER BY price DESC'
+)
 
 function createBid(req, res){
   var bidDetails = req.body.data
   if (bidDetails != null) {
-    createBidPs.values = [
-      bidDetails.username,
+    createBidPS.values = [
+      bidDetails.bidder_username,
       bidDetails.iid,
       bidDetails.price
     ]
@@ -39,6 +42,8 @@ function getBidsByIid(req, res){
         console.log(error)
         res.json(error)
       })
+  } else {
+    res.json({error: 'no iid found'})
   }
 }
 

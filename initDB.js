@@ -5,7 +5,7 @@ const cn = cred.dbcred
 const db = pgp(cn)
 
 const dropQuery =
-  'DROP TABLE IF EXISTS app_user, app_item, app_bidding, app_loan, app_notification;'
+  'DROP TABLE IF EXISTS app_user, app_item, app_bidding, app_loan, app_notification, app_tag_count, app_tag_relation;'
 const createUserQuery =
   'CREATE TABLE app_user ' +
   '(username      TEXT,' +
@@ -23,7 +23,6 @@ const createItemQuery =
   'name           TEXT          NOT NULL,' +
   'imagesrc       TEXT          NOT NULL,' +
   'description    TEXT,' +
-  'tags           TEXT,' +
   'minbid         NUMERIC       NOT NULL,' +
   'timeListed     TIMESTAMP          NOT NULL,' +
   'status         BOOLEAN       NOT NULL,' +
@@ -38,7 +37,7 @@ const createBiddingQuery =
   'CREATE TABLE app_bidding ' +
   '(bidder_username    TEXT,' +
   'iid                 INTEGER,' +
-  'price               INTEGER       NOT NULL,' +
+  'price               NUMERIC       NOT NULL,' +
   'time           TIMESTAMP,' +
   'PRIMARY KEY (bidder_username, iid),' +
   'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
@@ -49,7 +48,7 @@ const createLoanQuery =
   'CREATE TABLE app_loan ' +
   '(borrower_username    TEXT,' +
   'iid                   INTEGER,' +
-  'price                 INTEGER       NOT NULL,' +
+  'price                 NUMERIC       NOT NULL,' +
   'PRIMARY KEY (borrower_username, iid),' +
   'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
   'FOREIGN KEY (borrower_username) REFERENCES app_user(username)' +
@@ -65,6 +64,21 @@ const createNotiQuery =
   'PRIMARY KEY (username, iid),' +
   'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
   'FOREIGN KEY (username) REFERENCES app_user(username)' +
+  ');'
+
+const createTagRelationQuery =
+  'CREATE TABLE app_tag_relation ' +
+  '(tag      TEXT,' +
+  'iid     INTEGER,' +
+  'PRIMARY KEY (tag, iid),' +
+  'FOREIGN KEY (iid) REFERENCES app_item(iid)' +
+  ');'
+
+const createTagCountQuery =
+  'CREATE TABLE app_tag_count ' +
+  '(tag      TEXT,' +
+  'count     INTEGER   NOT NULL,' +
+  'PRIMARY KEY (tag)' +
   ');'
 
 const insertUserQuery = `INSERT INTO app_user VALUES ('qwer', 'defaultProfile.jpg', '$2a$08$zc0NLLSrVblCjAQpAD5Ll.P9eEFwN3YUJUHlxwTb9Z1RhJApKjFhO', DEFAULT, 100)`
@@ -83,6 +97,8 @@ db
     queries.push(t.any(createBiddingQuery))
     queries.push(t.any(createLoanQuery))
     queries.push(t.any(createNotiQuery))
+    queries.push(t.any(createTagCountQuery))
+    queries.push(t.any(createTagRelationQuery))
     queries.push(t.any(insertUserQuery))
     queries.push(t.any(insertItemQuery))
     queries.push(t.any('SELECT * FROM app_item'))

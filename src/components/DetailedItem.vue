@@ -30,7 +30,14 @@
           </ItemOwnerInfo>
         </div>
         <div class="col-md-9">
-          <ItemBidding></ItemBidding>
+          <span v-show="!isOwner()"><ItemBidding
+                                      :iid = "item.iid"
+                                      :minBid = "item.minbid"
+                                      :bids = "itemBids"></ItemBidding></span>
+          <span v-show="isOwner()"><ItemBiddingOwner
+                                      :iid = "item.iid"
+                                      :minBid = "item.minbid"
+                                      :bids = "itemBids"></ItemBiddingOwner></span>
         </div>
       </div>
     </div>
@@ -44,11 +51,13 @@
   import ItemOwnerInfo from './ItemOwnerInfo'
   import ItemDescription from './ItemDescription'
   import ItemBidding from './ItemBidding'
+  import ItemBiddingOwner from './ItemBiddingOwner'
 
 
   var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
   var api_itemimg = api_ep.API_URL + api_ep.IMAGE + '/'
   var api_del = api_ep.API_URL + api_ep.ITEM
+  var api_bids = api_ep.API_URL + 'api/bids' + '?iid='
 
   export default {
   name: 'DetailedItem',
@@ -56,25 +65,26 @@
     ItemPicture,
     ItemDescription,
     ItemOwnerInfo,
-    ItemBidding
+    ItemBidding,
+    ItemBiddingOwner
   },
   data() {
     return {
         login_user: '',
-        item: []
+        item: [],
+        itemBids: []
     }
   },
 
   methods: {
     isOwner() {
       if (this.login_user === this.item.owner_username) {
-        console.log("true")
+        console.log("this is the owner")
         return true;
       }
     },
     retrieveImageUrl(source){
-      var itemImage = api_itemimg + source + "?timestamp=" + new Date().getTime();
-      console.log(source);
+      var itemImage = api_itemimg + source /*+ "?timestamp=" + new Date().getTime()*/;
       return itemImage;
     },
 
@@ -88,6 +98,7 @@
         $.ajax({
           url: api_del,
           type: 'DELETE',
+          headers: auth.getAuthHeader(this),
           data: {data: {iid: this.$route.params.iid}},
           success: function(response) {
             console.log("deleting")
@@ -105,11 +116,17 @@
 
   created: function () {
     this.login_user = auth.getUsername(this)
-    console.log("the full url is:" + api_url + this.$route.params.iid)
+    //console.log("the full url is:" + api_url + this.$route.params.iid)
     this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
         this.item = response.data;
-        console.log("asdf" + this.item);
+        //console.log("asdf" + this.item);
+      });
+    console.log ("getting bid info for " + this.$route.params.iid)
+    this.$http.get(api_bids + this.$route.params.iid)
+      .then(response => {
+       this.itemBids = response.data;
+       console.log(this.itemBids)
       });
   }
 }
