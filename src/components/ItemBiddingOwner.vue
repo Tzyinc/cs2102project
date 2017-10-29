@@ -3,7 +3,7 @@
     <div class="item-bidding-owner-title card-header"><i class="fa fa-gavel" aria-hidden="true"></i> Bidding Info</div>
     <div class="table-responsive card-body">
       <table class="table table-condensed">
-        <thead>
+        <thead class="thead-light">
           <tr>
             <th width="15%">Select</th>
             <th>Bidder</th>
@@ -24,8 +24,9 @@
         </tbody>
       </table>
     </div>
-
-     <button type="submit" class="btn btn-secondary choose-button" v-on:click="choose(iid)" :disabled="isDisabled()">Choose winning bid</button>
+    <div class="button-padding">
+     <button type="submit" class="btn btn-secondary" v-on:click="choose(iid)" :disabled="isDisabled()">Choose winning bid</button>
+   </div>
   </div>
 </template>
 
@@ -109,7 +110,8 @@ export default {
   overflow-y: scroll;
 }
 
-.choose-button {
-  margin: auto;
+.button-padding {
+  margin:auto;
+  padding: 10px;
 }
 </style>

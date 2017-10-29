@@ -88,9 +88,9 @@ export default {
             data: {data: {bidder_username: this.login_user, iid: this.iid, price: this.bid_amt}},
             success: function(response) {
               if(response.hasOwnProperty('success')) {
-                alert("successfully made a bid!")
+                alert("Successfully made a bid!")
               } else {
-                alert("failed to bid")
+                alert("Failed to bid, have you already bid before?")
               }
             }
           })
