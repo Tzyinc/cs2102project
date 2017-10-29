@@ -108,7 +108,7 @@
     deleteItem () {
 
       if (confirm("Are you sure you want to delete this?")) {
-      var context = this
+        var context = this
         $.ajax({
           url: api_del,
           type: 'DELETE',
@@ -117,13 +117,15 @@
           success: function(response) {
             console.log("deleting")
             if(response.hasOwnProperty('success')) {
-              alert("successfully deleted")
-              context.$router.push({name: "myListing"})
+              alert("Successfully deleted!")
+              context.$router.push({name: "MyListing"})
             } else {
               alert("Failed to delete. Please try again.")
             }
           }
         })
+
+
       }
     }
   },
