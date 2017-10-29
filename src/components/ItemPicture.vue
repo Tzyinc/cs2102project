@@ -1,6 +1,6 @@
 <template>
   <div class="item-picture card">
-    <div class="item-picture-title card-header">Image</div>
+    <div class="item-picture-title card-header"><i class="fa fa-picture-o" aria-hidden="true"></i> Image</div>
     <div class="item-image card-body"><img :src="imagesrc"/></div>
   </div>
 </template>

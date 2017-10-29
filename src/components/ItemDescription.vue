@@ -1,7 +1,9 @@
 <template>
   <div class="item-desc card">
-    <div class="item-desc-title card-header">Description</div>
+    <div class="item-desc-title card-header"><i class="fa fa-file-text-o" aria-hidden="true"></i> Description</div>
     <div class="item-desc-text card-body">{{description}}</div>
+    <div><hr/></div>
+    <div class="item-desc-tags card-body">{{item.tags}}</div>
     <hr/>
   </div>
 </template>
@@ -38,6 +40,11 @@ export default {
 }
 .item-desc-text {
   max-height:inherit;
+  overflow-y: scroll;
+}
+
+.item-desc-tags {
+  height: 10%;
   overflow-y: scroll;
 }
 </style>

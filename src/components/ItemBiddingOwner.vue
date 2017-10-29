@@ -1,8 +1,6 @@
 <template>
   <div class="item-bidding-owner card">
-    <div class="item-bidding-owner-title card-header">
-      Bidding Info
-    </div>
+    <div class="item-bidding-owner-title card-header"><i class="fa fa-gavel" aria-hidden="true"></i> Bidding Info</div>
     <div class="table-responsive card-body">
       <table class="table table-condensed">
         <thead>
@@ -98,7 +96,7 @@ export default {
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
-  height: 400px;
+  height: 500px;
 }
 
 .item-bidding-owner-title {
