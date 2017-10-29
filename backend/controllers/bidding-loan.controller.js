@@ -3,7 +3,8 @@ var itemController = require('../controllers/item.controller.js')
 
 const createBidPS = new dbcon.PS(
   'createBid',
-  'INSERT INTO app_bidding (bidder_username, iid, price, time) VALUES ($1, $2, $3, now())'
+  'INSERT INTO app_bidding (bidder_username, iid, price, time) VALUES ($1, $2, $3, now())' +
+    'ON CONFLICT (bidder_username, iid) DO UPDATE SET price = $3, time = now()'
 )
 
 const selectBidsPS = new dbcon.PS(
