@@ -53,7 +53,7 @@ export default {
 }
 
 .item-info-value {
-  color: #a0a0a0;
+  color: #666666;
 }
 
 </style>
