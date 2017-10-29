@@ -1,9 +1,9 @@
 <template>
-  <div class="item-bidding">
-    <div class="item-bidding-title">
+  <div class="item-bidding card">
+    <div class="item-bidding-title card-header">
       Bidding Info
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive card-body">
       <table class="table table-condensed">
     <thead>
       <tr>
@@ -25,11 +25,11 @@
     </div>
 
     <form class="form-inline">
-     <div class="form-group">
-       <label>Enter your bid:</label>
+     <div class="form-group submit-bid">
+       <label>Enter your bid: </label>
        <input class="form-control" v-model="bid_amt" placeholder="0"> <!-- check for > latest bid-->
      </div>
-     <button type="submit" class="btn btn-secondary" v-on:click="submitBid()">Submit</button>
+     <button type="submit" class="btn btn-secondary submit-bid-button" v-on:click="submitBid()">Submit</button>
    </form>
   <!--  <div class="input-group">
       <input class="form-control" name="enterbid"  v-model="bid_amt" placeholder="Enter your bid"/>
@@ -99,20 +99,31 @@ export default {
 
 <style scoped>
 .item-bidding {
-  width: 70%;
+  width: 100%;
   text-align: left;
-  display: inline-block;
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
+  height: 400px;
 }
 
 .item-bidding-title {
   font-weight:bold;
-  font-size:2em;
+  font-size:1.5em;
+  padding-bottom: 2%;
 }
 
 .table-responsive {
   overflow-y: scroll;
 }
+
+.submit-bid {
+  margin: auto;
+  padding: 3%;
+}
+
+.submit-bid-button {
+  margin: auto;
+}
+
 </style>

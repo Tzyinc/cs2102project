@@ -4,21 +4,21 @@
       <button type="button" class="btn btn-danger pull-right" v-on:click="deleteItem()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
       <button type="button" class="btn btn-warning pull-right" v-on:click="load()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
     </div>
-      <div class= "container">
-        <div class="detailed-title">Listing Details</div>
-        <div class="row">
-          <div class="col-md-3">
+        <div class= "detailed-item">
+        <div class="detailed-title">Listing Details<hr/></div>
+          <div class="row detailed-row">
+          <div class="col-3">
             <ItemPicture
               :imagesrc = "retrieveImageUrl(item.itemimg)"></ItemPicture>
           </div>
-          <div class="col-md-9">
+          <div class="col-9">
           <ItemDescription
             :description = "item.description">
           </ItemDescription>
         </div>
         </div>
-        <div class="row">
-          <div class="col-md-3">
+        <div class="row detailed-row">
+          <div class="col-3">
           <ItemOwnerInfo
             :owner_username = "item.owner_username"
             :name = "item.name"
@@ -29,7 +29,7 @@
             :enddate = "item.enddate">
           </ItemOwnerInfo>
         </div>
-        <div class="col-md-9">
+        <div class="col-9">
           <span v-show="!isOwner()"><ItemBidding
                                       :iid = "item.iid"
                                       :minBid = "item.minbid"
@@ -134,24 +134,22 @@
 
 <style scoped>
 .detailed-item {
-  width: 90%;
+  width: 80%;
   margin: 0 auto;
   /*background-color: #efefef; /*to remove later*/
 
 }
 
-.detailed-item * {
-  padding:3%;
-  background-color: #efefef;
-  border: 1px solid #000;
+.detailed-row {
+  padding: 5px;
 }
 
 .detailed-title {
   text-align: left;
   font-weight:bold;
   font-size: 2em;
-  padding-bottom: 6%;
-  display:
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
 
 .buttons {

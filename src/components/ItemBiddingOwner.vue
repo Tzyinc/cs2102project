@@ -1,9 +1,9 @@
 <template>
-  <div class="item-bidding-owner">
-    <div class="item-bidding-owner-title">
+  <div class="item-bidding-owner card">
+    <div class="item-bidding-owner-title card-header">
       Bidding Info
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive card-body">
       <table class="table table-condensed">
         <thead>
           <tr>
@@ -27,7 +27,7 @@
       </table>
     </div>
 
-     <button type="submit" class="btn btn-secondary" v-on:click="choose()" :disabled="isDisabled()">Choose winning bid</button>
+     <button type="submit" class="btn btn-secondary choose-button" v-on:click="choose()" :disabled="isDisabled()">Choose winning bid</button>
   </div>
 </template>
 
@@ -60,20 +60,25 @@ export default {
 
 <style scoped>
 .item-bidding-owner {
-  width: 70%;
+  width: 100%;
   text-align: left;
-  display: inline-block;
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
+  height: 400px;
 }
 
 .item-bidding-owner-title {
   font-weight:bold;
-  font-size:2em;
+  font-size:1.5em;
+  padding-bottom: 2%;
 }
 
 .table-responsive {
   overflow-y: scroll;
+}
+
+.choose-button {
+  margin: auto;
 }
 </style>
