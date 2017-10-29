@@ -1,47 +1,54 @@
 <template>
   <div>
-    <div v-show="isOwner()">
-      <button type="button" class="btn btn-danger pull-right" v-on:click="deleteItem()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
-      <button type="button" class="btn btn-warning pull-right" v-on:click="load()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-    </div>
-        <div class= "detailed-item">
-        <div class="detailed-title">Listing Details<hr/></div>
+    <div v-if="itemExists">
+      <div v-show="isOwner()">
+        <button type="button" class="btn btn-danger pull-right" v-on:click="deleteItem()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+        <button type="button" class="btn btn-warning pull-right" v-on:click="load()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+      </div>
+          <div class= "detailed-item">
+          <div class="detailed-title">Listing Details<hr/></div>
+          <div v-if="item.status"></div>
+          <div v-else class="alert alert-danger" role="alert">This item has already been loaned out.</div>
+            <div class="row detailed-row">
+            <div class="col-3">
+              <ItemPicture
+                :imagesrc = "retrieveImageUrl(item.itemimg)"></ItemPicture>
+            </div>
+            <div class="col-9">
+            <ItemDescription
+              :description = "item.description">
+            </ItemDescription>
+          </div>
+          </div>
           <div class="row detailed-row">
-          <div class="col-3">
-            <ItemPicture
-              :imagesrc = "retrieveImageUrl(item.itemimg)"></ItemPicture>
+            <div class="col-3">
+            <ItemOwnerInfo
+              :owner_username = "item.owner_username"
+              :name = "item.name"
+              :location = "item.location"
+              :status = "item.status"
+              :timelisted = "item.timelisted"
+              :startdate = "item.startdate"
+              :enddate = "item.enddate">
+            </ItemOwnerInfo>
           </div>
           <div class="col-9">
-          <ItemDescription
-            :description = "item.description">
-          </ItemDescription>
-        </div>
-        </div>
-        <div class="row detailed-row">
-          <div class="col-3">
-          <ItemOwnerInfo
-            :owner_username = "item.owner_username"
-            :name = "item.name"
-            :location = "item.location"
-            :status = "item.status"
-            :timelisted = "item.timelisted"
-            :startdate = "item.startdate"
-            :enddate = "item.enddate">
-          </ItemOwnerInfo>
-        </div>
-        <div class="col-9">
-          <span v-show="!isOwner()"><ItemBidding
-                                      :iid = "item.iid"
-                                      :minBid = "item.minbid"
-                                      :bids = "itemBids"
-                                      :status = "item.status"></ItemBidding></span>
-          <span v-show="isOwner()"><ItemBiddingOwner
-                                      :iid = "item.iid"
-                                      :minBid = "item.minbid"
-                                      :bids = "itemBids"
-                                      :status = "item.status"></ItemBiddingOwner></span>
+            <span v-show="!isOwner()"><ItemBidding
+                                        :iid = "item.iid"
+                                        :minBid = "item.minbid"
+                                        :bids = "itemBids"
+                                        :status = "item.status"></ItemBidding></span>
+            <span v-show="isOwner()"><ItemBiddingOwner
+                                        :iid = "item.iid"
+                                        :minBid = "item.minbid"
+                                        :bids = "itemBids"
+                                        :status = "item.status"></ItemBiddingOwner></span>
+          </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <h1 class="errorMsg">Error 404: Item not found</h1>
     </div>
   </div>
 </template>
@@ -74,11 +81,15 @@
     return {
         login_user: '',
         item: [],
-        itemBids: []
+        itemBids: [],
+        itemExists: true
     }
   },
 
   methods: {
+    itemExists() {
+      return true
+    },
     isOwner() {
       if (this.login_user === this.item.owner_username) {
         //console.log("this is the owner")
@@ -122,6 +133,10 @@
     this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
         this.item = response.data;
+        console.log("this item owner username =" + this.item.owner_username)
+        if (this.item.owner_username === undefined) {
+          this.itemExists = false
+        }
         //console.log("asdf" + this.item);
       });
     console.log ("getting bid info for " + this.$route.params.iid)
@@ -130,6 +145,7 @@
        this.itemBids = response.data;
        console.log(this.itemBids)
       });
+
   }
 }
 </script>
