@@ -4,6 +4,7 @@
   "ITEM": "api/item",
   "ITEMS": "api/items",
   "IMAGE": "api/img",
-  "LOGIN": "api/login"
-
+  "UIMAGE": "api/uimg",
+  "LOGIN": "api/login",
+  "PASSWORD": "api/password"
 }

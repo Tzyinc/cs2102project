@@ -7,6 +7,11 @@ const updateItemImgSrcPS = new dbcon.PS(
   'UPDATE app_item SET imagesrc = $1' + 'WHERE iid = $2'
 )
 
+const updateUserImgSrcPS = new dbcon.PS(
+  'updateUserImgSrc',
+  'UPDATE app_user SET imagesrc = $1' + 'WHERE username = $2'
+)
+
 function saveToFile(imageBin, iid){
   console.log('saveToFileCalled')
   base64en.img(imageBin, path.join(__dirname, 'src'), iid, function(
@@ -25,6 +30,26 @@ function saveToFile(imageBin, iid){
   })
 }
 
+function saveUserToFile(imageBin, username){
+  console.log('saveUToFileCalled')
+  //console.log(imageBin, username)
+  base64en.img(imageBin, path.join(__dirname, 'usrc'), username, function(
+    err,
+    filepath
+  ){
+    if (err) {
+      console.error(err)
+    } else {
+      var filepaths = filepath.split(/\\|\/\/|\//)
+      updateUserImgSrcPS.values = [ filepaths.pop(), username ]
+      dbcon.db.none(updateUserImgSrcPS).catch(error => {
+        console.error(error)
+      })
+    }
+  })
+}
+
 module.exports = {
-  saveToFile: saveToFile
+  saveToFile: saveToFile,
+  saveUserToFile: saveUserToFile
 }

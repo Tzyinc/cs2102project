@@ -44,4 +44,10 @@ export default {
 html, body {
     height:100%;
 }
+.container-fluid {
+     padding-right: 0; /*15px in bootstrap.css*/
+     padding-left: 0;  /*idem*/
+     margin-right: auto;
+     margin-left: auto;
+}
 </style>
