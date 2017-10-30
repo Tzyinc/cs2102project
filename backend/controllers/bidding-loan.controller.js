@@ -1,6 +1,6 @@
 var dbcon = require('../dbcon/database.js')
 var itemController = require('../controllers/item.controller.js')
-
+var notiController = require('../controllers/notification.controller.js')
 const createBidPS = new dbcon.PS(
   'createBid',
   'INSERT INTO app_bidding (bidder_username, iid, price, time) VALUES ($1, $2, $3, now())' +
@@ -28,7 +28,26 @@ function createBid(req, res) {
     dbcon.db
       .none(createBidPS)
       .then(result => {
-        res.json({ success: true })
+        itemController
+          .getItemByIid(bidDetails.iid)
+          .then(result => {
+            console.log(result)
+            notiController
+              .createNotification(result.owner_username, result.iid, 'bidMade')
+              .then(result => {
+                res.json({ success: true })
+              })
+              .catch(error => {
+                console.error(error)
+                res.json(error)
+              })
+            // res.json({success: true})
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+        // res.json({ success: true })
       })
       .catch(error => {
         console.log('ERROR:', error)

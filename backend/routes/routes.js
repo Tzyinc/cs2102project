@@ -19,6 +19,7 @@ var exampleController = require('../controllers/example.controller.js')
 var userController = require('../controllers/user.controller.js')
 var itemController = require('../controllers/item.controller.js')
 var blController = require('../controllers/bidding-loan.controller.js')
+var notiController = require('../controllers/notification.controller.js')
 
 // jwt implementation
 var jwtOptions = {
@@ -141,5 +142,12 @@ router
     passport.authenticate('jwt', { session: false }),
     blController.confirmLoan
   )
+router
+  .route('/noti')
+  .post(
+    passport.authenticate('jwt', { session: false }),
+    notiController.checkNotificationRead
+  )
+router.route('/noti').get(notiController.getNotification)
 
 module.exports = router
