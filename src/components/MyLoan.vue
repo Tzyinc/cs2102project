@@ -1,6 +1,8 @@
 <template>
 <div class="myLoan">
-	<h1>My Loans</h1>
+  <div class="loan-title">
+	My Loans
+  </div>
   <!--
 	<div class="input-group">
     <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
@@ -80,4 +82,10 @@ export default {
   margin-right: 50px;
 }
 
+.loan-title{
+  font-weight:bold;
+  font-size: 2em;
+  padding-top: 2%;
+  padding-bottom: 1%;
+}
 </style>

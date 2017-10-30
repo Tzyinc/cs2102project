@@ -1,6 +1,8 @@
 <template>
 <div class="updateItem">
-	<h1>Update Item</h1>
+	<div class="update-title">
+	Update Item
+	</div>
 	<form id="itemForm">
 
 		<!-- Name -->
@@ -49,7 +51,7 @@
 		<div class="formRow">
 
 			<label for="avail">StartDate: </label>
-			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="startdate" name="uniquename"></datepicker>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="startdate" name="uniquename" style="margin-bottom: 5px;"></datepicker>
 		</div>
 		<div class="formRow">
 			<label for="avail">End Date: </label>
@@ -65,7 +67,6 @@
 		</div>
         
 	</form>
-	<div><pre>data: {{$data | json 2}}</pre></div>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
 </div>
 </template>
@@ -220,11 +221,12 @@ export default {
     text-align: center;
 }
 
-.updateItem input, textarea{
-	width : 80% ;
+.updateItem input, textarea, .avail{
+	width : 100% ;
 	display: block;
 	vertical-align: top;
-	margin-bottom: 5px;
+	margin-bottom: 4px;
+	margin-top: 3px;
 	margin-right: 5px;
 	overflow: hidden;
 }
@@ -268,5 +270,14 @@ export default {
 	width : 100%;
 	vertical-align:middle;
 	margin-top: 20px;
+}
+.updateItem p{
+	margin-bottom: 0;
+}
+
+.update-title{
+  font-weight:bold;
+  font-size: 2em;
+  padding-top: 2%;
 }
 </style>
