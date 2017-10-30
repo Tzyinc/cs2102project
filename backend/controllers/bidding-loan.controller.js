@@ -31,7 +31,7 @@ function createBid(req, res) {
         res.json({ success: true })
       })
       .catch(error => {
-        console.log('ERROR:', error)
+        console.error('ERROR:', error)
         res.json(error)
       })
   }
@@ -47,7 +47,7 @@ function getBidsByIid(req, res) {
         res.json(result)
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
         res.json(error)
       })
   } else {
