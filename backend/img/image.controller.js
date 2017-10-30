@@ -12,17 +12,16 @@ const updateUserImgSrcPS = new dbcon.PS(
   'UPDATE app_user SET imagesrc = $1' + 'WHERE username = $2'
 )
 
-function saveToFile(imageBin, iid){
-  console.log('saveToFileCalled')
+function saveToFile(imageBin, iid) {
   base64en.img(imageBin, path.join(__dirname, 'src'), iid, function(
     err,
     filepath
-  ){
+  ) {
     if (err) {
       console.error(err)
     } else {
       var filepaths = filepath.split(/\\|\/\/|\//)
-      updateItemImgSrcPS.values = [ filepaths.pop(), iid ]
+      updateItemImgSrcPS.values = [filepaths.pop(), iid]
       dbcon.db.none(updateItemImgSrcPS).catch(error => {
         console.error(error)
       })
@@ -30,18 +29,16 @@ function saveToFile(imageBin, iid){
   })
 }
 
-function saveUserToFile(imageBin, username){
-  console.log('saveUToFileCalled')
-  //console.log(imageBin, username)
+function saveUserToFile(imageBin, username) {
   base64en.img(imageBin, path.join(__dirname, 'usrc'), username, function(
     err,
     filepath
-  ){
+  ) {
     if (err) {
       console.error(err)
     } else {
       var filepaths = filepath.split(/\\|\/\/|\//)
-      updateUserImgSrcPS.values = [ filepaths.pop(), username ]
+      updateUserImgSrcPS.values = [filepaths.pop(), username]
       dbcon.db.none(updateUserImgSrcPS).catch(error => {
         console.error(error)
       })
