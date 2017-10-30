@@ -17,7 +17,8 @@
             </div>
             <div class="col-9">
             <ItemDescription
-              :description = "item.description">
+              :description = "item.description"
+              :tags = "itemTags">
             </ItemDescription>
           </div>
           </div>
@@ -67,8 +68,9 @@
   var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
   var api_itemimg = api_ep.API_URL + api_ep.IMAGE + '/'
   var api_del = api_ep.API_URL + api_ep.ITEM
-  var api_bids = api_ep.API_URL + 'api/bids' + '?iid='
-  var api_loan = api_ep.API_URL + 'api/loan' + '?iid='
+  var api_bids = api_ep.API_URL + api_ep.BIDS + '?iid='
+  var api_loan = api_ep.API_URL + api_ep.LOAN + '?iid='
+  var api_tags = api_ep.API_URL + api_ep.TAGS + '?iid='
 
   export default {
   name: 'DetailedItem',
@@ -84,6 +86,7 @@
         login_user: '',
         isAdmin: false,
         item: [],
+        itemTags: [],
         itemBids: [],
         itemLoan: [],
         itemExists: true
@@ -141,7 +144,7 @@
         if (this.item.owner_username === undefined) {
           this.itemExists = false
         }
-        console.log("asdf" + this.item.status);
+        console.log("asdf" + this.item.status)
 
         console.log ("getting bid info for " + this.$route.params.iid)
         this.$http.get(api_bids + this.$route.params.iid)
@@ -159,6 +162,11 @@
 
           });
 
+      console.log("retrieving tags")
+      this.$http.get(api_tags + this.$route.params.iid)
+        .then(response => {
+          this.itemTags = response.data;
+        })
       });
 
   }
