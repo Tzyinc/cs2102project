@@ -68,8 +68,8 @@ export default {
     },
 
     submitBid() {
-      console.log("submitting bid")
-      console.log("is bid not a number? " + isNaN(this.bid_amt))
+      //console.log("submitting bid")
+      //console.log("is bid not a number? " + isNaN(this.bid_amt))
 
       if (isNaN(this.bid_amt) || this.bid_amt === '' || this.bid_amt < 0) {
         alert("Please enter a valid amount")

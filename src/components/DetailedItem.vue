@@ -133,7 +133,7 @@
     this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
         this.item = response.data;
-        console.log("this item owner username =" + this.item.owner_username)
+        //console.log("this item owner username =" + this.item.owner_username)
         if (this.item.owner_username === undefined) {
           this.itemExists = false
         }
@@ -143,7 +143,7 @@
     this.$http.get(api_bids + this.$route.params.iid)
       .then(response => {
        this.itemBids = response.data;
-       console.log(this.itemBids)
+       //console.log(this.itemBids)
       });
 
   }
