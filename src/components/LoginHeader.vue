@@ -1,24 +1,36 @@
 <template>
-  <div class="LoginHeader">
-    <nav class="navbar navbar-dark bg-dark" id="bootstrapPaddingOverwrite">
-      <div class="navbar-header">
-        <router-link to="/" class="nav-link"><h4>StuffShare</h4></router-link>
-        <!--<button type="button" v-on:click="testToken()">Token</button>-->
-      </div>
-      <ul class="nav navbar-nav navbar-right">
-        <template v-if="!logged_in">
-          <li><router-link to="/Login" class="nav-link">Login</router-link></li>
-          <li><router-link to="/Register" class="nav-link">Sign Up</router-link></li>
-        </template>
-        <template v-else>
-          <li><router-link to="/myListing" class="nav-link">Lent</router-link></li>
-          <li><router-link to="/myLoan" class="nav-link">Borrowed</router-link></li>
-          <li><router-link :to="profile_link" class="nav-link">{{display_name}}</router-link></li>
-          <li><button type="button" class="btn btn-dark" style="border-color:#1d2124" v-on:click="logout()">Logout</button></li>
-        </template>
-      </ul>
-  </nav>
-  </div>
+    <div class="LoginHeader">
+        <nav class="navbar navbar-dark bg-dark" id="bootstrapPaddingOverwrite">
+            <div class="navbar-header">
+                <router-link to="/" class="nav-link"><h4>StuffShare</h4></router-link>
+                <!--<button type="button" v-on:click="testToken()">Token</button>-->
+            </div>
+             <ul class="nav navbar-nav navbar-right">
+                <template v-if="!logged_in">
+                    <li><router-link to="/Login" class="nav-link">Login</router-link></li>
+                    <li><router-link to="/Register" class="nav-link">Sign Up</router-link></li>
+                </template>
+                <template v-else>
+                    <li><router-link to="/myListing" class="nav-link">Lent</router-link></li>
+                    <li><router-link to="/myLoan" class="nav-link">Borrowed</router-link></li>
+                    <li><router-link :to="profile_link" class="nav-link">{{display_name}}</router-link></li>
+                    
+                    <li><div class="dropdown">
+                        <button class="btn btn-secondary" type="button" id="notificationListButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Notifications <span class="badge badge-danger">3</span>
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="notificationListButton" style="position: absolute; z-index: 1000">
+                            <div v-for = "notification in notifications"class="list-group-item notification" v-bind:class="{ active: notification.read }">
+                                <div>{{notification.type}}</div>
+                            </div>
+                        </div>
+                    </div></li>
+
+                    <li><button type="button" class="btn btn-dark" style="border-color:#1d2124" v-on:click="logout()">Logout</button></li>
+                    </template>
+            </ul>
+        </nav>
+    </div>
 </template>
 
 <script>
@@ -27,9 +39,11 @@ export default {
   name: 'LoginHeader',
   data () {
     return {
-      logged_in: auth.isLoggedIn(this),
-      profile_link: "/user/" + auth.getUsername(this),
-      display_name: auth.getUsername(this)
+        logged_in: auth.isLoggedIn(this),
+        profile_link: "/user/" + auth.getUsername(this),
+        display_name: auth.getUsername(this),
+        notifications: [{type:"This is a notification", read:true}, {type:"This is the second notification", read:false},
+        ]
     }
   },
 
@@ -72,7 +86,6 @@ nav {
   color: #888;
   margin: 0px 0px 0px 0px;
   border: 0px;
-  overflow: hidden;
   width: 100%;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -105,6 +118,24 @@ nav > ul > li:hover > router-link {
   color: rgb(255, 255, 255);
 }
 
+.dropdown-menu {
+    right: 0; 
+    left: auto; 
+    padding:0px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification {
+    width:300px;
+    font-size:10pt;
+    letter-spacing:0px;
+}
+
+.unread {
+    background-color: #CCC
+}
+
 .navbar {
       padding-top: 15px;
       padding-bottom: 15px;
@@ -112,9 +143,8 @@ nav > ul > li:hover > router-link {
       border-radius: 0;
       margin-bottom: 0;
       font-size: 12px;
+      background-color: ;
       letter-spacing: 5px;
-      opacity: 0.75;
-      filter: alpha(opacity=75);
   }
 
 </style>
