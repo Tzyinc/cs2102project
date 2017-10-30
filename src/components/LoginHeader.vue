@@ -17,11 +17,20 @@
                     
                     <li><div class="dropdown">
                         <button class="btn btn-secondary" type="button" id="notificationListButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Notifications <span class="badge badge-danger">3</span>
+                            Notifications <span class="badge badge-danger" v-show="notification_count>0">{{notification_count}}</span>
                         </button>
                         <div class="dropdown-menu" aria-labelledby="notificationListButton" style="position: absolute; z-index: 1000">
-                            <div v-for = "notification in notifications"class="list-group-item notification" v-bind:class="{ active: notification.read }">
-                                <div>{{notification.type}}</div>
+                            <div v-if="notifications.length === 0" class="container notification">
+                                No notifications
+                            </div>
+                            <div v-else>
+                                <div v-for = "notification in notifications" >
+                                    <notification
+                                        :iid = "notification.iid"
+                                        :type = "notification.type"
+                                        :isRead = "notification.isRead"
+                                        :notificationid = "notification.notificationid"></notification>
+                                </div>
                             </div>
                         </div>
                     </div></li>
@@ -35,41 +44,67 @@
 
 <script>
 import auth from '../auth/auth'
-export default {
-  name: 'LoginHeader',
-  data () {
-    return {
-        logged_in: auth.isLoggedIn(this),
-        profile_link: "/user/" + auth.getUsername(this),
-        display_name: auth.getUsername(this),
-        notifications: [{type:"This is a notification", read:true}, {type:"This is the second notification", read:false},
-        ]
-    }
-  },
+import api_ep from '../api.json'
+import Notification from './Notification'
+var api_url_noti = api_ep.API_URL + api_ep.NOTIFICATION;
+var api_noti_owner = '?username=';
+var api_notiId = '?notificationID=';
 
-  watch: {
-    // call again the method if the route changes
-    '$route': 'updateLoginStatus'
-  },
-  
-  methods: {
-    updateLoginStatus() {
-      //if(this.$session.exists()) {
-        this.logged_in = auth.isLoggedIn(this)
-        this.display_name = auth.getUsername(this)
-        this.profile_link = "/user/" + auth.getUsername(this)
-      //} else {
-      //  logged_in = false;
-      //}
+export default {
+    name: 'LoginHeader',
+    components: {
+        'notification' : Notification
     },
-    //testToken() {
-    //  auth.testToken(this)
-    //},  
-    logout() {
-      auth.logout(this)
-      this.logged_in = false;
+    data () {
+        return {
+            logged_in: auth.isLoggedIn(this),
+            profile_link: "/user/" + auth.getUsername(this),
+            display_name: auth.getUsername(this),
+            notifications: [],
+            notification_count: 0
+        }
+    },
+
+    watch: {
+        // call again the method if the route changes
+        '$route': 'updateLoginStatus'
+    },
+  
+    methods: {
+        updateLoginStatus() {
+            this.logged_in = auth.isLoggedIn(this)
+            this.display_name = auth.getUsername(this)
+            this.profile_link = "/user/" + auth.getUsername(this)
+            if(this.logged_in) {
+                this.getnoti()
+            }
+        },
+         
+        logout() {
+          auth.logout(this)
+          this.logged_in = false;
+        },
+
+        //Get noti is triggered from auth.js, after login is confirmed
+        getnoti () { 
+            this.$http.get(api_url_noti+api_noti_owner+auth.getUsername(this))
+            .then(response => {
+                this.notifications = response.data;
+                this.notification_count = 0;
+                for(var notification in this.notifications) {
+                    if(!notification.isRead) {
+                        this.notification_count++;
+                    }
+                }
+            });
+        },
+
+        reduceNotiCount() {
+            if(this.notification_count > 0) {
+                this.notification_count--;
+            }
+        }
     }
-  }
 }
 </script>
 
@@ -124,16 +159,6 @@ nav > ul > li:hover > router-link {
     padding:0px;
     max-height: 400px;
     overflow-y: auto;
-}
-
-.notification {
-    width:300px;
-    font-size:10pt;
-    letter-spacing:0px;
-}
-
-.unread {
-    background-color: #CCC
 }
 
 .navbar {
