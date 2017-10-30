@@ -78,9 +78,6 @@ function confirmLoan(req, res) {
   var bidDetails = req.body.data
   if (bidDetails != null) {
     // create loan
-    bidDetails.iid
-    bidDetails.bidder_username
-    bidDetails.price
     createLoanPS.values = [
       bidDetails.bidder_username,
       bidDetails.iid,
@@ -94,8 +91,26 @@ function confirmLoan(req, res) {
         itemController
           .changeItemStatus(false, bidDetails.iid)
           .then(result => {
+            var promiseArr = []
             // send notifications
-            res.json({ success: true })
+            //send success noti
+            promiseArr.push(
+              notiController.createNotification(
+                bidDetails.bidder_username,
+                bidDetails.iid,
+                'bidSuccess'
+              )
+            )
+
+            //send failure noti
+            Promise.all(promiseArr)
+              .then(result => {
+                res.json({ success: true })
+              })
+              .catch(error => {
+                console.error(error)
+                res.json(error)
+              })
           })
           .catch(error => {
             console.error(error)
