@@ -141,5 +141,6 @@ router
     passport.authenticate('jwt', { session: false }),
     blController.confirmLoan
   )
+router.route('/loan').get(blController.getLoaningUser)
 
 module.exports = router
