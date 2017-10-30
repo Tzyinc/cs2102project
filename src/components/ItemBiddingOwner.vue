@@ -13,7 +13,7 @@
         <tbody>
           <tr v-for = "item in bids">
             <td><input type="radio" :value="item" v-model="selected" :disabled="isDisabled()"></td>
-            <td>{{item.bidder_username}}</td>
+            <td><router-link :to="{name: 'MyProfile', params: {uid: item.bidder_username}}">{{item.bidder_username}}</router-link></td>
             <td>${{item.price}}</td>
           </tr>
           <tr>
