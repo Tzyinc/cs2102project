@@ -111,6 +111,7 @@ export default {
 hr {
   padding:1px;
   margin: 0px;
+  border: none;
 }
 
 </style>

@@ -25,7 +25,7 @@
       </table>
     </div>
     <div class="button-padding">
-     <button type="submit" class="btn btn-secondary" v-on:click="choose(iid)" :disabled="isDisabled()">Choose winning bid</button>
+     <button type="submit" class="btn btn-primary" v-on:click="choose(iid)" :disabled="isDisabled()">Choose winning bid</button>
    </div>
   </div>
 </template>

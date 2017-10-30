@@ -30,7 +30,7 @@
           <input type="text" class="form-control" id="bidInput" v-model="bid_amt" placeholder="0" :disabled="isDisabled()"> <!-- check for > latest bid-->
         </div>
         <div class="col-sm-2">
-            <button type="submit" class="btn btn-secondary submit-bid-button" v-on:click="submitBid()" :disabled="isDisabled()">Submit</button>
+            <button type="submit" class="btn btn-primary submit-bid-button" v-on:click="submitBid()" :disabled="isDisabled()">Submit</button>
         </div>
       </div>
     </form>
