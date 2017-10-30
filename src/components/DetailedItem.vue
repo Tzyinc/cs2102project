@@ -9,7 +9,7 @@
             </span>
           <hr/></div>
           <div v-if="item.status"></div>
-          <div v-else class="alert alert-danger" role="alert">This item has already been loaned out.</div>
+          <div v-else class="alert alert-danger" role="alert">This item has already been loaned out<span v-if="isOwner()"> to </span>.</div>
             <div class="row detailed-row">
             <div class="col-3">
               <ItemPicture
@@ -68,6 +68,7 @@
   var api_itemimg = api_ep.API_URL + api_ep.IMAGE + '/'
   var api_del = api_ep.API_URL + api_ep.ITEM
   var api_bids = api_ep.API_URL + 'api/bids' + '?iid='
+  var api_loan = api_ep.API_URL + 'api/loan' + '?iid='
 
   export default {
   name: 'DetailedItem',
@@ -83,6 +84,7 @@
         login_user: '',
         item: [],
         itemBids: [],
+        itemLoan: [],
         itemExists: true
     }
   },
@@ -146,6 +148,13 @@
        //console.log(this.itemBids)
       });
 
+    if (!this.item.status){
+      console.log("getting loans info")
+      this.$http.get(api_loan + this.$route.params.iid)
+      .then(response => {
+        this.itemLoan = response.data;
+      });
+    }
   }
 }
 </script>

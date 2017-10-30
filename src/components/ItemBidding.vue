@@ -76,6 +76,11 @@ export default {
         return false
       }
 
+      if (this.bid_amt < this.minBid) {
+        alert("Please enter an amount higher than the minimum bid.")
+        return false
+      }
+
       if (confirm("Are you sure you want to place a bid of $" + this.bid_amt + "?")) {
         console.log(this.login_user + " making a bid of " + this.bid_amt + " on " + this.iid)
 
