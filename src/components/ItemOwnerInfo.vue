@@ -8,10 +8,10 @@
       <p><span class="item-info-attr"><i class="fa fa-gift" aria-hidden="true"></i> Name</span><br/><span class="item-info-value">{{name}}</span></p><hr/>
       <p><span class="item-info-attr"><i class="fa fa-user" aria-hidden="true"></i> Owner</span><br/><span class="item-info-value">
               <router-link :to="{name: 'MyProfile', params: {uid: this.owner_username}}">{{owner_username}}</router-link></span></p><hr/>
-      <p><span class="item-info-attr"><i class="fa fa-clock-o" aria-hidden="true"></i> Date Listed</span><br/><span class="item-info-value">{{timelisted}}</span></p><hr/>
+      <p><span class="item-info-attr"><i class="fa fa-clock-o" aria-hidden="true"></i> Date Listed</span><br/><span class="item-info-value">{{parseDate(timelisted)}}</span></p><hr/>
       <p><span class="item-info-attr"><i class="fa fa-map-marker" aria-hidden="true"></i> Location</span><br/><span class="item-info-value">{{location}}</span></p><hr/>
-      <p><span class="item-info-attr"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Available start</span><br/><span class="item-info-value">{{startdate}}</span></p><hr/>
-      <p><span class="item-info-attr"><i class="fa fa-calendar-times-o" aria-hidden="true"></i> Available end</span><br/><span class="item-info-value">{{enddate}}</span></p>
+      <p><span class="item-info-attr"><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Available start</span><br/><span class="item-info-value">{{parseDate(startdate)}}</span></p><hr/>
+      <p><span class="item-info-attr"><i class="fa fa-calendar-times-o" aria-hidden="true"></i> Available end</span><br/><span class="item-info-value">{{parseDate(enddate)}}</span></p>
     </div>
   </div>
 </template>
@@ -29,6 +29,9 @@ export default {
   },
   methods: {
     parseDate(str) {
+      if (str == null) {
+        return ''
+      }
       var year = str.substring(0,4)
       var month = str.substring(5,7)
       var day = str.substring(8,10)
