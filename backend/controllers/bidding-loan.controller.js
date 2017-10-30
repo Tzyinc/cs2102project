@@ -20,7 +20,7 @@ const createLoanPS = new dbcon.PS(
 const getLoanPS = new dbcon.PS(
   'getLoan',
   'SELECT l.borrower_username, l.iid, l.price, i.owner_username, i.name, i.location' +
-    ' FROM app_loan l INNER JOIN app_item i ON l.iid = i.iid WHERE iid = $1'
+    ' FROM app_loan l INNER JOIN app_item i ON l.iid = i.iid WHERE l.iid = $1'
 )
 
 function createBid(req, res) {
@@ -102,10 +102,11 @@ function confirmLoan(req, res) {
 function getLoaningUser(req, res) {
   var loanDetails = req.query
   if (loanDetails.iid != null) {
-    getLoanPS.values = loanDetails.iid
+    // getLoanPS.values = [parseInt(loanDetails.iid)]
     dbcon.db
-      .one(getLoanPS)
+      .one(getLoanPS, [parseInt(loanDetails.iid)])
       .then(result => {
+        console.log(result)
         res.json(result)
       })
       .catch(error => {
