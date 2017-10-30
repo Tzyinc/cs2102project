@@ -7,14 +7,14 @@ const createNotiPS = new dbcon.PS(
 
 const checkNotiPS = new dbcon.PS(
   'checkNoti',
-  'UPDATE app_notification SET isRead = true WHERE username =$1 AND iid = $2'
+  'UPDATE app_notification SET isRead = true WHERE notificationId =$1'
 )
 
 const getAllNotiPS = new dbcon.PS('getNoti', 'SELECT * FROM app_notification')
 
 const getNotiByUserPS = new dbcon.PS(
   'getNotiByUser',
-  'SELECT * FROM app_notification WHERE username = $1'
+  'SELECT * FROM app_notification WHERE username = $1 ORDER BY timeCreated DESC'
 )
 
 function createNotification(username, iid, type) {
@@ -49,7 +49,7 @@ function getNotification(req, res) {
 function checkNotificationRead(req, res) {
   var notiValues = req.body.data
   if (notiValues != null) {
-    checkNotiPS.values = [notiValues.username, notiValues.iid]
+    checkNotiPS.values = [notiValues.notificationID]
     dbcon.db
       .none(checkNotiPS)
       .then(result => {
@@ -63,18 +63,6 @@ function checkNotificationRead(req, res) {
     res.json({ error: 'No values found' })
   }
 }
-/*
-CREATE TABLE app_notification ' +
-'(username      TEXT,' +
-'iid            INTEGER,' +
-'timeCreated    TIMESTAMP       NOT NULL,' +
-'type           TEXT            NOT NULL,' +
-'isRead         BOOLEAN         NOT NULL,' +
-'PRIMARY KEY (username, iid),' +
-'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
-'FOREIGN KEY (username) REFERENCES app_user(username)' +
-');'
-*/
 
 module.exports = {
   createNotification: createNotification,
