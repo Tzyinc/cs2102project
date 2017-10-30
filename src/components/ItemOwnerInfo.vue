@@ -29,6 +29,7 @@ export default {
   },
   methods: {
     parseDate(str) {
+      console.log("parse date")
       if (str == null) {
         return ''
       }

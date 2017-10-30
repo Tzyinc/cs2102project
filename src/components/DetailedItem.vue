@@ -82,6 +82,7 @@
   data() {
     return {
         login_user: '',
+        isAdmin: false,
         item: [],
         itemBids: [],
         itemLoan: [],
@@ -91,7 +92,7 @@
 
   methods: {
     isOwner() {
-      if (this.login_user === this.item.owner_username) {
+      if (this.login_user === this.item.owner_username || this.isAdmin) {
         //console.log("this is the owner")
         return true;
       }
@@ -131,6 +132,7 @@
 
   created: function () {
     this.login_user = auth.getUsername(this)
+    this.isAdmin = auth.isUserAdmin(this)
     //console.log("the full url is:" + api_url + this.$route.params.iid)
     this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
