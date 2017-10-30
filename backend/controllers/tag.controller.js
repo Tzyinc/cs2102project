@@ -103,7 +103,7 @@ function getAllTags(req, res) {
     dbcon.db
       .any(getTagByItemsPS)
       .then(result => {
-        res.json(result)
+        res.json(result.map(x => x.tag))
       })
       .catch(error => {
         console.error(error)
@@ -113,7 +113,7 @@ function getAllTags(req, res) {
     dbcon.db
       .any(getAllExistingTagsPS)
       .then(result => {
-        res.json(result)
+        res.json(result.map(x => x.tag))
       })
       .catch(error => {
         console.error(error)
