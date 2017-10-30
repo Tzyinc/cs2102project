@@ -9,7 +9,7 @@
             </span>
           <hr/></div>
           <div v-if="item.status"></div>
-          <div v-else class="alert alert-danger" role="alert">This item has already been loaned out<span v-if="isOwner()"> to </span>.</div>
+          <div v-else class="alert alert-danger" role="alert">This item has already been loaned out<span v-if="isOwner()"> to <router-link :to="{name: 'MyProfile', params: {uid: itemLoan.borrower_username}}">{{itemLoan.borrower_username}}</router-link></span>.</div>
             <div class="row detailed-row">
             <div class="col-3">
               <ItemPicture
@@ -139,22 +139,26 @@
         if (this.item.owner_username === undefined) {
           this.itemExists = false
         }
-        //console.log("asdf" + this.item);
-      });
-    console.log ("getting bid info for " + this.$route.params.iid)
-    this.$http.get(api_bids + this.$route.params.iid)
-      .then(response => {
-       this.itemBids = response.data;
-       //console.log(this.itemBids)
+        console.log("asdf" + this.item.status);
+
+        console.log ("getting bid info for " + this.$route.params.iid)
+        this.$http.get(api_bids + this.$route.params.iid)
+          .then(response => {
+           this.itemBids = response.data;
+           //console.log(this.itemBids)
+
+           if (!this.item.status) {
+               console.log("getting loans info")
+               this.$http.get(api_loan + this.$route.params.iid)
+               .then(response => {
+                 this.itemLoan = response.data;
+               });
+            }
+
+          });
+
       });
 
-    if (!this.item.status){
-      console.log("getting loans info")
-      this.$http.get(api_loan + this.$route.params.iid)
-      .then(response => {
-        this.itemLoan = response.data;
-      });
-    }
   }
 }
 </script>
