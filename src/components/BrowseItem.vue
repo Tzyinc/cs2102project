@@ -1,6 +1,8 @@
 <template>
 <div class="browseItem">
-	<h1>Browse Item</h1>
+	<div class="browse-title">
+	Browse Item
+	</div>
 	<div class="row justify-content-center">
 		<div class="searchBar input-group col-10" @keyup.enter="search(searchQuery)">
 		    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
@@ -78,5 +80,12 @@ export default {
 }
 
 .searchBar{
+}
+
+.browse-title{
+  font-weight:bold;
+  font-size: 2em;
+  padding-top: 2%;
+  padding-bottom: 1%;
 }
 </style>

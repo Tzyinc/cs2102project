@@ -1,6 +1,8 @@
 <template>
 <div class="myListing">
-	<h1>My Listing</h1>
+  <div class="listing-title">
+	My Listing
+  </div>
   <!--
 	<div class="input-group">
     <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
@@ -86,4 +88,10 @@ export default {
   margin-right: 50px;
 }
 
+.listing-title{
+  font-weight:bold;
+  font-size: 2em;
+  padding-top: 2%;
+  padding-bottom: 1%;
+}
 </style>

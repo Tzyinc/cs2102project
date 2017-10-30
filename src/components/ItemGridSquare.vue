@@ -36,7 +36,7 @@ img {
 	width:200px;
 	min-height: auto;
 	border-style: solid;
-    border-width: 5px;
+    border-width: 4px;
     overflow:hidden;
     /*background-color: red;*/
     display: inline-block;
