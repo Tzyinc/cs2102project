@@ -11,7 +11,7 @@
     </thead>
     <tbody>
       <tr v-for = "item in bids">
-          <td>{{item.bidder_username}}</td>
+          <td>{{censorUsernames(item.bidder_username)}}</td>
           <td>${{item.price}}</td>
       </tr>
       <tr>
@@ -65,6 +65,14 @@ export default {
   methods: {
     isDisabled() {
       return this.status === false
+    },
+
+    censorUsernames(username) {
+      if (this.login_user === username) {
+        return username
+      } else {
+        return Array(username.length+1).join("*")
+      }
     },
 
     submitBid() {
