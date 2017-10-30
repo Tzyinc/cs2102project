@@ -71,9 +71,9 @@ export default {
       console.log("submitting bid")
       console.log("is bid not a number? " + isNaN(this.bid_amt))
 
-      if (isNaN(this.bid_amt)) {
+      if (isNaN(this.bid_amt) || this.bid_amt === '' || this.bid_amt < 0) {
         alert("Please enter a valid amount")
-        return
+        return false
       }
 
       if (confirm("Are you sure you want to place a bid of $" + this.bid_amt + "?")) {
@@ -90,7 +90,7 @@ export default {
               if(response.hasOwnProperty('success')) {
                 alert("Successfully made a bid!")
               } else {
-                alert("Failed to bid, have you already bid before?")
+                alert("Failed to bid")
               }
             }
           })
@@ -117,7 +117,7 @@ export default {
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
-  height: 500px;
+  height: 500px auto;
 }
 
 .item-bidding-title {
@@ -127,6 +127,7 @@ export default {
 }
 
 .table-responsive {
+  max-height: 380px;
   overflow-y: scroll;
 }
 

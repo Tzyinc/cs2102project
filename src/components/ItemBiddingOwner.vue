@@ -98,7 +98,7 @@ export default {
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
-  height: 500px;
+  height: 500px auto;
 }
 
 .item-bidding-owner-title {
@@ -108,6 +108,7 @@ export default {
 }
 
 .table-responsive {
+  max-height: 380px;
   overflow-y: scroll;
 }
 
