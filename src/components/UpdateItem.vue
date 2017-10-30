@@ -31,7 +31,7 @@
 		<div class="formRow">
 			<label for="minbid">Minimum Price: </label>
 			<p class="control has-icon has-icon-right">
-				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2'" :class="{'input': true,'is-danger': errors.has('price')}">
+				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2|min_value:0'" :class="{'input': true,'is-danger': errors.has('price')}">
 				<i v-show="errors.has('price')" class="fa fa-warning"></i>
 				<span class="help text-danger" v-show="errors.has('price')">{{ errors.first('price') }}</span>
 			</p>		
@@ -53,7 +53,7 @@
 		</div>
 		<div class="formRow">
 			<label for="avail">End Date: </label>
-			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="enddate" name="uniquename"></datepicker>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="enddate" name="uniquename" ></datepicker>
 			<i v-show="!validateDate()" class="fa fa-warning"></i>
 			<span class="help text-danger" v-show="!validateDate()">{{ errorDate }}</span>
 		</div>
@@ -147,9 +147,9 @@ export default {
   	},
   	validateDate(){
   		if(this.enddate<=this.startdate){
-  			return false
+  			return false;
   		}
-  		return true
+  		return true;
   	}
   },
   	created: function () {

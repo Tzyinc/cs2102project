@@ -31,7 +31,7 @@
 		<div class="formRow">
 			<label for="minbid">Minimum Price: </label>
 			<p class="control has-icon has-icon-right">
-				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2'" :class="{'input': true,'is-danger': errors.has('price')}">
+				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2|min_value:0'" :class="{'input': true,'is-danger': errors.has('price')}">
 				<i v-show="errors.has('price')" class="fa fa-warning"></i>
 				<span class="help text-danger" v-show="errors.has('price')">{{ errors.first('price') }}</span>
 			</p>
@@ -109,7 +109,6 @@ export default {
 		var isChildValidated = true;
 		this.$validator.validateAll()
 		this.$children.forEach(vm => {
-			console.log(vm)
 		  vm.$validator.validateAll();
 		  if(vm.errors.any()){
 		  	isChildValidated = false;
