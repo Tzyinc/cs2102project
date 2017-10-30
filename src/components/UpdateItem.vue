@@ -65,7 +65,7 @@
 		</div>
         
 	</form>
-	<div><pre>data: {{$data}}</pre></div>
+	<div><pre>data: {{$data | json 2}}</pre></div>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
 </div>
 </template>
@@ -80,6 +80,7 @@ var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
 var api_post_url = api_ep.API_URL + api_ep.ITEM
 var api_url_image = api_ep.API_URL + api_ep.IMAGE + '/'
 var api_put_tags = api_ep.API_URL + api_ep.TAGS
+var api_get_tags = api_ep.API_URL + api_ep.TAGS + '?iid='
 export default {
   name: 'UpdateItem',
 	components: {
@@ -170,6 +171,9 @@ export default {
   			return false;
   		}
   		return true;
+  	},
+  	processTags(item){
+  		item.map(x => this.tagsString = this.tagsString + "#" + x + " ")
   	}
 
   },
@@ -180,19 +184,24 @@ export default {
 	        var item = response.data;
 	        this.name = item.name;
 	       	this.description = item.description;
-		    	this.oldImage = api_url_image+ item.itemimg;
-		    	this.tags = item.tags;
-		    	this.minBid = item.minbid;
-		    	this.location = item.location;
-		    	this.startdate = item.startdate;
-		    	this.enddate = item.enddate;
-		    	this.owner_username = item.owner_username;
-		    	this.timeListed = item.timelisted;
+	    	this.oldImage = api_url_image+ item.itemimg;
+	    	this.tags = item.tags;
+	    	this.minBid = item.minbid;
+	    	this.location = item.location;
+	    	this.startdate = item.startdate;
+	    	this.enddate = item.enddate;
+	    	this.owner_username = item.owner_username;
+	    	this.timeListed = item.timelisted;
 	    	if(auth.getUsername(this) != item.owner_username){
 		    	alert("You cannot edit this item.")
 		    	this.$router.push('/myListing')
 		    }
 	    });
+	    this.$http.get(api_get_tags + this.iid)
+	      .then(response => {
+	        var item = response.data;
+	        this.processTags(item)
+	    });	      
 
 
 	},
