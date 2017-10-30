@@ -25,7 +25,7 @@
 		<!-- Tags -->
 		<div class="formRow">
 			<label for="tag">Tags: </label>
-			<input class="tag form-control" type="text" v-model="tags" placeholder="Tags">
+			<input class="tag form-control" type="text" v-model="tagsString" placeholder="Tags">
 		</div>
 		<!-- Min Price -->
 		<div class="formRow">
@@ -65,6 +65,7 @@
 		</div>
         
 	</form>
+	<div><pre>data: {{$data}}</pre></div>
 			<!--<div><pre>data: {{$data | json 2}}</pre></div>-->
 </div>
 </template>
@@ -78,6 +79,7 @@ import ImageUpload from './ImageUpload'
 var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
 var api_post_url = api_ep.API_URL + api_ep.ITEM
 var api_url_image = api_ep.API_URL + api_ep.IMAGE + '/'
+var api_put_tags = api_ep.API_URL + api_ep.TAGS
 export default {
   name: 'UpdateItem',
 	components: {
@@ -94,7 +96,8 @@ export default {
 	    description     : '',
 	    imageSrc : '',
 	    imageBin : '',
-	    tags     : '',
+	    tagsString     : '',
+	    tags 	 : [],
 	    minBid   : 0,
 	    location : '',
 	    startdate   : today,
@@ -128,14 +131,31 @@ export default {
 	     	success: function(response){
 		        console.log('submit update')
 		        if(response.hasOwnProperty('success')){
-		        	alert("Successfully updated item:\n" + formData.name)
-		        	context.$router.push('/myListing')
+					context.submitTag(formData)
 				} else{
 					alert("Failed to submit.\nPlease try again.")
 				}
 			}
 			})
     	}
+  	},
+  	submitTag(formData){
+		var context = this
+	  	$.ajax({
+	    	url: api_put_tags, //Your api url
+	     	type: 'PUT', //type is any HTTP method
+	     	headers: auth.getAuthHeader(this),
+	     	data: {data: formData}, //Data as js object
+	     	success: function(response){
+		        console.log('submit update')
+		        if(response.hasOwnProperty('success')){
+		        	alert("Successfully updated item:\n" + formData.name)
+		        	context.$router.push('/myListing')
+				} else{
+					alert("Failed to submit.\nPlease try again.")
+				}
+			}
+			})  		
   	},
   	cancel (){
   		this.$router.push('/myListing')
@@ -151,6 +171,7 @@ export default {
   		}
   		return true;
   	}
+
   },
   	created: function () {
   		console.log("Loading update: ",api_url + this.iid)
@@ -174,7 +195,12 @@ export default {
 	    });
 
 
-	}
+	},
+	watch: {
+    	tagsString: function (val) {
+      	this.tags = val.match(/#[\w\d\s]+/gi).map(x => x.substr(1).trim()) || []
+    }
+  }
 }
 </script>
 
