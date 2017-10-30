@@ -66,20 +66,17 @@ function createItem(req, res) {
   dbcon.db
     .one(createItemPS)
     .then(result => {
-      console.log(result)
       imageSaver.saveToFile(itemDetails.imageBin, result.iid)
       res.json({ success: true })
     })
     .catch(error => {
-      console.log(error)
+      console.error(error)
       res.json(error)
     })
 }
 
 function updateItem(req, res) {
   var itemDetails = req.body.data
-  console.log('imageBin', itemDetails.imageBin)
-  //console.log('update item test')
   if (itemDetails != null && itemDetails.imageBin != '') {
     var startDate = new Date(itemDetails.startdate)
     var endDate = new Date(itemDetails.enddate)
@@ -99,16 +96,14 @@ function updateItem(req, res) {
     dbcon.db
       .none(updateItemPS)
       .then(result => {
-        // console.log('update item test 2')
         imageSaver.saveToFile(itemDetails.imageBin, itemDetails.iid)
         res.json({ success: true })
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
         res.json(error)
       })
   } else if (itemDetails != null && itemDetails.imageBin === '') {
-    console.log('testaroo')
     // updateItemNoImgPS
     var startDate = new Date(itemDetails.startdate)
     var endDate = new Date(itemDetails.enddate)
@@ -130,13 +125,12 @@ function updateItem(req, res) {
         res.json({ success: true })
       })
       .catch(error => {
-        console.log(error)
+        console.error(error)
         res.json(error)
       })
   } else {
     res.json({ error: 'no data' })
   }
-  //console.log('update item test 3'
 }
 
 function getItems(req, res) {

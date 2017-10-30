@@ -38,15 +38,15 @@ const removeUserImgSrcPS = new dbcon.PS(
 )
 
 // takes in unique username and (hashed) password and stores in database.
-function createUser(req, res){
+function createUser(req, res) {
   var userDetails = req.body.data
   if (userDetails != null) {
-    createUserPS.values = [ userDetails.username, userDetails.password ]
+    createUserPS.values = [userDetails.username, userDetails.password]
   }
   dbcon.db
     .any(createUserPS)
     .then(result => {
-      res.json({success: true})
+      res.json({ success: true })
     })
     .catch(error => {
       res.json(error)
@@ -54,10 +54,10 @@ function createUser(req, res){
 }
 
 // get all details of user
-function getUserDetails(req, res){
+function getUserDetails(req, res) {
   var userDetails = req.query
   if (userDetails.username != null) {
-    getUserPS.values = [ userDetails.username ]
+    getUserPS.values = [userDetails.username]
     dbcon.db
       .one(getUserPS)
       .then(result => {
@@ -78,59 +78,56 @@ function getUserDetails(req, res){
   }
 }
 
-function updateUserImg(req, res){
+function updateUserImg(req, res) {
   var userDetails = req.body.data
-  //console.log(userDetails)
   if (userDetails != null) {
     if (userDetails.imageBin === null || userDetails.imageBin === '') {
-      //console.log('entered here')
-      removeUserImgSrcPS.values = [ userDetails.username ]
+      removeUserImgSrcPS.values = [userDetails.username]
       dbcon.db
         .one(removeUserImgSrcPS)
         .then(result => {
-          res.json({success: true})
+          res.json({ success: true })
         })
         .catch(error => {
           res.json(error)
         })
     } else {
       imageSaver.saveUserToFile(userDetails.imageBin, userDetails.username)
-      res.json({success: true})
+      res.json({ success: true })
     }
   }
 }
 
 // get all usernames (to be used in router)
-function getAllUsernames(){
+function getAllUsernames() {
   return dbcon.db.any(getUserNamesPS)
 }
 
 // get user details given username (to be used in router)
-function getUsernamePw(username){
+function getUsernamePw(username) {
   if (username != null) {
-    getUsernamePwPS.values = [ username ]
+    getUsernamePwPS.values = [username]
   }
   return dbcon.db.one(getUsernamePwPS)
 }
 
-function updatePassword(req, res){
+function updatePassword(req, res) {
   var userDetails = req.body.data
   getUsernamePw(userDetails.username)
     .then(result => {
       if (bcrypt.compareSync(userDetails.oldPassword, result.password)) {
-        console.log('Passwords matched')
-        updatePwPS.values = [ userDetails.password, userDetails.username ]
+        updatePwPS.values = [userDetails.password, userDetails.username]
         dbcon.db
           .none(updatePwPS)
           .then(result => {
-            res.json({success: true})
+            res.json({ success: true })
           })
           .catch(error => {
             res.json(error)
           })
       } else {
-        console.log('Password dont match')
-        res.json({error: "old password doesn't match"})
+        console.error('Password dont match')
+        res.json({ error: "old password doesn't match" })
       }
     })
     .catch(error => {

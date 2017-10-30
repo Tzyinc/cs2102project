@@ -28,7 +28,6 @@ var jwtOptions = {
 }
 
 var strategy = new JwtStrategy(jwtOptions, function(jwt_payload, next) {
-  console.log('payload received', jwt_payload)
   var usernamePromise = userController.getAllUsernames()
   usernamePromise
     .then(result => {
@@ -55,12 +54,9 @@ function jwtlogin(req, res) {
   var usernamePwPromise = userController.getUsernamePw(username)
   usernamePwPromise
     .then(result => {
-      console.log('Old password: ' + password)
-      console.log('Saved password: ' + result.password)
       if (bcrypt.compareSync(password, result.password)) {
         var payload = { username: result.username }
         var token = jwt.sign(payload, jwtOptions.secretOrKey)
-        console.log(payload, token)
         res.json({ success: true, token: token })
       } else {
         res.status(401).json({ message: 'passwords did not match' })
