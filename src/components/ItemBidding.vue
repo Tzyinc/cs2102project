@@ -11,7 +11,7 @@
     </thead>
     <tbody>
       <tr v-for = "item in bids">
-          <td>{{item.bidder_username}}</td>
+          <td>{{censorUsernames(item.bidder_username)}}</td>
           <td>${{item.price}}</td>
       </tr>
       <tr>
@@ -30,7 +30,7 @@
           <input type="text" class="form-control" id="bidInput" v-model="bid_amt" placeholder="0" :disabled="isDisabled()"> <!-- check for > latest bid-->
         </div>
         <div class="col-sm-2">
-            <button type="submit" class="btn btn-secondary submit-bid-button" v-on:click="submitBid()" :disabled="isDisabled()">Submit</button>
+            <button type="submit" class="btn btn-primary submit-bid-button" v-on:click="submitBid()" :disabled="isDisabled()">Submit</button>
         </div>
       </div>
     </form>
@@ -67,13 +67,26 @@ export default {
       return this.status === false
     },
 
-    submitBid() {
-      console.log("submitting bid")
-      console.log("is bid not a number? " + isNaN(this.bid_amt))
+    censorUsernames(username) {
+      if (this.login_user === username) {
+        return username
+      } else {
+        return Array(username.length+1).join("*")
+      }
+    },
 
-      if (isNaN(this.bid_amt)) {
+    submitBid() {
+      //console.log("submitting bid")
+      //console.log("is bid not a number? " + isNaN(this.bid_amt))
+
+      if (isNaN(this.bid_amt) || this.bid_amt === '' || this.bid_amt < 0) {
         alert("Please enter a valid amount")
-        return
+        return false
+      }
+
+      if (this.bid_amt < this.minBid) {
+        alert("Please enter an amount higher than the minimum bid.")
+        return false
       }
 
       if (confirm("Are you sure you want to place a bid of $" + this.bid_amt + "?")) {
@@ -90,7 +103,7 @@ export default {
               if(response.hasOwnProperty('success')) {
                 alert("Successfully made a bid!")
               } else {
-                alert("Failed to bid, have you already bid before?")
+                alert("Failed to bid")
               }
             }
           })
@@ -117,7 +130,7 @@ export default {
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
-  height: 500px;
+  height: 500px auto;
 }
 
 .item-bidding-title {
@@ -127,6 +140,7 @@ export default {
 }
 
 .table-responsive {
+  max-height: 380px;
   overflow-y: scroll;
 }
 

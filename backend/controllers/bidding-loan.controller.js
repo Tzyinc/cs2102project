@@ -17,7 +17,13 @@ const createLoanPS = new dbcon.PS(
   'INSERT into app_loan (borrower_username, iid, price) VALUES($1, $2, $3)'
 )
 
-function createBid(req, res) {
+const getLoanPS = new dbcon.PS(
+  'getLoan',
+  'SELECT l.borrower_username, l.iid, l.price, i.owner_username, i.name, i.location' +
+    ' FROM app_loan l INNER JOIN app_item i ON l.iid = i.iid WHERE l.iid = $1'
+)
+
+function createBid(req, res){
   var bidDetails = req.body.data
   if (bidDetails != null) {
     createBidPS.values = [
@@ -35,7 +41,7 @@ function createBid(req, res) {
             notiController
               .createNotification(result.owner_username, result.iid, 'bidMade')
               .then(result => {
-                res.json({ success: true })
+                res.json({success: true})
               })
               .catch(error => {
                 console.error(error)
@@ -56,10 +62,10 @@ function createBid(req, res) {
   }
 }
 
-function getBidsByIid(req, res) {
+function getBidsByIid(req, res){
   var bidDetails = req.query
   if (bidDetails != null) {
-    selectBidsPS.values = [bidDetails.iid]
+    selectBidsPS.values = [ bidDetails.iid ]
     dbcon.db
       .any(selectBidsPS)
       .then(result => {
@@ -70,11 +76,11 @@ function getBidsByIid(req, res) {
         res.json(error)
       })
   } else {
-    res.json({ error: 'no iid found' })
+    res.json({error: 'no iid found'})
   }
 }
 
-function confirmLoan(req, res) {
+function confirmLoan(req, res){
   var bidDetails = req.body.data
   if (bidDetails != null) {
     // create loan
@@ -105,7 +111,7 @@ function confirmLoan(req, res) {
             //send failure noti
             Promise.all(promiseArr)
               .then(result => {
-                res.json({ success: true })
+                res.json({success: true})
               })
               .catch(error => {
                 console.error(error)
@@ -123,12 +129,30 @@ function confirmLoan(req, res) {
       })
     // bidDetails.time
   } else {
-    res.json({ error: 'no bid details found' })
+    res.json({error: 'no bid details found'})
+  }
+}
+
+function getLoaningUser(req, res){
+  var loanDetails = req.query
+  if (loanDetails.iid != null) {
+    // getLoanPS.values = [parseInt(loanDetails.iid)]
+    dbcon.db
+      .one(getLoanPS, [ parseInt(loanDetails.iid) ])
+      .then(result => {
+        console.log(result)
+        res.json(result)
+      })
+      .catch(error => {
+        console.error(error)
+        res.json(error)
+      })
   }
 }
 
 module.exports = {
   createBid: createBid,
   getBidsByIid: getBidsByIid,
-  confirmLoan: confirmLoan
+  confirmLoan: confirmLoan,
+  getLoaningUser: getLoaningUser
 }

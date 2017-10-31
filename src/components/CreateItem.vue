@@ -1,6 +1,8 @@
 <template>
 <div class="createItem">
-	<h1>Create Item</h1>
+	<div class="create-title">
+	Create Item
+	</div>
 	<form id="itemForm">
 
 		<!-- Name -->
@@ -22,16 +24,17 @@
 			<label for="image">Image: </label>
 			<imageupload :oldImage="empty" @changed="loadImage"></imageupload>
 		</div>
-		<!-- Tags -->
+		<!-- Tags 
 		<div class="formRow">
 			<label for="tag">Tags: </label>
 			<input class="tag form-control" type="text" v-model="tags" placeholder="Tags">
 		</div>
+		-->
 		<!-- Min Price -->
 		<div class="formRow">
 			<label for="minbid">Minimum Price: </label>
 			<p class="control has-icon has-icon-right">
-				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2'" :class="{'input': true,'is-danger': errors.has('price')}">
+				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2|min_value:0'" :class="{'input': true,'is-danger': errors.has('price')}">
 				<i v-show="errors.has('price')" class="fa fa-warning"></i>
 				<span class="help text-danger" v-show="errors.has('price')">{{ errors.first('price') }}</span>
 			</p>
@@ -109,7 +112,6 @@ export default {
 		var isChildValidated = true;
 		this.$validator.validateAll()
 		this.$children.forEach(vm => {
-			console.log(vm)
 		  vm.$validator.validateAll();
 		  if(vm.errors.any()){
 		  	isChildValidated = false;
@@ -169,7 +171,8 @@ export default {
 	width : 100% ;
 	display: block;
 	vertical-align: top;
-	margin-bottom: 5px;
+	margin-bottom: 4px;
+	margin-top: 3px;
 	margin-right: 5px;
 	overflow: hidden;
 }
@@ -215,4 +218,13 @@ export default {
 	margin-top: 20px;
 }
 
+.createItem p{
+	margin-bottom: 0;
+}
+
+.create-title{
+  font-weight:bold;
+  font-size: 2em;
+  padding-top: 2%;
+}
 </style>

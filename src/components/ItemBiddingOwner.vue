@@ -13,7 +13,7 @@
         <tbody>
           <tr v-for = "item in bids">
             <td><input type="radio" :value="item" v-model="selected" :disabled="isDisabled()"></td>
-            <td>{{item.bidder_username}}</td>
+            <td><router-link :to="{name: 'MyProfile', params: {uid: item.bidder_username}}">{{item.bidder_username}}</router-link></td>
             <td>${{item.price}}</td>
           </tr>
           <tr>
@@ -25,7 +25,7 @@
       </table>
     </div>
     <div class="button-padding">
-     <button type="submit" class="btn btn-secondary" v-on:click="choose(iid)" :disabled="isDisabled()">Choose winning bid</button>
+     <button type="submit" class="btn btn-primary" v-on:click="choose(iid)" :disabled="isDisabled()">Choose winning bid</button>
    </div>
   </div>
 </template>
@@ -98,7 +98,7 @@ export default {
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
-  height: 500px;
+  height: 500px auto;
 }
 
 .item-bidding-owner-title {
@@ -108,6 +108,7 @@ export default {
 }
 
 .table-responsive {
+  max-height: 380px;
   overflow-y: scroll;
 }
 
