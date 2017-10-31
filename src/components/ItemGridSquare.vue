@@ -64,6 +64,7 @@ img {
   	object-fit: 
 }
 #name{
+	padding-top: 2px;
 	padding-left: 10px;
 	padding-bottom: 5px;
 	width:90%;
