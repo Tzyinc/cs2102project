@@ -57,6 +57,7 @@ function jwtlogin(req, res) {
       if (bcrypt.compareSync(password, result.password)) {
         var payload = { username: result.username }
         var token = jwt.sign(payload, jwtOptions.secretOrKey)
+        // TODO: get isadmin
         res.json({ success: true, token: token })
       } else {
         res.status(401).json({ message: 'passwords did not match' })

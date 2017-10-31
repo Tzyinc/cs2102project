@@ -10,11 +10,14 @@ const checkNotiPS = new dbcon.PS(
   'UPDATE app_notification SET isRead = true WHERE notificationId =$1'
 )
 
-const getAllNotiPS = new dbcon.PS('getNoti', 'SELECT * FROM app_notification')
+const getAllNotiPS = new dbcon.PS(
+  'getNoti',
+  'SELECT * FROM app_notification INNER JOIN app_item i ON n.iid = i.iid'
+)
 
 const getNotiByUserPS = new dbcon.PS(
   'getNotiByUser',
-  'SELECT * FROM app_notification WHERE username = $1 ORDER BY timeCreated DESC'
+  'SELECT * FROM app_notification n INNER JOIN app_item i ON n.iid = i.iid  WHERE username = $1 ORDER BY timeCreated DESC'
 )
 
 function createNotification(username, iid, type) {
