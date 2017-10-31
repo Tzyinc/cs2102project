@@ -20,6 +20,7 @@ var userController = require('../controllers/user.controller.js')
 var itemController = require('../controllers/item.controller.js')
 var tagController = require('../controllers/tag.controller.js')
 var blController = require('../controllers/bidding-loan.controller.js')
+var notiController = require('../controllers/notification.controller.js')
 
 // jwt implementation
 var jwtOptions = {
@@ -139,6 +140,14 @@ router.route('/bids').get(blController.getBidsByIid)
 router
   .route('/loan')
   .put(passport.authenticate('jwt', {session: false}), blController.confirmLoan)
+router
+  .route('/noti')
+  .post(
+    passport.authenticate('jwt', {session: false}),
+    notiController.checkNotificationRead
+  )
+router.route('/noti').get(notiController.getNotification)
+
 router.route('/loan').get(blController.getLoaningUser)
 
 module.exports = router
