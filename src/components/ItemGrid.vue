@@ -33,7 +33,6 @@ export default {
   methods: {
     retrieveImageUrl(source){
       var itemImage = api_url+source +"?timestamp=" + new Date().getTime();
-      console.log(source);
       return itemImage;
     }
   } ,
