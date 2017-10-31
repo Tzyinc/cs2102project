@@ -7,17 +7,17 @@ const createNotiPS = new dbcon.PS(
 
 const checkNotiPS = new dbcon.PS(
   'checkNoti',
-  'UPDATE app_notification SET isRead = true WHERE notificationId =$1'
+  'UPDATE app_notification SET isRead = true WHERE nid =$1'
 )
 
 const getAllNotiPS = new dbcon.PS(
   'getNoti',
-  'SELECT * FROM app_notification INNER JOIN app_item i ON n.iid = i.iid'
+  'SELECT n.nid, n.username, n.iid, n.type, n.timeCreated, n.isRead, i.name, i.owner_username FROM app_notification n INNER JOIN app_item i ON n.iid = i.iid'
 )
 
 const getNotiByUserPS = new dbcon.PS(
   'getNotiByUser',
-  'SELECT * FROM app_notification n INNER JOIN app_item i ON n.iid = i.iid  WHERE username = $1 ORDER BY timeCreated DESC'
+  'SELECT n.nid, n.username, n.iid, n.type, n.timeCreated, n.isRead, i.name, i.owner_username FROM app_notification n INNER JOIN app_item i ON n.iid = i.iid  WHERE username = $1 ORDER BY timeCreated DESC'
 )
 
 function createNotification(username, iid, type) {
@@ -51,11 +51,14 @@ function getNotification(req, res) {
 
 function checkNotificationRead(req, res) {
   var notiValues = req.body.data
+  console.log(notiValues.nid)
   if (notiValues != null) {
-    checkNotiPS.values = [notiValues.notificationID]
+    checkNotiPS.values = [notiValues.nid]
+    console.log(checkNotiPS)
     dbcon.db
       .none(checkNotiPS)
       .then(result => {
+        console.log('success')
         res.json({ success: true })
       })
       .catch(error => {

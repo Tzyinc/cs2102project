@@ -14,7 +14,7 @@
                     <li><router-link to="/myListing" class="nav-link">Lent</router-link></li>
                     <li><router-link to="/myLoan" class="nav-link">Borrowed</router-link></li>
                     <li><router-link :to="profile_link" class="nav-link">{{display_name}}</router-link></li>
-                    
+
                     <li><div class="dropdown">
                         <button class="btn btn-secondary" type="button" id="notificationListButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Notifications <span class="badge badge-danger" v-show="notification_count>0">{{notification_count}}</span>
@@ -27,9 +27,9 @@
                                 <div v-for = "notification in notifications" >
                                     <notification
                                         :iid = "notification.iid"
-                                        :type = "notification.type"
+                                        :notiType = "notification.type"
                                         :isRead = "notification.isRead"
-                                        :notificationid = "notification.notificationid"></notification>
+                                        :nid = "notification.nid"></notification>
                                 </div>
                             </div>
                         </div>
@@ -48,7 +48,7 @@ import api_ep from '../api.json'
 import Notification from './Notification'
 var api_url_noti = api_ep.API_URL + api_ep.NOTIFICATION;
 var api_noti_owner = '?username=';
-var api_notiId = '?notificationID=';
+var api_notiId = '?nid=';
 
 export default {
     name: 'LoginHeader',
@@ -69,7 +69,7 @@ export default {
         // call again the method if the route changes
         '$route': 'updateLoginStatus'
     },
-  
+
     methods: {
         updateLoginStatus() {
             this.logged_in = auth.isLoggedIn(this)
@@ -79,14 +79,14 @@ export default {
                 this.getnoti()
             }
         },
-         
+
         logout() {
           auth.logout(this)
           this.logged_in = false;
         },
 
         //Get noti is triggered from auth.js, after login is confirmed
-        getnoti () { 
+        getnoti () {
             this.$http.get(api_url_noti+api_noti_owner+auth.getUsername(this))
             .then(response => {
                 this.notifications = response.data;
@@ -154,8 +154,8 @@ nav > ul > li:hover > router-link {
 }
 
 .dropdown-menu {
-    right: 0; 
-    left: auto; 
+    right: 0;
+    left: auto;
     padding:0px;
     max-height: 400px;
     overflow-y: auto;
