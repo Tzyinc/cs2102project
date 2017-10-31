@@ -25,7 +25,7 @@ const getLoanPS = new dbcon.PS(
 
 const getLoanByUserPS = new dbcon.PS(
   'getLoanByUser',
-  'SELECT l.borrower_username, l.iid, l.price, i.owner_username, i.name, i.location' +
+  'SELECT l.borrower_username, l.iid, l.price, i.owner_username, i.name, i.location, i.imagesrc' +
     ' FROM app_loan l INNER JOIN app_item i ON l.iid = i.iid WHERE l.borrower_username = $1'
 )
 
@@ -155,7 +155,7 @@ function getLoaningUser(req, res) {
       })
   } else if (loanDetails.username != null) {
     dbcon.db
-      .any(getLoanByUserPS, [parseInt(loanDetails.username)])
+      .any(getLoanByUserPS, [loanDetails.username])
       .then(result => {
         console.log(result)
         res.json(result)
