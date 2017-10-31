@@ -1,6 +1,6 @@
 var dbcon = require('../dbcon/database.js')
 var itemController = require('../controllers/item.controller.js')
-
+var notiController = require('../controllers/notification.controller.js')
 const createBidPS = new dbcon.PS(
   'createBid',
   'INSERT INTO app_bidding (bidder_username, iid, price, time) VALUES ($1, $2, $3, now())' +
@@ -23,7 +23,7 @@ const getLoanPS = new dbcon.PS(
     ' FROM app_loan l INNER JOIN app_item i ON l.iid = i.iid WHERE l.iid = $1'
 )
 
-function createBid(req, res) {
+function createBid(req, res){
   var bidDetails = req.body.data
   if (bidDetails != null) {
     createBidPS.values = [
@@ -34,7 +34,26 @@ function createBid(req, res) {
     dbcon.db
       .none(createBidPS)
       .then(result => {
-        res.json({ success: true })
+        itemController
+          .getItemByIid(bidDetails.iid)
+          .then(result => {
+            console.log(result)
+            notiController
+              .createNotification(result.owner_username, result.iid, 'bidMade')
+              .then(result => {
+                res.json({success: true})
+              })
+              .catch(error => {
+                console.error(error)
+                res.json(error)
+              })
+            // res.json({success: true})
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+        // res.json({ success: true })
       })
       .catch(error => {
         console.error('ERROR:', error)
@@ -43,10 +62,10 @@ function createBid(req, res) {
   }
 }
 
-function getBidsByIid(req, res) {
+function getBidsByIid(req, res){
   var bidDetails = req.query
   if (bidDetails != null) {
-    selectBidsPS.values = [bidDetails.iid]
+    selectBidsPS.values = [ bidDetails.iid ]
     dbcon.db
       .any(selectBidsPS)
       .then(result => {
@@ -57,17 +76,14 @@ function getBidsByIid(req, res) {
         res.json(error)
       })
   } else {
-    res.json({ error: 'no iid found' })
+    res.json({error: 'no iid found'})
   }
 }
 
-function confirmLoan(req, res) {
+function confirmLoan(req, res){
   var bidDetails = req.body.data
   if (bidDetails != null) {
     // create loan
-    bidDetails.iid
-    bidDetails.bidder_username
-    bidDetails.price
     createLoanPS.values = [
       bidDetails.bidder_username,
       bidDetails.iid,
@@ -81,8 +97,26 @@ function confirmLoan(req, res) {
         itemController
           .changeItemStatus(false, bidDetails.iid)
           .then(result => {
+            var promiseArr = []
             // send notifications
-            res.json({ success: true })
+            //send success noti
+            promiseArr.push(
+              notiController.createNotification(
+                bidDetails.bidder_username,
+                bidDetails.iid,
+                'bidSuccess'
+              )
+            )
+
+            //send failure noti
+            Promise.all(promiseArr)
+              .then(result => {
+                res.json({success: true})
+              })
+              .catch(error => {
+                console.error(error)
+                res.json(error)
+              })
           })
           .catch(error => {
             console.error(error)
@@ -95,16 +129,16 @@ function confirmLoan(req, res) {
       })
     // bidDetails.time
   } else {
-    res.json({ error: 'no bid details found' })
+    res.json({error: 'no bid details found'})
   }
 }
 
-function getLoaningUser(req, res) {
+function getLoaningUser(req, res){
   var loanDetails = req.query
   if (loanDetails.iid != null) {
     // getLoanPS.values = [parseInt(loanDetails.iid)]
     dbcon.db
-      .one(getLoanPS, [parseInt(loanDetails.iid)])
+      .one(getLoanPS, [ parseInt(loanDetails.iid) ])
       .then(result => {
         console.log(result)
         res.json(result)
