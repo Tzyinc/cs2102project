@@ -40,7 +40,7 @@ img {
 .itemsquare{
 	width: 200px;
 	min-height: auto;
-	border: 2px solid lightgrey;
+	border: 3px solid lightgrey;
     overflow:hidden;
     background-color: rgba(235, 235, 235, 0.9);
     display: inline-block;
