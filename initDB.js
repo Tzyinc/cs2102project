@@ -56,13 +56,13 @@ const createLoanQuery =
 
 const createNotiQuery =
   'CREATE TABLE app_notification ' +
-  '(notificationID SERIAL,' +
+  '(nid SERIAL,' +
   'username       TEXT            NOT NULL,' +
   'iid            INTEGER         NOT NULL,' +
   'timeCreated    TIMESTAMP       NOT NULL,' +
   'type           TEXT            NOT NULL,' +
   'isRead         BOOLEAN         NOT NULL,' +
-  'PRIMARY KEY (notificationID),' +
+  'PRIMARY KEY (nid),' +
   'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
   'FOREIGN KEY (username) REFERENCES app_user(username)' +
   ');'

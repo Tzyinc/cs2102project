@@ -171,9 +171,7 @@ function getItems(req, res){
 function getItem(req, res){
   var itemDetails = req.query
   if (itemDetails.iid != null) {
-    getItemPS.values = [ itemDetails.iid ]
-    dbcon.db
-      .one(getItemPS)
+    getItemByIid(itemDetails.iid)
       .then(result => {
         res.json(result)
       })
@@ -183,6 +181,11 @@ function getItem(req, res){
   } else {
     res.json({success: false})
   }
+}
+
+function getItemByIid(iid){
+  getItemPS.values = [ iid ]
+  return dbcon.db.one(getItemPS)
 }
 
 function deleteItem(req, res){
@@ -242,5 +245,6 @@ module.exports = {
   updateItem: updateItem,
   deleteItem: deleteItem,
   changeItemStatus: changeItemStatus,
+  getItemByIid: getItemByIid,
   updateItemTags: updateItemTags
 }
