@@ -6,5 +6,9 @@
   "IMAGE": "api/img",
   "UIMAGE": "api/uimg",
   "LOGIN": "api/login",
-  "PASSWORD": "api/password"
+  "PASSWORD": "api/password",
+  "TAGS": "api/tags",
+  "BIDS": "api/bids",
+  "BID": "api/bid",
+  "LOAN": "api/loan"
 }
