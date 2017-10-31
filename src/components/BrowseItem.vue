@@ -37,6 +37,9 @@ import CustomPagination from './CustomPagination'
 
 var api_url = api_ep.API_URL + api_ep.ITEMS
 var api_url_search = api_ep.API_URL + api_ep.ITEMS + "?name_like="
+var api_limit = "?limit="
+var api_offset = "&offset="
+var api_sort = "&sort="
 export default {
   name: 'BrowseItem',
   components: {
@@ -62,8 +65,8 @@ export default {
       count: 6,
       total: 10,
       limit: 10,
-      offset: 0
-
+      offset: 0,
+      sort: 'oldest'
     }
   },
   methods: {
@@ -83,6 +86,7 @@ export default {
     loadItems(){
       this.offset = (this.current - 1) * this.limit
       console.log("getting items of limit :"+this.limit + ", offset: " + this.offset)
+      console.log(api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort)
       this.$http.get(api_url)
       .then(response => {
         this.items = response.data;
