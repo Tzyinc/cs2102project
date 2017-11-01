@@ -21,8 +21,7 @@ const getNotiByUserPS = new dbcon.PS(
 )
 
 function createNotification(username, iid, type) {
-  createNotiPS.values = [username, iid, type]
-  return dbcon.db.none(createNotiPS)
+  return dbcon.db.none(createNotiPS, [username, iid, type])
 }
 
 function getNotification(req, res) {
