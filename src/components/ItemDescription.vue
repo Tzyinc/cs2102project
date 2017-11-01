@@ -3,7 +3,8 @@
     <div class="item-desc-title card-header"><i class="fa fa-file-text-o" aria-hidden="true"></i> Description</div>
     <div class="item-desc-text card-body">{{description}}</div>
     <div><hr/></div>
-    <div class="item-desc-tags card-body">
+    <div class="item-desc-tags">
+      <b>Tags:</b> 
       <span v-for="tag in tags">
         #{{tag}}
       </span>
@@ -51,7 +52,7 @@ export default {
 }
 
 .item-desc-tags {
-  height: 10%;
-  overflow-y: scroll;
+  height: 10px;
+  padding-left: 10px;
 }
 </style>
