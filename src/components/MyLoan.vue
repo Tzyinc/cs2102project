@@ -1,15 +1,8 @@
 <template>
 <div class="myLoan">
-	<h1>My Loans</h1>
-  <!--
-	<div class="input-group">
-    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
-    <span class="input-group-btn">
-    	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
-    </span>
-
+  <div class="loan-title">
+	My Loans
   </div>
-  -->
   <br/>
   <br/>
   <itemgrid :items = "items"></itemgrid>
@@ -22,8 +15,8 @@
 import auth from '../auth/auth'
 import api_ep from '../api.json'
 import ItemGrid from './ItemGrid'
-var api_url_items = api_ep.API_URL + api_ep.ITEMS
-var api_item_owner = '?item_owner='
+var api_url_items = api_ep.API_URL + api_ep.LOAN
+var api_loan = '?username='
 
 export default {
   name: 'MyLoan',
@@ -39,7 +32,9 @@ export default {
     }
   },
   methods: {
-
+    formatPrice(){
+      this.items.map(x => x.minbid = x.price)
+    }
   } ,
   created: function () {
     /*Change here to get items by logged in user*/
@@ -47,10 +42,10 @@ export default {
       this.$router.push('/')
     }
     this.login_user = auth.getUsername(this)
-    this.$http.get(api_url_items+api_item_owner+this.login_user)
+    this.$http.get(api_url_items+api_loan+this.login_user)
       .then(response => {
-        this.items = response.data;
-        console.log(this.items);
+        this.items = response.data
+        this.formatPrice()
       });
   }
 }
@@ -80,4 +75,10 @@ export default {
   margin-right: 50px;
 }
 
+.loan-title{
+  font-weight:bold;
+  font-size: 2em;
+  padding-top: 2%;
+  padding-bottom: 1%;
+}
 </style>

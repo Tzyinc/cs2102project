@@ -1,6 +1,8 @@
 <template>
 <div class="updateItem">
-	<h1>Update Item</h1>
+	<div class="update-title">
+	Update Item
+	</div>
 	<form id="itemForm">
 
 		<!-- Name -->
@@ -25,13 +27,13 @@
 		<!-- Tags -->
 		<div class="formRow">
 			<label for="tag">Tags: </label>
-			<input class="tag form-control" type="text" v-model="tags" placeholder="Tags">
+			<input class="tag form-control" type="text" v-model="tagsString" placeholder="Tags">
 		</div>
 		<!-- Min Price -->
 		<div class="formRow">
 			<label for="minbid">Minimum Price: </label>
 			<p class="control has-icon has-icon-right">
-				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2'" :class="{'input': true,'is-danger': errors.has('price')}">
+				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2|min_value:0'" :class="{'input': true,'is-danger': errors.has('price')}">
 				<i v-show="errors.has('price')" class="fa fa-warning"></i>
 				<span class="help text-danger" v-show="errors.has('price')">{{ errors.first('price') }}</span>
 			</p>		
@@ -49,11 +51,11 @@
 		<div class="formRow">
 
 			<label for="avail">StartDate: </label>
-			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="startdate" name="uniquename"></datepicker>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="startdate" name="uniquename" style="margin-bottom: 5px;"></datepicker>
 		</div>
 		<div class="formRow">
 			<label for="avail">End Date: </label>
-			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="enddate" name="uniquename"></datepicker>
+			<datepicker input-class="avail form-control" format="dd MMMM yyyy" type="date" v-model="enddate" name="uniquename" ></datepicker>
 			<i v-show="!validateDate()" class="fa fa-warning"></i>
 			<span class="help text-danger" v-show="!validateDate()">{{ errorDate }}</span>
 		</div>
@@ -78,6 +80,8 @@ import ImageUpload from './ImageUpload'
 var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
 var api_post_url = api_ep.API_URL + api_ep.ITEM
 var api_url_image = api_ep.API_URL + api_ep.IMAGE + '/'
+var api_put_tags = api_ep.API_URL + api_ep.TAGS
+var api_get_tags = api_ep.API_URL + api_ep.TAGS + '?iid='
 export default {
   name: 'UpdateItem',
 	components: {
@@ -94,7 +98,8 @@ export default {
 	    description     : '',
 	    imageSrc : '',
 	    imageBin : '',
-	    tags     : '',
+	    tagsString     : '',
+	    tags 	 : [],
 	    minBid   : 0,
 	    location : '',
 	    startdate   : today,
@@ -128,14 +133,31 @@ export default {
 	     	success: function(response){
 		        console.log('submit update')
 		        if(response.hasOwnProperty('success')){
-		        	alert("Successfully updated item:\n" + formData.name)
-		        	context.$router.push('/myListing')
+					context.submitTag(formData)
 				} else{
 					alert("Failed to submit.\nPlease try again.")
 				}
 			}
 			})
     	}
+  	},
+  	submitTag(formData){
+		var context = this
+	  	$.ajax({
+	    	url: api_put_tags, //Your api url
+	     	type: 'PUT', //type is any HTTP method
+	     	headers: auth.getAuthHeader(this),
+	     	data: {data: formData}, //Data as js object
+	     	success: function(response){
+		        console.log('submit update')
+		        if(response.hasOwnProperty('success')){
+		        	alert("Successfully updated item:\n" + formData.name)
+		        	context.$router.push('/myListing')
+				} else{
+					alert("Failed to submit.\nPlease try again.")
+				}
+			}
+			})  		
   	},
   	cancel (){
   		this.$router.push('/myListing')
@@ -147,10 +169,14 @@ export default {
   	},
   	validateDate(){
   		if(this.enddate<=this.startdate){
-  			return false
+  			return false;
   		}
-  		return true
+  		return true;
+  	},
+  	processTags(item){
+  		item.map(x => this.tagsString = this.tagsString + "#" + x + " ")
   	}
+
   },
   	created: function () {
   		console.log("Loading update: ",api_url + this.iid)
@@ -159,22 +185,32 @@ export default {
 	        var item = response.data;
 	        this.name = item.name;
 	       	this.description = item.description;
-		    	this.oldImage = api_url_image+ item.itemimg;
-		    	this.tags = item.tags;
-		    	this.minBid = item.minbid;
-		    	this.location = item.location;
-		    	this.startdate = item.startdate;
-		    	this.enddate = item.enddate;
-		    	this.owner_username = item.owner_username;
-		    	this.timeListed = item.timelisted;
+	    	this.oldImage = api_url_image+ item.itemimg;
+	    	this.tags = item.tags;
+	    	this.minBid = item.minbid;
+	    	this.location = item.location;
+	    	this.startdate = item.startdate;
+	    	this.enddate = item.enddate;
+	    	this.owner_username = item.owner_username;
+	    	this.timeListed = item.timelisted;
 	    	if(auth.getUsername(this) != item.owner_username){
 		    	alert("You cannot edit this item.")
 		    	this.$router.push('/myListing')
 		    }
 	    });
+	    this.$http.get(api_get_tags + this.iid)
+	      .then(response => {
+	        var item = response.data;
+	        this.processTags(item)
+	    });	      
 
 
-	}
+	},
+	watch: {
+    	tagsString: function (val) {
+      	this.tags = val.match(/#[\w\d\s]+/gi).map(x => x.substr(1).trim()) || []
+    }
+  }
 }
 </script>
 
@@ -185,11 +221,12 @@ export default {
     text-align: center;
 }
 
-.updateItem input, textarea{
-	width : 80% ;
+.updateItem input, textarea, .avail{
+	width : 100% ;
 	display: block;
 	vertical-align: top;
-	margin-bottom: 5px;
+	margin-bottom: 4px;
+	margin-top: 3px;
 	margin-right: 5px;
 	overflow: hidden;
 }
@@ -233,5 +270,14 @@ export default {
 	width : 100%;
 	vertical-align:middle;
 	margin-top: 20px;
+}
+.updateItem p{
+	margin-bottom: 0;
+}
+
+.update-title{
+  font-weight:bold;
+  font-size: 2em;
+  padding-top: 2%;
 }
 </style>

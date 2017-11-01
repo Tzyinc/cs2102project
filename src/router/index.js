@@ -20,7 +20,8 @@ export default new Router({
       path: '/',
       alias: '/browseItem',
       name: 'BrowseItem',
-      component: BrowseItem
+      component: BrowseItem,
+      props: route => ({page: parseInt(route.query.page)})
     },
     {
       path: '/login',

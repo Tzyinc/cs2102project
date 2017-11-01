@@ -1,4 +1,5 @@
 var dbcon = require('../dbcon/database.js')
+var tagController = require('../controllers/tag.controller.js')
 var imageSaver = require('../img/image.controller.js')
 
 const createItemPS = new dbcon.PS(
@@ -21,6 +22,11 @@ const updateItemNoImgPS = new dbcon.PS(
 
 const getItemsPS = new dbcon.PS('getItems', 'SELECT * FROM app_item ')
 
+const getItemsOffsetLimitPS = new dbcon.PS(
+  'getItemsOffsetLimit',
+  'SELECT * FROM app_item LIMIT $1 OFFSET $2'
+)
+
 const getItemByUserPS = new dbcon.PS(
   'getItemByUser',
   'SELECT * FROM app_item WHERE owner_username = $1'
@@ -33,7 +39,10 @@ const getItemByNamePS = new dbcon.PS(
 
 const getItemPS = new dbcon.PS(
   'getItem',
-  'SELECT i.iid, i.owner_username, i.name, i.imagesrc AS itemImg, i.description, i.minbid, i.timeListed, i.status, i.location, i.startdate, i.enddate, u.userrating, u.imagesrc AS userImg FROM app_item i INNER JOIN app_user u ON i.owner_username = u.username WHERE i.iid = $1'
+  'SELECT i.iid, i.owner_username, i.name, i.imagesrc AS itemImg, i.description, i.minbid,' +
+    ' i.timeListed, i.status, i.location, i.startdate, i.enddate, u.userrating, u.imagesrc ' +
+    'AS userImg FROM app_item i INNER JOIN app_user u ON i.owner_username = u.username ' +
+    'WHERE i.iid = $1'
 )
 
 const deleteItemByIDPS = new dbcon.PS(
@@ -143,6 +152,7 @@ function getItems(req, res) {
         res.json(result)
       })
       .catch(error => {
+        console.error(error)
         res.json(error)
       })
   } else if (itemDetails.name_like != null) {
@@ -153,6 +163,19 @@ function getItems(req, res) {
         res.json(result)
       })
       .catch(error => {
+        console.error(error)
+        res.json(error)
+      })
+  } else if (itemDetails.limit != null || itemDetails.offset != null) {
+    var limit = itemDetails.limit || null
+    var offset = itemDetails.offset || 0
+    dbcon.db
+      .any(getItemsOffsetLimitPS, [limit, offset])
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        console.error(error)
         res.json(error)
       })
   } else {
@@ -162,6 +185,7 @@ function getItems(req, res) {
         res.json(result)
       })
       .catch(error => {
+        console.error(error)
         res.json(error)
       })
   }
@@ -209,6 +233,34 @@ function changeItemStatus(itemStatus, iid) {
   return dbcon.db.none(changeItemStatusPS)
 }
 
+function updateItemTags(req, res) {
+  var itemDetails = req.body.data
+  console.log('entered updateItemTags ', req.body)
+  if (itemDetails != null) {
+    tagController
+      .deleteItemTags(itemDetails.iid)
+      .then(result => {
+        var promiseArr = tagController.createItemTags(
+          itemDetails.tags,
+          itemDetails.iid
+        )
+        Promise.all(promiseArr)
+          .then(result => {
+            console.log('updateItemTags success')
+            res.json({ success: true })
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+      })
+      .catch(error => {
+        console.log(error)
+        res.json(error)
+      })
+  }
+}
+
 module.exports = {
   createItem: createItem,
   getItems: getItems,
@@ -216,5 +268,6 @@ module.exports = {
   updateItem: updateItem,
   deleteItem: deleteItem,
   changeItemStatus: changeItemStatus,
-  getItemByIid: getItemByIid
+  getItemByIid: getItemByIid,
+  updateItemTags: updateItemTags
 }

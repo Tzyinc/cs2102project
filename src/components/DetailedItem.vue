@@ -9,7 +9,7 @@
             </span>
           <hr/></div>
           <div v-if="item.status"></div>
-          <div v-else class="alert alert-danger" role="alert">This item has already been loaned out.</div>
+          <div v-else class="alert alert-danger" role="alert">This item has already been loaned out<span v-if="isOwner()"> to <router-link :to="{name: 'MyProfile', params: {uid: itemLoan.borrower_username}}">{{itemLoan.borrower_username}}</router-link></span>.</div>
             <div class="row detailed-row">
             <div class="col-3">
               <ItemPicture
@@ -17,7 +17,8 @@
             </div>
             <div class="col-9">
             <ItemDescription
-              :description = "item.description">
+              :description = "item.description"
+              :tags = "itemTags">
             </ItemDescription>
           </div>
           </div>
@@ -67,7 +68,9 @@
   var api_url = api_ep.API_URL + api_ep.ITEM + '?iid='
   var api_itemimg = api_ep.API_URL + api_ep.IMAGE + '/'
   var api_del = api_ep.API_URL + api_ep.ITEM
-  var api_bids = api_ep.API_URL + 'api/bids' + '?iid='
+  var api_bids = api_ep.API_URL + api_ep.BIDS + '?iid='
+  var api_loan = api_ep.API_URL + api_ep.LOAN + '?iid='
+  var api_tags = api_ep.API_URL + api_ep.TAGS + '?iid='
 
   export default {
   name: 'DetailedItem',
@@ -81,15 +84,18 @@
   data() {
     return {
         login_user: '',
+        isAdmin: false,
         item: [],
+        itemTags: [],
         itemBids: [],
+        itemLoan: [],
         itemExists: true
     }
   },
 
   methods: {
     isOwner() {
-      if (this.login_user === this.item.owner_username) {
+      if (this.login_user === this.item.owner_username || this.isAdmin) {
         //console.log("this is the owner")
         return true;
       }
@@ -129,21 +135,38 @@
 
   created: function () {
     this.login_user = auth.getUsername(this)
+    this.isAdmin = auth.isUserAdmin(this)
     //console.log("the full url is:" + api_url + this.$route.params.iid)
     this.$http.get(api_url + this.$route.params.iid)
       .then(response => {
         this.item = response.data;
-        console.log("this item owner username =" + this.item.owner_username)
+        //console.log("this item owner username =" + this.item.owner_username)
         if (this.item.owner_username === undefined) {
           this.itemExists = false
         }
-        //console.log("asdf" + this.item);
-      });
-    console.log ("getting bid info for " + this.$route.params.iid)
-    this.$http.get(api_bids + this.$route.params.iid)
-      .then(response => {
-       this.itemBids = response.data;
-       console.log(this.itemBids)
+        console.log("asdf" + this.item.status)
+
+        console.log ("getting bid info for " + this.$route.params.iid)
+        this.$http.get(api_bids + this.$route.params.iid)
+          .then(response => {
+           this.itemBids = response.data;
+           //console.log(this.itemBids)
+
+           if (!this.item.status) {
+               console.log("getting loans info")
+               this.$http.get(api_loan + this.$route.params.iid)
+               .then(response => {
+                 this.itemLoan = response.data;
+               });
+            }
+
+          });
+
+      console.log("retrieving tags")
+      this.$http.get(api_tags + this.$route.params.iid)
+        .then(response => {
+          this.itemTags = response.data;
+        })
       });
 
   }
