@@ -22,6 +22,11 @@ const updateItemNoImgPS = new dbcon.PS(
 
 const getItemsPS = new dbcon.PS('getItems', 'SELECT * FROM app_item ')
 
+const getItemsOffsetLimitPS = new dbcon.PS(
+  'getItemsOffsetLimit',
+  'SELECT * FROM app_item LIMIT $1 OFFSET $2'
+)
+
 const getItemByUserPS = new dbcon.PS(
   'getItemByUser',
   'SELECT * FROM app_item WHERE owner_username = $1'
@@ -34,7 +39,10 @@ const getItemByNamePS = new dbcon.PS(
 
 const getItemPS = new dbcon.PS(
   'getItem',
-  'SELECT i.iid, i.owner_username, i.name, i.imagesrc AS itemImg, i.description, i.minbid, i.timeListed, i.status, i.location, i.startdate, i.enddate, u.userrating, u.imagesrc AS userImg FROM app_item i INNER JOIN app_user u ON i.owner_username = u.username WHERE i.iid = $1'
+  'SELECT i.iid, i.owner_username, i.name, i.imagesrc AS itemImg, i.description, i.minbid,' +
+    ' i.timeListed, i.status, i.location, i.startdate, i.enddate, u.userrating, u.imagesrc ' +
+    'AS userImg FROM app_item i INNER JOIN app_user u ON i.owner_username = u.username ' +
+    'WHERE i.iid = $1'
 )
 
 const deleteItemByIDPS = new dbcon.PS(
@@ -47,7 +55,7 @@ const changeItemStatusPS = new dbcon.PS(
   'UPDATE app_item SET status = $1 WHERE iid = $2'
 )
 
-function createItem(req, res){
+function createItem(req, res) {
   var itemDetails = req.body.data
   if (itemDetails != null) {
     var startDate = new Date(itemDetails.startdate)
@@ -68,7 +76,7 @@ function createItem(req, res){
     .one(createItemPS)
     .then(result => {
       imageSaver.saveToFile(itemDetails.imageBin, result.iid)
-      res.json({success: true})
+      res.json({ success: true })
     })
     .catch(error => {
       console.error(error)
@@ -76,7 +84,7 @@ function createItem(req, res){
     })
 }
 
-function updateItem(req, res){
+function updateItem(req, res) {
   var itemDetails = req.body.data
   if (itemDetails != null && itemDetails.imageBin != '') {
     var startDate = new Date(itemDetails.startdate)
@@ -98,7 +106,7 @@ function updateItem(req, res){
       .none(updateItemPS)
       .then(result => {
         imageSaver.saveToFile(itemDetails.imageBin, itemDetails.iid)
-        res.json({success: true})
+        res.json({ success: true })
       })
       .catch(error => {
         console.error(error)
@@ -123,37 +131,51 @@ function updateItem(req, res){
     dbcon.db
       .none(updateItemNoImgPS)
       .then(result => {
-        res.json({success: true})
+        res.json({ success: true })
       })
       .catch(error => {
         console.error(error)
         res.json(error)
       })
   } else {
-    res.json({error: 'no data'})
+    res.json({ error: 'no data' })
   }
 }
 
-function getItems(req, res){
+function getItems(req, res) {
   var itemDetails = req.query
   if (itemDetails.item_owner != null) {
-    getItemByUserPS.values = [ itemDetails.item_owner ]
+    getItemByUserPS.values = [itemDetails.item_owner]
     dbcon.db
       .any(getItemByUserPS)
       .then(result => {
         res.json(result)
       })
       .catch(error => {
+        console.error(error)
         res.json(error)
       })
   } else if (itemDetails.name_like != null) {
-    getItemByNamePS.values = [ dbcon.addWildcard(itemDetails.name_like) ]
+    getItemByNamePS.values = [dbcon.addWildcard(itemDetails.name_like)]
     dbcon.db
       .any(getItemByNamePS)
       .then(result => {
         res.json(result)
       })
       .catch(error => {
+        console.error(error)
+        res.json(error)
+      })
+  } else if (itemDetails.limit != null || itemDetails.offset != null) {
+    var limit = itemDetails.limit || null
+    var offset = itemDetails.offset || 0
+    dbcon.db
+      .any(getItemsOffsetLimitPS, [limit, offset])
+      .then(result => {
+        res.json(result)
+      })
+      .catch(error => {
+        console.error(error)
         res.json(error)
       })
   } else {
@@ -163,12 +185,13 @@ function getItems(req, res){
         res.json(result)
       })
       .catch(error => {
+        console.error(error)
         res.json(error)
       })
   }
 }
 
-function getItem(req, res){
+function getItem(req, res) {
   var itemDetails = req.query
   if (itemDetails.iid != null) {
     getItemByIid(itemDetails.iid)
@@ -179,38 +202,38 @@ function getItem(req, res){
         res.json(error)
       })
   } else {
-    res.json({success: false})
+    res.json({ success: false })
   }
 }
 
-function getItemByIid(iid){
-  getItemPS.values = [ iid ]
+function getItemByIid(iid) {
+  getItemPS.values = [iid]
   return dbcon.db.one(getItemPS)
 }
 
-function deleteItem(req, res){
+function deleteItem(req, res) {
   var itemDetails = req.body.data
   if (itemDetails.iid != null) {
-    deleteItemByIDPS.values = [ itemDetails.iid ]
+    deleteItemByIDPS.values = [itemDetails.iid]
     dbcon.db
       .any(deleteItemByIDPS)
       .then(result => {
-        res.json({success: true})
+        res.json({ success: true })
       })
       .catch(error => {
         res.json(error)
       })
   } else {
-    res.json({success: false})
+    res.json({ success: false })
   }
 }
 
-function changeItemStatus(itemStatus, iid){
-  changeItemStatusPS.values = [ itemStatus, iid ]
+function changeItemStatus(itemStatus, iid) {
+  changeItemStatusPS.values = [itemStatus, iid]
   return dbcon.db.none(changeItemStatusPS)
 }
 
-function updateItemTags(req, res){
+function updateItemTags(req, res) {
   var itemDetails = req.body.data
   console.log('entered updateItemTags ', req.body)
   if (itemDetails != null) {
@@ -224,7 +247,7 @@ function updateItemTags(req, res){
         Promise.all(promiseArr)
           .then(result => {
             console.log('updateItemTags success')
-            res.json({success: true})
+            res.json({ success: true })
           })
           .catch(error => {
             console.error(error)
