@@ -73,9 +73,16 @@ export default {
 	  			this.retrieveImageUrl(this.oldImage);
 	  		}
    		}
+  	},
+  	created: function () {
+  		if(this.oldImage == '' || this.oldImage == null){
+	  		this.image = ''
+  		} else {
+  			this.retrieveImageUrl(this.oldImage);
+  		}
   	}
-
 }
+
 </script>
 <style>
 .displayimageupload img {
