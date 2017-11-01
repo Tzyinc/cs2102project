@@ -52,12 +52,6 @@
     <div v-else>
       <h1 class="errorMsg">Error 404: Item not found</h1>
     </div>
-    <div>
-      <router-link :to="{ name: 'DetailedItem', params: {iid: 1} }">item1</router-link>
-      <br/>
-      <router-link :to="{ name: 'DetailedItem', params: {iid: 2} }">item2</router-link>
-      <br/>
-    </div>
   </div>
 </template>
 
