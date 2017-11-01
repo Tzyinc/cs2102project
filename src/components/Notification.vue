@@ -1,7 +1,13 @@
 <template>
 <div class="list-group-item notification" v-bind:class="{ active: !read }" v-on:mouseover="markNotiRead(nid, isRead)" v-on:click="goToItem(iid)">
-	<div v-if="type='bidMade'">
+	<div v-if="notiType=='bidMade'">
         New bid on '{{name}}'
+    </div>
+    <div v-else-if="notiType=='bidSuccess'">
+    	Successful bid on '{{name}}'
+    </div>
+    <div v-else-if="notiType=='bidFail'">
+    	Failed bid on '{{name}}'
     </div>
 </div>
 </template>
