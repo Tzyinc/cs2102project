@@ -22,6 +22,11 @@ const updateItemNoImgPS = new dbcon.PS(
 
 const getItemsPS = new dbcon.PS('getItems', 'SELECT * FROM app_item ')
 
+const getItemsCountPS = new dbcon.PS(
+  'getItemsCount',
+  'SELECT count(*) FROM app_item '
+)
+
 const getItemsOffsetLimitPS = new dbcon.PS(
   'getItemsOffsetLimit',
   'SELECT * FROM app_item LIMIT $1 OFFSET $2'
@@ -261,6 +266,18 @@ function updateItemTags(req, res) {
   }
 }
 
+function getItemsCount(req, res) {
+  dbcon.db
+    .one(getItemsCountPS)
+    .then(result => {
+      res.json(result)
+    })
+    .catch(error => {
+      console.log(error)
+      res.json(error)
+    })
+}
+
 module.exports = {
   createItem: createItem,
   getItems: getItems,
@@ -269,5 +286,6 @@ module.exports = {
   deleteItem: deleteItem,
   changeItemStatus: changeItemStatus,
   getItemByIid: getItemByIid,
-  updateItemTags: updateItemTags
+  updateItemTags: updateItemTags,
+  getItemsCount: getItemsCount
 }
