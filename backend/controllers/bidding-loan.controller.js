@@ -71,9 +71,7 @@ function createBid(req, res) {
 function getBidsByIid(req, res) {
   var bidDetails = req.query
   if (bidDetails != null) {
-    selectBidsPS.values = [bidDetails.iid]
-    dbcon.db
-      .any(selectBidsPS)
+    getBidsIid(bidDetails.iid)
       .then(result => {
         res.json(result)
       })
@@ -84,6 +82,11 @@ function getBidsByIid(req, res) {
   } else {
     res.json({ error: 'no iid found' })
   }
+}
+
+function getBidsIid(iid) {
+  selectBidsPS.values = [iid]
+  return dbcon.db.any(selectBidsPS)
 }
 
 function confirmLoan(req, res) {
@@ -103,21 +106,39 @@ function confirmLoan(req, res) {
         itemController
           .changeItemStatus(false, bidDetails.iid)
           .then(result => {
-            var promiseArr = []
             // send notifications
             //send success noti
-            promiseArr.push(
-              notiController.createNotification(
-                bidDetails.bidder_username,
-                bidDetails.iid,
-                'bidSuccess'
-              )
-            )
-
-            //send failure noti
-            Promise.all(promiseArr)
+            getBidsIid(bidDetails.iid)
               .then(result => {
-                res.json({ success: true })
+                var promiseArr = []
+                for (var i = 0; i < result.length; i++) {
+                  console.log('result', result)
+                  if (result[i].bidder_username != bidDetails.bidder_username) {
+                    promiseArr.push(
+                      notiController.createNotification(
+                        result[i].bidder_username,
+                        result[i].iid,
+                        'bidFail'
+                      )
+                    )
+                  } else {
+                    promiseArr.push(
+                      notiController.createNotification(
+                        result[i].bidder_username,
+                        result[i].iid,
+                        'bidSuccess'
+                      )
+                    )
+                  }
+                }
+                Promise.all(promiseArr)
+                  .then(result => {
+                    res.json({ success: true })
+                  })
+                  .catch(error => {
+                    console.error(error)
+                    res.json(error)
+                  })
               })
               .catch(error => {
                 console.error(error)
