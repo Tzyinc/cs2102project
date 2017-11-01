@@ -4,7 +4,7 @@
     <div class="item-desc-text card-body">{{description}}</div>
     <div><hr/></div>
     <div class="item-desc-tags">
-      <b>Tags:</b> 
+      <b>Tags:</b>
       <span v-for="tag in tags">
         #{{tag}}
       </span>
@@ -39,7 +39,7 @@ export default {
   position: relative;
   /*background-color: #efefef;*/
   vertical-align: top;
-  height: 350px;
+  height: 350px auto;
 }
 .item-desc-title {
   font-weight:bold;

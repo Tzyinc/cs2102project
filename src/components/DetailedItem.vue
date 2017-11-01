@@ -13,7 +13,8 @@
             <div class="row detailed-row">
             <div class="col-3">
               <ItemPicture
-                :imagesrc = "retrieveImageUrl(item.itemimg)"></ItemPicture>
+                :imagesrc = "retrieveImageUrl(item.itemimg)"
+                :name = "item.name"></ItemPicture>
             </div>
             <div class="col-9">
             <ItemDescription
