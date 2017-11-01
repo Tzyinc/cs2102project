@@ -1,7 +1,7 @@
 <template>
 <div class="itemsquare" v-on:click="load(iid)">
 	<div id='image'>
-		<img class="img-thumbnail" :src="image">
+		<img class="" :src="image">
 	</div>
 	<div class='info'>
 		<div id='name'>{{name}}</div>
@@ -28,33 +28,43 @@ export default {
 </script>
 
 <style scoped>
+
 img {
-    max-width: 100%;
-    max-height: 100%;
+	min-width: 100%;
+    height: 100%;
+    margin: 0px;
+
+    object-fit: fill;
 }
+
 .itemsquare{
-	width:200px;
+	width: 200px;
 	min-height: auto;
-	border-style: solid;
-    border-width: 4px;
+	border: 3px solid lightgrey;
     overflow:hidden;
-    /*background-color: red;*/
+    background-color: rgba(235, 235, 235, 0.9);
     display: inline-block;
     padding-bottom: 1px;
-    border-radius: 1em;
+    border-radius: 0.75em;
 }
-.itemsquare:hover {
-	border-color: grey;
-}
-#image{
-	/*background-color: blue;*/
-	width :100%;
-	height: 150px;
-	background-size: auto 100%;
-	padding: 5px 5px 0px 5px;
 
+.itemsquare:hover {
+	border-color: black;
+}
+
+#image{
+	width :206px;
+	height: 150px;
+	background-color: white;
+	background-size: auto 100%;
+	padding: 2px 0px 0px 2px;
+	margin: -5px 0px 0px -5px;
+	overflow: hidden;
+  	position: relative;
+  	object-fit: 
 }
 #name{
+	padding-top: 2px;
 	padding-left: 10px;
 	padding-bottom: 5px;
 	width:90%;
@@ -68,6 +78,7 @@ img {
 	float:left;
 	text-align:left;
 	font-size: smaller;
+	background-color: rgba(235, 235, 235, 0.9);
 	/*background-color: yellow;*/
 }
 #price{

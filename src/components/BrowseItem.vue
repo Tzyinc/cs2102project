@@ -16,6 +16,15 @@
     </div>
     <itemgrid :items = "items"></itemgrid>
     <br/>
+    <customPagination 
+    :url = "url" 
+    :pageParam = "pageParam"
+    :counts = "count"
+    :current = "current"
+    :total = "total"
+    :fn = "pageChange">
+      
+    </customPagination>
     <!--<div><pre>data: {{$data}}</pre></div>	-->
 </div>
 </template>
@@ -24,21 +33,40 @@
 import api_ep from '../api.json'
 import ItemGrid from './ItemGrid'
 import BrowseFilter from './Filter'
+import CustomPagination from './CustomPagination'
 
 var api_url = api_ep.API_URL + api_ep.ITEMS
 var api_url_search = api_ep.API_URL + api_ep.ITEMS + "?name_like="
+var api_limit = "?limit="
+var api_offset = "&offset="
+var api_sort = "&sort="
 export default {
   name: 'BrowseItem',
   components: {
     'itemgrid' : ItemGrid,
-    BrowseFilter
+    BrowseFilter,
+    'customPagination' : CustomPagination,
+  },  
+  props: {
+    page: {
+        type: Number,
+        default: 1
+    }
   },
+
   data () {
 
     return {
     	searchQuery: '',
-    	items: []
-
+    	items: [],
+      url: '/',
+      pageParam: 'page',
+      current: 1,
+      count: 6,
+      total: 10,
+      limit: 10,
+      offset: 0,
+      sort: 'oldest'
     }
   },
   methods: {
@@ -48,14 +76,29 @@ export default {
 	        this.items = response.data;
 	        console.log("Searching for : " + query);
 	      });
-  	}
-  } ,
-  created: function () {
-    this.$http.get(api_url)
+  	},
+    pageChange(d, e){
+      e.preventDefault()
+      console.log("page change to :", d)
+      this.current = d
+      this.loadItems()
+    },
+    loadItems(){
+      this.offset = (this.current - 1) * this.limit
+      console.log("getting items of limit :"+this.limit + ", offset: " + this.offset)
+      console.log(api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort)
+      this.$http.get(api_url)
       .then(response => {
         this.items = response.data;
-        console.log(this.items);
       });
+    }
+  } ,
+  created: function () {
+    console.log("page number : ", this.page)
+    if(!isNaN(this.page)){
+      this.current = this.page
+    }
+    this.loadItems()
   }
 }
 </script>

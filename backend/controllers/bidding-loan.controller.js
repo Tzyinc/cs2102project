@@ -1,6 +1,6 @@
 var dbcon = require('../dbcon/database.js')
 var itemController = require('../controllers/item.controller.js')
-
+var notiController = require('../controllers/notification.controller.js')
 const createBidPS = new dbcon.PS(
   'createBid',
   'INSERT INTO app_bidding (bidder_username, iid, price, time) VALUES ($1, $2, $3, now())' +
@@ -23,6 +23,12 @@ const getLoanPS = new dbcon.PS(
     ' FROM app_loan l INNER JOIN app_item i ON l.iid = i.iid WHERE l.iid = $1'
 )
 
+const getLoanByUserPS = new dbcon.PS(
+  'getLoanByUser',
+  'SELECT l.borrower_username, l.iid, l.price, i.owner_username, i.name, i.location, i.imagesrc' +
+    ' FROM app_loan l INNER JOIN app_item i ON l.iid = i.iid WHERE l.borrower_username = $1'
+)
+
 function createBid(req, res) {
   var bidDetails = req.body.data
   if (bidDetails != null) {
@@ -34,7 +40,26 @@ function createBid(req, res) {
     dbcon.db
       .none(createBidPS)
       .then(result => {
-        res.json({ success: true })
+        itemController
+          .getItemByIid(bidDetails.iid)
+          .then(result => {
+            console.log(result)
+            notiController
+              .createNotification(result.owner_username, result.iid, 'bidMade')
+              .then(result => {
+                res.json({ success: true })
+              })
+              .catch(error => {
+                console.error(error)
+                res.json(error)
+              })
+            // res.json({success: true})
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+        // res.json({ success: true })
       })
       .catch(error => {
         console.error('ERROR:', error)
@@ -65,9 +90,6 @@ function confirmLoan(req, res) {
   var bidDetails = req.body.data
   if (bidDetails != null) {
     // create loan
-    bidDetails.iid
-    bidDetails.bidder_username
-    bidDetails.price
     createLoanPS.values = [
       bidDetails.bidder_username,
       bidDetails.iid,
@@ -81,8 +103,26 @@ function confirmLoan(req, res) {
         itemController
           .changeItemStatus(false, bidDetails.iid)
           .then(result => {
+            var promiseArr = []
             // send notifications
-            res.json({ success: true })
+            //send success noti
+            promiseArr.push(
+              notiController.createNotification(
+                bidDetails.bidder_username,
+                bidDetails.iid,
+                'bidSuccess'
+              )
+            )
+
+            //send failure noti
+            Promise.all(promiseArr)
+              .then(result => {
+                res.json({ success: true })
+              })
+              .catch(error => {
+                console.error(error)
+                res.json(error)
+              })
           })
           .catch(error => {
             console.error(error)
@@ -113,6 +153,19 @@ function getLoaningUser(req, res) {
         console.error(error)
         res.json(error)
       })
+  } else if (loanDetails.username != null) {
+    dbcon.db
+      .any(getLoanByUserPS, [loanDetails.username])
+      .then(result => {
+        console.log(result)
+        res.json(result)
+      })
+      .catch(error => {
+        console.error(error)
+        res.json(error)
+      })
+  } else {
+    res.json({ error: 'data not found' })
   }
 }
 

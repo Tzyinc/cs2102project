@@ -277,6 +277,7 @@ export default {
     margin-right: 5px;
     float:right;
     color: white;
+    z-index: 500;
 }
 
 .pwChange {
