@@ -28,8 +28,9 @@
                                     <notification
                                         :iid = "notification.iid"
                                         :notiType = "notification.type"
-                                        :isRead = "notification.isRead"
-                                        :nid = "notification.nid"></notification>
+                                        :isRead = "notification.isread"
+                                        :nid = "notification.nid"
+                                        :name = "notification.name"></notification>
                                 </div>
                             </div>
                         </div>
@@ -91,8 +92,8 @@ export default {
             .then(response => {
                 this.notifications = response.data;
                 this.notification_count = 0;
-                for(var notification in this.notifications) {
-                    if(!notification.isRead) {
+                for(var i = 0; i < this.notifications.length; i++) {
+                    if(!this.notifications[i].isread) {
                         this.notification_count++;
                     }
                 }

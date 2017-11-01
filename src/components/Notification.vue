@@ -1,7 +1,13 @@
 <template>
-<div class="list-group-item notification" v-bind:class="{ active: !read }" v-on:mouseover="markNotiRead(nid, isRead)">
-	<div v-if="type='bidMade'">
-        New bid on '{{iid}}'
+<div class="list-group-item notification" v-bind:class="{ active: !read }" v-on:mouseover="markNotiRead(nid, isRead)" v-on:click="goToItem(iid)">
+	<div v-if="notiType=='bidMade'">
+        New bid on '{{name}}'
+    </div>
+    <div v-else-if="notiType=='bidSuccess'">
+    	Successful bid on '{{name}}'
+    </div>
+    <div v-else-if="notiType=='bidFail'">
+    	Failed bid on '{{name}}'
     </div>
 </div>
 </template>
@@ -15,7 +21,7 @@ var api_notiId = '?nid=';
 
 export default {
 	name: 'Notification',
-  	props: ['iid', 'notiType', 'isRead','nid'],
+  	props: ['iid', 'notiType', 'isRead','nid', 'name'],
  	 data () {
     	return {
     		read : ''
@@ -24,15 +30,13 @@ export default {
   	methods: {
   		markNotiRead (notiId, read) {
         	if(!this.read) {
-        		console.log(notiId + " read!")
-						alert(notiId)
         		this.read = true;
 
 	        	$.ajax({
 	                url: api_url_noti, //Your api url
 	                type: 'POST', //type is any HTTP method
 	                headers: auth.getAuthHeader(this),
-									data: {data: {"nid": notiId}},
+					data: {data: {"nid": notiId}},
 	                success: function(response){
 	                    if(response.success) {
 	                		console.log("Notification mark as read")
@@ -41,6 +45,9 @@ export default {
 	            })
 	        }
 
+    	},
+    	goToItem(iid) {
+    		this.$router.push({ name: 'DetailedItem', params: { iid: iid }})
     	}
   	},
   	watch: {
