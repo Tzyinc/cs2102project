@@ -83,10 +83,29 @@ const createTagCountQuery =
   ');'
 
 const insertUserQuery = `INSERT INTO app_user VALUES ('qwer', 'defaultProfile.jpg', '$2a$08$zc0NLLSrVblCjAQpAD5Ll.P9eEFwN3YUJUHlxwTb9Z1RhJApKjFhO', true, 100)`
-
+const insertUserQuery2 = `INSERT INTO app_user VALUES ('bob99', 'defaultProfile.jpg', '$2a$08$zc0NLLSrVblCjAQpAD5Ll.P9eEFwN3YUJUHlxwTb9Z1RhJApKjFhO', true, 100)`
+const insertUserQuery3 = `INSERT INTO app_user VALUES ('charlie11', 'defaultProfile.jpg', '$2a$08$zc0NLLSrVblCjAQpAD5Ll.P9eEFwN3YUJUHlxwTb9Z1RhJApKjFhO', true, 100)`
 const insertItemQuery =
-  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location) ' +
-  `VALUES('qwer','some default name','error.png', 10 ,now(), TRUE,'somewhere')`
+  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location, startdate, enddate) ' +
+  `VALUES('qwer','Database Introduction','book.png', 49.99 ,now(), TRUE,'NUS','2017-11-30', '2017-12-30')`
+const insertItemQuery2 =
+  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location, startdate, enddate) ' +
+  `VALUES('qwer','Book','book.png', 19.99 ,now(), TRUE,'Buona Vista','2017-11-30', '2017-12-20')`
+const insertItemQuery3 =
+  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location, startdate, enddate) ' +
+  `VALUES('bob99','English book','book.png', 49.99 ,now(), TRUE,'Seng Kang','2017-11-25', '2018-12-30')`
+const insertItemQuery4 =
+  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location, startdate, enddate) ' +
+  `VALUES('bob99','Chinese Book','book.png', 39.99 ,now(), TRUE,'Pasir Ris','2017-11-22', '2018-10-20')`
+const insertItemQuery5 =
+  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location, startdate, enddate) ' +
+  `VALUES('bob99','Japanese book','book.png', 99.99 ,now(), TRUE,'Clementi','2017-11-30', '2018-01-30')`
+const insertItemQuery6 =
+  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location, startdate, enddate) ' +
+  `VALUES('charlie11','Calculus Book','book.png', 40 ,now(), TRUE,'Clementi','2017-11-19', '2017-12-30')`
+const insertItemQuery7 =
+  'INSERT INTO app_item (owner_username, name, imagesrc, minbid, timeListed, status, location, startdate, enddate) ' +
+  `VALUES('charlie11','Magic book','book.png', 199.99 ,now(), TRUE,'Clementi','2017-12-05', '2018-12-30')`
 
 db
   .tx(t => {
@@ -101,7 +120,15 @@ db
     queries.push(t.any(createTagCountQuery))
     queries.push(t.any(createTagRelationQuery))
     queries.push(t.any(insertUserQuery))
+    queries.push(t.any(insertUserQuery2))
+    queries.push(t.any(insertUserQuery3))
     queries.push(t.any(insertItemQuery))
+    queries.push(t.any(insertItemQuery2))
+    queries.push(t.any(insertItemQuery3))
+    queries.push(t.any(insertItemQuery4))
+    queries.push(t.any(insertItemQuery5))
+    queries.push(t.any(insertItemQuery6))
+    queries.push(t.any(insertItemQuery7))
     queries.push(t.any('SELECT * FROM app_item'))
 
     // returning a promise that determines a successful transaction:

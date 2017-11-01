@@ -62,9 +62,9 @@ export default {
       url: '/',
       pageParam: 'page',
       current: 1,
-      count: 6,
+      count: 5,
       total: 10,
-      limit: 10,
+      limit: 3,
       offset: 0,
       sort: 'oldest'
     }
@@ -86,8 +86,9 @@ export default {
     loadItems(){
       this.offset = (this.current - 1) * this.limit
       console.log("getting items of limit :"+this.limit + ", offset: " + this.offset)
-      console.log(api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort)
-      this.$http.get(api_url)
+      var api_load = api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort
+      console.log(api_load)
+      this.$http.get(api_load)
       .then(response => {
         this.items = response.data;
       });
