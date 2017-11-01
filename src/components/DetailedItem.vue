@@ -4,7 +4,7 @@
           <div class= "detailed-item">
           <div class="detailed-title">Listing Details
             <span v-if="isOwner()">
-              <button type="button" class="btn btn-warning" :disabled="!item.status" v-on:click="load()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+              <button type="button" class="btn btn-warning" :disabled="!item.status" v-on:click="updateItem()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
               <button type="button" class="btn btn-danger" :disabled="!item.status" v-on:click="deleteItem()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
             </span>
           <hr/></div>
@@ -51,6 +51,12 @@
     </div>
     <div v-else>
       <h1 class="errorMsg">Error 404: Item not found</h1>
+    </div>
+    <div>
+      <router-link :to="{ name: 'DetailedItem', params: {iid: 1} }">item1</router-link>
+      <br/>
+      <router-link :to="{ name: 'DetailedItem', params: {iid: 2} }">item2</router-link>
+      <br/>
     </div>
   </div>
 </template>
@@ -105,7 +111,7 @@
       return itemImage;
     },
 
-  	load (){
+  	updateItem (){
   		this.$router.push({ name: 'UpdateItem', params: { iid: this.$route.params.iid }})
   	},
     deleteItem () {
@@ -127,48 +133,53 @@
             }
           }
         })
-
-
       }
+    },
+    loadItem() {
+
+      //console.log("the full url is:" + api_url + this.$route.params.iid)
+      this.$http.get(api_url + this.$route.params.iid)
+        .then(response => {
+          this.item = response.data;
+          //console.log("this item owner username =" + this.item.owner_username)
+          if (this.item.owner_username === undefined) {
+            this.itemExists = false
+          }
+          console.log("asdf" + this.item.status)
+
+          console.log ("getting bid info for " + this.$route.params.iid)
+          this.$http.get(api_bids + this.$route.params.iid)
+            .then(response => {
+             this.itemBids = response.data;
+             //console.log(this.itemBids)
+
+             if (!this.item.status) {
+                 console.log("getting loans info")
+                 this.$http.get(api_loan + this.$route.params.iid)
+                 .then(response => {
+                   this.itemLoan = response.data;
+                 });
+              }
+
+            });
+
+        console.log("retrieving tags")
+        this.$http.get(api_tags + this.$route.params.iid)
+          .then(response => {
+            this.itemTags = response.data;
+          })
+        });
     }
   },
 
   created: function () {
     this.login_user = auth.getUsername(this)
     this.isAdmin = auth.isUserAdmin(this)
-    //console.log("the full url is:" + api_url + this.$route.params.iid)
-    this.$http.get(api_url + this.$route.params.iid)
-      .then(response => {
-        this.item = response.data;
-        //console.log("this item owner username =" + this.item.owner_username)
-        if (this.item.owner_username === undefined) {
-          this.itemExists = false
-        }
-        console.log("asdf" + this.item.status)
+    this.loadItem()
 
-        console.log ("getting bid info for " + this.$route.params.iid)
-        this.$http.get(api_bids + this.$route.params.iid)
-          .then(response => {
-           this.itemBids = response.data;
-           //console.log(this.itemBids)
-
-           if (!this.item.status) {
-               console.log("getting loans info")
-               this.$http.get(api_loan + this.$route.params.iid)
-               .then(response => {
-                 this.itemLoan = response.data;
-               });
-            }
-
-          });
-
-      console.log("retrieving tags")
-      this.$http.get(api_tags + this.$route.params.iid)
-        .then(response => {
-          this.itemTags = response.data;
-        })
-      });
-
+  },
+  watch: {
+      '$route': 'loadItem'
   }
 }
 </script>
