@@ -22,7 +22,6 @@
   </table>
     </div>
 
-    <form>
       <div class="form-group row">
         <div class="col-sm-2"></div>
         <label class="col-sm-2 col-form-label" for="bidInput">Enter your bid:</label>
@@ -30,14 +29,32 @@
           <input type="text" class="form-control" id="bidInput" v-model="bid_amt" placeholder="0" :disabled="isDisabled()"> <!-- check for > latest bid-->
         </div>
         <div class="col-sm-2">
-            <button type="submit" class="btn btn-primary submit-bid-button" v-on:click="submitBid()" :disabled="isDisabled()">Submit</button>
+            <button type="submit" class="btn btn-primary submit-bid-button" v-on:click="submit()" :disabled="isDisabled()">Submit</button>
         </div>
       </div>
-    </form>
+    <div class="error-msg">
+      {{bid_error_msg}}
+    </div>
 
-  <!--  <div class="input-group">
-      <input class="form-control" name="enterbid"  v-model="bid_amt" placeholder="Enter your bid"/>
-    </div>-->
+    <div class="modal fade" id="bidModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm bid</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want make a bid of <b>${{bid_amt}}</b> on this item?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" v-on:click="submitBid()" data-dismiss="modal">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
   </div>
 </template>
 
@@ -55,6 +72,7 @@ export default {
     return {
         login_user: '',
         bid_amt: '',
+        bid_error_msg: '',
         //bids: [],
         item: {
           minBid : 0.17
@@ -64,7 +82,7 @@ export default {
   },
   methods: {
     isDisabled() {
-      return this.status === false
+      return this.status === false || this.login_user === ''
     },
 
     censorUsernames(username) {
@@ -75,21 +93,25 @@ export default {
       }
     },
 
-    submitBid() {
-      //console.log("submitting bid")
-      //console.log("is bid not a number? " + isNaN(this.bid_amt))
-
+    submit() {
       if (isNaN(this.bid_amt) || this.bid_amt === '' || this.bid_amt < 0) {
-        alert("Please enter a valid amount")
-        return false
+        //alert("Please enter a valid amount")
+        this.bid_error_msg = 'Please enter a valid amount'
+        //return false
       }
 
-      if (this.bid_amt < this.minBid) {
-        alert("Please enter an amount higher than the minimum bid.")
-        return false
+      else if (this.bid_amt < this.minBid) {
+        //alert("Please enter an amount higher than the minimum bid.")
+        this.bid_error_msg = 'Please enter an amount higher than the minimum bid'
+        //return false
+      } else {
+        $('#bidModal').modal('show')
       }
+    },
 
-      if (confirm("Are you sure you want to place a bid of $" + this.bid_amt + "?")) {
+    submitBid() {
+      //if (confirm("Are you sure you want to place a bid of $" + this.bid_amt + "?")) {
+        //$('#bidModal').modal('show')
         console.log(this.login_user + " making a bid of " + this.bid_amt + " on " + this.iid)
 
         var context = this
@@ -101,17 +123,15 @@ export default {
             data: {data: {bidder_username: this.login_user, iid: this.iid, price: this.bid_amt}},
             success: function(response) {
               if(response.hasOwnProperty('success')) {
-                alert("Successfully made a bid!")
+                console.log("Successfully made a bid!")
+                window.location.reload()
               } else {
                 alert("Failed to bid")
               }
             }
-          })
-          //sleep(100)
-          //alert("making a bid...")
+          });
+      }
 
-    }
-  }
   },
   created: function () {
     this.login_user = auth.getUsername(this)
@@ -152,6 +172,12 @@ export default {
 
 .submit-bid-button {
   margin: auto;
+}
+
+.error-msg {
+  margin:auto;
+  color: red;
+
 }
 
 </style>
