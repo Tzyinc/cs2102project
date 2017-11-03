@@ -119,7 +119,7 @@
   methods: {
     isOwner() {
       if (this.login_user === this.item.owner_username || this.isAdmin) {
-        //console.log("this is the owner")
+        console.log("this is the owner")
         return true;
       }
     },
@@ -163,7 +163,6 @@
           if (this.item.owner_username === undefined) {
             this.itemExists = false
           }
-          console.log("asdf" + this.item.status)
 
           console.log ("getting bid info for " + this.$route.params.iid)
           this.$http.get(api_bids + this.$route.params.iid)

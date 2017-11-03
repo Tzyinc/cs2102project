@@ -89,7 +89,7 @@ export default {
       console.log("num is " + num)
       var dotPos = num.search('\\.')
       console.log("dotpos is " + dotPos)
-      if (dotPos === 0) {
+      if (dotPos === 0 || dotPos === -1) {
         return true
       } else {
         var str = num.substring(dotPos + 1)
