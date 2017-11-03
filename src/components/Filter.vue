@@ -15,21 +15,19 @@
 					<h3>Sort by</h3>
 				</div>
 				<div class="row">
-					<div class="col filterOption" v-on:click="sortChange('latest', $event)">Newest</div>
-					<div class="col filterOption" v-on:click="sortChange('earliest', $event)">Oldest</div>
+					<div class="col filterOption" v-on:click="onclickSort('latest', 0, $event)" v-bind:class="{ active: isActive('latest')}" >Newest</div>
+					<div class="col filterOption" v-on:click="onclickSort('earliest', 1, $event)" v-bind:class="{ active: isActive('earliest')}">Oldest</div>
 
 				</div>
 				<div class="row">
-					<div class="col filterOption" v-on:click="sortChange('atoz', $event)">Name (A to Z)</div>
-					<div class="col filterOption" v-on:click="sortChange('ztoa', $event)">Name (Z to A)</div>
+					<div class="col filterOption" v-on:click="onclickSort('atoz', 2, $event)" v-bind:class="{ active: isActive('atoz')}">Name (A to Z)</div>
+					<div class="col filterOption" v-on:click="onclickSort('ztoa', 3, $event)" v-bind:class="{ active: isActive('ztoa')}">Name (Z to A)</div>
 				</div>
 				<div class="row">
-					<div class="col filterOption" v-on:click="sortChange('cheap', $event)">
-						Price 
+					<div class="col filterOption" v-on:click="onclickSort('cheap', 4, $event)" v-bind:class="{ active: isActive('cheap')}">Price 
 						<i class="fa fa-long-arrow-up" aria-hidden="true"></i>
 					</div>
-					<div class="col filterOption" v-on:click="sortChange('expensive', $event)">
-						Price 
+					<div class="col filterOption" v-on:click="onclickSort('expensive', 5, $event)" v-bind:class="{ active: isActive('expensive')}"> Price 
 						<i class="fa fa-long-arrow-down" aria-hidden="true"></i>
 					</div>
 				</div>
@@ -50,26 +48,18 @@ export default {
 	data () {
 		return {
 	    	isOpened: false,
+	    	activeItem: 'latest'
 	    }
   	},
 	methods: {
-		createImage(file) {
-			var image = new Image();
-		  	var reader = new FileReader();
-		  	var vm = this;
-
-			reader.onload = (e) => {
-			    vm.image = e.target.result;
-			    
-			    var value = {name:file.name, image:this.image};
-			    console.log("loaded image :" + value.name);
-			    this.$emit('changed', value);
-			};
-		  	reader.readAsDataURL(file);
+		onclickSort(newSort,index, e){
+			this.sortChange(newSort, e)
+			//this.isActive = isActive.map(x => x = false)
+			this.activeItem = newSort
 		},
-		removeImage: function (e) {
-		  	this.image = '';
-		}
+		isActive(selected) {
+      		return this.activeItem === selected
+    	},
 	}
 }
 </script>
@@ -81,7 +71,6 @@ export default {
 }
 #displayFilter{
 	padding-bottom :10px;
-	/*transition: all 0.5s;*/
 	border-bottom: 1px solid;
 	border-color: rgba(0, 0, 0, 0.15);
 }
@@ -92,7 +81,7 @@ export default {
 
 .filterTitle{
 	padding: 0px 0px 2px 5px;
-	color: rgba(0, 0, 0, 0.7);
+	color: rgba(0, 0, 0, 0.9);
 }
 
 .filterOption{
@@ -105,14 +94,8 @@ export default {
 	color: rgba(0, 0, 0, 0.8);
 }
 
-/*
-.fade-enter-active, .fade-leave-active {
-  transition: 0.5s
+.active {
+	font-weight: bold;
+	color: rgba(0, 0, 0, 1);
 }
-.fade-enter, .fade-leave-to {
-	height: 0%;
-}
-.fade-enter-to, .fade-leave /* .fade-leave-active below version 2.1.8  {
-	height: 100%;
-}*/
 </style>

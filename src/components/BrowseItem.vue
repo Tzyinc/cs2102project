@@ -89,7 +89,7 @@ export default {
       this.offset = (this.current - 1) * this.limit
       console.log("getting items of limit :"+this.limit + ", offset: " + this.offset)
       var api_load = api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort
-      console.log(api_load)
+      //console.log(api_load)
       this.$http.get(api_load)
       .then(response => {
         this.items = response.data;
@@ -108,8 +108,6 @@ export default {
     sortChange(d, e){
       e.preventDefault()
       this.sort = d
-
-      console.log("page change to :", 1)
       this.current = 1
       this.loadItems()
     }
