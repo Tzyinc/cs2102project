@@ -10,6 +10,7 @@ import BrowseItem from '@/components/BrowseItem.vue'
 import MyListing from '@/components/MyListing.vue'
 import MyLoan from '@/components/MyLoan.vue'
 import MyProfile from '@/components/MyProfile.vue'
+import AdminPage from '@/components/AdminPage.vue'
 
 Vue.use(Router)
 
@@ -20,7 +21,8 @@ export default new Router({
       path: '/',
       alias: '/browseItem',
       name: 'BrowseItem',
-      component: BrowseItem
+      component: BrowseItem,
+      props: route => ({page: parseInt(route.query.page)})
     },
     {
       path: '/login',
@@ -63,6 +65,11 @@ export default new Router({
       name: 'MyProfile',
       component: MyProfile,
       props: true
+    },
+    {
+      path: '/admin',
+      name: 'AdminPage',
+      component: AdminPage
     }
   ]
 })

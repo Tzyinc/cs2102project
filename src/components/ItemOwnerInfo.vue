@@ -5,7 +5,7 @@
       <p><span class="item-info-attr"><i class="fa fa-question" aria-hidden="true"></i> Status</span><br/>
         <span v-if="status"><font color="green">Available <i class="fa fa-check" aria-hidden="true"></i></font></a></span>
         <span v-else><font color="red">Not Available</font></span></p><hr/>
-      <p><span class="item-info-attr"><i class="fa fa-gift" aria-hidden="true"></i> Name</span><br/><span class="item-info-value">{{name}}</span></p><hr/>
+      <!--<p><span class="item-info-attr"><i class="fa fa-gift" aria-hidden="true"></i> Name</span><br/><span class="item-info-value">{{name}}</span></p><hr/>-->
       <p><span class="item-info-attr"><i class="fa fa-user" aria-hidden="true"></i> Owner</span><br/><span class="item-info-value">
               <router-link :to="{name: 'MyProfile', params: {uid: this.owner_username}}">{{owner_username}}</router-link></span></p><hr/>
       <p><span class="item-info-attr"><i class="fa fa-clock-o" aria-hidden="true"></i> Date Listed</span><br/><span class="item-info-value">{{parseDate(timelisted)}}</span></p><hr/>

@@ -7,7 +7,7 @@
 		<div class="searchBar input-group col-10" @keyup.enter="search(searchQuery)">
 		    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
 		    <span class="input-group-btn">
-		    	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
+		    	<button class="btn btn-outline-primary" type="button" v-on:click="search(searchQuery)">Go!</button>
 		    </span>
 		</div>
     </div>
@@ -16,6 +16,15 @@
     </div>
     <itemgrid :items = "items"></itemgrid>
     <br/>
+    <customPagination 
+    :url = "url" 
+    :pageParam = "pageParam"
+    :counts = "count"
+    :current = "current"
+    :total = "total"
+    :fn = "pageChange">
+      
+    </customPagination>
     <!--<div><pre>data: {{$data}}</pre></div>	-->
 </div>
 </template>
@@ -24,21 +33,41 @@
 import api_ep from '../api.json'
 import ItemGrid from './ItemGrid'
 import BrowseFilter from './Filter'
+import CustomPagination from './CustomPagination'
 
 var api_url = api_ep.API_URL + api_ep.ITEMS
 var api_url_search = api_ep.API_URL + api_ep.ITEMS + "?name_like="
+var api_total_items = api_ep.API_URL + api_ep.ITEMCOUNT
+var api_limit = "?limit="
+var api_offset = "&offset="
+var api_sort = "&sort="
 export default {
   name: 'BrowseItem',
   components: {
     'itemgrid' : ItemGrid,
-    BrowseFilter
+    BrowseFilter,
+    'customPagination' : CustomPagination,
+  },  
+  props: {
+    page: {
+        type: Number,
+        default: 1
+    }
   },
+
   data () {
 
     return {
     	searchQuery: '',
-    	items: []
-
+    	items: [],
+      url: '/',
+      pageParam: 'page',
+      current: 1,
+      count: 5,
+      total: 10,
+      limit: 2,
+      offset: 0,
+      sort: 'oldest'
     }
   },
   methods: {
@@ -48,14 +77,41 @@ export default {
 	        this.items = response.data;
 	        console.log("Searching for : " + query);
 	      });
-  	}
-  } ,
-  created: function () {
-    this.$http.get(api_url)
+  	},
+    pageChange(d, e){
+      e.preventDefault()
+      console.log("page change to :", d)
+      this.current = d
+      this.loadItems()
+    },
+    loadItems(){
+      this.getTotalItems()
+      this.offset = (this.current - 1) * this.limit
+      console.log("getting items of limit :"+this.limit + ", offset: " + this.offset)
+      var api_load = api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort
+      console.log(api_load)
+      this.$http.get(api_load)
       .then(response => {
         this.items = response.data;
-        console.log(this.items);
       });
+    },
+    getTotalItems(){
+      this.$http.get(api_total_items)
+      .then(response => {
+        var totalItem = parseInt(response.data.count)
+        this.total = totalItem/this.limit
+        if(totalItem % this.limit > 0){
+          this.total = this.total + 1
+        }
+      });
+    }
+  } ,
+  created: function () {
+    console.log("page number : ", this.page)
+    if(!isNaN(this.page)){
+      this.current = this.page
+    }
+    this.loadItems()
   }
 }
 </script>
