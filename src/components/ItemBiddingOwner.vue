@@ -25,8 +25,31 @@
       </table>
     </div>
     <div class="button-padding">
-     <button type="submit" class="btn btn-primary" v-on:click="choose(iid)" :disabled="isDisabled()">Choose winning bid</button>
+     <button type="submit" class="btn btn-primary" v-on:click="check()" :disabled="isDisabled()">Choose winning bid</button>
    </div>
+   <div class="error-msg">
+     {{error_msg}}
+   </div>
+
+   <div class="modal fade" id="selectBidModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h5 class="modal-title" id="exampleModalLabel">Confirm bid winner</h5>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+       Are you sure you want to choose <b>{{bidder_username}}</b>'s bid of <b>${{price}}</b> as the winning bid?
+     </div>
+     <div class="modal-footer">
+       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+       <button type="button" class="btn btn-primary" v-on:click="choose(iid)" data-dismiss="modal">Confirm</button>
+     </div>
+   </div>
+ </div>
+</div>
   </div>
 </template>
 
@@ -45,6 +68,7 @@ export default {
       selected: [],
       bidder_username: '',
       price: '',
+      error_msg: '',
       item: {}
     }
   },
@@ -54,19 +78,23 @@ export default {
       return (this.bids.length === 0 || this.status === false)
     },
 
-    choose(iid) {
+    check() {
       //console.log("selected: " + this.selected.bidder_username + this.selected.price)
       this.bidder_username = this.selected.bidder_username
       this.price = this.selected.price
       //console.log(this.bidder_username + this.price + " ... " + typeof(this.price) + isNaN(this.price))
 
       if (isNaN(this.price)) {
-        alert("Please choose a winning bid")
+        this.error_msg = "Please choose a winning bid"
         return
+      } else {
+        $('#selectBidModal').modal('show')
       }
+    },
 
+    choose(iid) {
 
-      if (confirm("Do you want to choose " + this.selected.bidder_username + "'s bid of $" + this.selected.price + " as the winning bid?")) {
+      //if (confirm("Do you want to choose " + this.selected.bidder_username + "'s bid of $" + this.selected.price + " as the winning bid?")) {
         var context = this
           $.ajax({
             url: api_loan,
@@ -76,7 +104,7 @@ export default {
             data: {data: {iid: this.iid, bidder_username: this.bidder_username, price: this.price}},
             success: function(response) {
               if(response.hasOwnProperty('success')) {
-                alert("Success!")
+                console.log("Successfully loaned out")
               } else {
                 alert("Failed to award bid")
               }
@@ -84,7 +112,7 @@ export default {
           })
           //alert("awarding bid...")
           window.location.reload() // is there another way to this
-      }
+      //}
     }
   }
 }
@@ -115,5 +143,11 @@ export default {
 .button-padding {
   margin:auto;
   padding: 10px;
+}
+
+.error-msg {
+  margin:auto;
+  color: red;
+
 }
 </style>
