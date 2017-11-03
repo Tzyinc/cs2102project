@@ -32,6 +32,36 @@ const getItemsOffsetLimitPS = new dbcon.PS(
   'SELECT * FROM app_item LIMIT $1 OFFSET $2'
 )
 
+const getItemsOffsetLimitTimeListedASCPS = new dbcon.PS(
+  'getItemsOffsetLimitTimeListedASCPS',
+  'SELECT * FROM app_item ORDER BY timeListed ASC LIMIT $1 OFFSET $2'
+)
+
+const getItemsOffsetLimitTimeListedDESCPS = new dbcon.PS(
+  'getItemsOffsetLimitTimeListedDESCPS',
+  'SELECT * FROM app_item ORDER BY timeListed DESC LIMIT $1 OFFSET $2'
+)
+
+const getItemsOffsetLimitMinbidASCPS = new dbcon.PS(
+  'getItemsOffsetLimitMinbidASCPS',
+  'SELECT * FROM app_item ORDER BY minbid ASC LIMIT $1 OFFSET $2'
+)
+
+const getItemsOffsetLimitMinbidDESCPS = new dbcon.PS(
+  'getItemsOffsetLimitMinbidDESCPS',
+  'SELECT * FROM app_item ORDER BY minbid DESC LIMIT $1 OFFSET $2'
+)
+
+const getItemsOffsetLimitNameASCPS = new dbcon.PS(
+  'getItemsOffsetLimitNameASCPS',
+  'SELECT * FROM app_item ORDER BY name ASC LIMIT $1 OFFSET $2'
+)
+
+const getItemsOffsetLimitNameDESCPS = new dbcon.PS(
+  'getItemsOffsetLimitNameDESCPS',
+  'SELECT * FROM app_item ORDER BY name DESC LIMIT $1 OFFSET $2'
+)
+
 const getItemByUserPS = new dbcon.PS(
   'getItemByUser',
   'SELECT * FROM app_item WHERE owner_username = $1'
@@ -174,15 +204,81 @@ function getItems(req, res) {
   } else if (itemDetails.limit != null || itemDetails.offset != null) {
     var limit = itemDetails.limit || null
     var offset = itemDetails.offset || 0
-    dbcon.db
-      .any(getItemsOffsetLimitPS, [limit, offset])
-      .then(result => {
-        res.json(result)
-      })
-      .catch(error => {
-        console.error(error)
-        res.json(error)
-      })
+    if (itemDetails.sort != null) {
+      if (itemDetails.sort === 'earliest') {
+        dbcon.db
+          .any(getItemsOffsetLimitTimeListedASCPS, [limit, offset])
+          .then(result => {
+            res.json(result)
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+      } else if (itemDetails.sort === 'latest') {
+        dbcon.db
+          .any(getItemsOffsetLimitTimeListedDESCPS, [limit, offset])
+          .then(result => {
+            res.json(result)
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+      } else if (itemDetails.sort === 'expensive') {
+        // getItemsOffsetLimitMinbidASCPS
+        dbcon.db
+          .any(getItemsOffsetLimitMinbidDESCPS, [limit, offset])
+          .then(result => {
+            res.json(result)
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+      } else if (itemDetails.sort === 'cheap') {
+        dbcon.db
+          .any(getItemsOffsetLimitMinbidASCPS, [limit, offset])
+          .then(result => {
+            res.json(result)
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+      } else if (itemDetails.sort === 'ztoa') {
+        // getItemsOffsetLimitNameDESCPS
+        dbcon.db
+          .any(getItemsOffsetLimitNameDESCPS, [limit, offset])
+          .then(result => {
+            res.json(result)
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+      } else {
+        dbcon.db
+          .any(getItemsOffsetLimitNameASCPS, [limit, offset])
+          .then(result => {
+            res.json(result)
+          })
+          .catch(error => {
+            console.error(error)
+            res.json(error)
+          })
+      }
+    } else {
+      dbcon.db
+        .any(getItemsOffsetLimitPS, [limit, offset])
+        .then(result => {
+          res.json(result)
+        })
+        .catch(error => {
+          console.error(error)
+          res.json(error)
+        })
+    }
   } else {
     dbcon.db
       .any(getItemsPS)

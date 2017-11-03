@@ -2,7 +2,7 @@
     <div class="LoginHeader">
         <nav class="navbar" id="bootstrapPaddingOverwrite">
             <div class="navbar-header">
-                <router-link to="/" class="nav-link" id="HeaderLogo">StuffShare</router-link>
+                <router-link to="/" class="nav-link" id="HeaderLogo"><img class="logo" src="/static/images/stuffShareLogo.png">StuffShare</router-link>
                 <!--<button type="button" v-on:click="testToken()">Token</button>-->
             </div>
              <ul id="marginOverwrite">
@@ -192,5 +192,9 @@ nav > ul > li > router-link {
     padding:0px;
     max-height: 400px;
     overflow-y: auto;
+}
+
+.logo {
+  width:40px;
 }
 </style>

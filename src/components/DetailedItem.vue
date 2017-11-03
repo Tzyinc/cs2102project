@@ -5,7 +5,7 @@
           <div class="detailed-title">Listing Details
             <span v-if="isOwner()">
               <button type="button" class="btn btn-warning" :disabled="!item.status" v-on:click="updateItem()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-              <button type="button" class="btn btn-danger" :disabled="!item.status" v-on:click="deleteItem()"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
+              <button type="button" class="btn btn-danger" :disabled="!item.status" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</button>
             </span>
           <hr/></div>
           <div v-if="item.status"></div>
@@ -53,6 +53,28 @@
     <div v-else>
       <h1 class="errorMsg">Error 404: Item not found</h1>
     </div>
+
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirm deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this item?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" v-on:click="deleteItem()" data-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   </div>
 </template>
 
@@ -97,7 +119,7 @@
   methods: {
     isOwner() {
       if (this.login_user === this.item.owner_username || this.isAdmin) {
-        //console.log("this is the owner")
+        console.log("this is the owner")
         return true;
       }
     },
@@ -111,24 +133,25 @@
   	},
     deleteItem () {
 
-      if (confirm("Are you sure you want to delete this?")) {
+      //if (confirm("Are you sure you want to delete this?")) {
         var context = this
         $.ajax({
           url: api_del,
           type: 'DELETE',
           headers: auth.getAuthHeader(this),
+          async: false,
           data: {data: {iid: this.$route.params.iid}},
           success: function(response) {
             console.log("deleting")
             if(response.hasOwnProperty('success')) {
-              alert("Successfully deleted!")
+              console.log("Successfully deleted!")
               context.$router.push({name: "MyListing"})
             } else {
               alert("Failed to delete. Please try again.")
             }
           }
         })
-      }
+      //}
     },
     loadItem() {
 
@@ -136,11 +159,11 @@
       this.$http.get(api_url + this.$route.params.iid)
         .then(response => {
           this.item = response.data;
-          //console.log("this item owner username =" + this.item.owner_username)
+          console.log("this item owner username =" + this.item.owner_username + "minbid is " + this.item.minbid)
+
           if (this.item.owner_username === undefined) {
             this.itemExists = false
           }
-          console.log("asdf" + this.item.status)
 
           console.log ("getting bid info for " + this.$route.params.iid)
           this.$http.get(api_bids + this.$route.params.iid)
