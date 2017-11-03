@@ -133,7 +133,11 @@ export default {
 	     	success: function(response){
 		        console.log('submit update')
 		        if(response.hasOwnProperty('success')){
-					context.submitTag(formData)
+		        	if(context.tags != null){
+						context.submitTag(formData)
+					}
+					alert("Successfully updated item:\n" + formData.name)
+		        	context.$router.push('/myListing')
 				} else{
 					alert("Failed to submit.\nPlease try again.")
 				}
@@ -149,10 +153,9 @@ export default {
 	     	headers: auth.getAuthHeader(this),
 	     	data: {data: formData}, //Data as js object
 	     	success: function(response){
-		        console.log('submit update')
+		        console.log('submit tag')
 		        if(response.hasOwnProperty('success')){
-		        	alert("Successfully updated item:\n" + formData.name)
-		        	context.$router.push('/myListing')
+
 				} else{
 					alert("Failed to submit.\nPlease try again.")
 				}
