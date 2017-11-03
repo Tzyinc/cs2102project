@@ -85,6 +85,22 @@ export default {
       return this.status === false || this.login_user === ''
     },
 
+    isTwoDecimal(num) {
+      console.log("num is " + num)
+      var dotPos = num.search('\\.')
+      console.log("dotpos is " + dotPos)
+      if (dotPos === 0) {
+        return true
+      } else {
+        var str = num.substring(dotPos + 1)
+        console.log("str is [" + str + "], length is "+str.length)
+        if (str.length > 2 || str.length === 0) {
+          return false
+        } else {
+          return true
+        }
+      }
+    },
     censorUsernames(username) {
       if (this.login_user === username) {
         return username
@@ -98,6 +114,8 @@ export default {
         //alert("Please enter a valid amount")
         this.bid_error_msg = 'Please enter a valid amount'
         //return false
+      } else if (!this.isTwoDecimal(this.bid_amt)) {
+        this.bid_error_msg = 'Please enter up to 2 decimal places'
       }
 
       else if (this.bid_amt < this.minBid) {
@@ -108,6 +126,7 @@ export default {
         $('#bidModal').modal('show')
       }
     },
+
 
     submitBid() {
       //if (confirm("Are you sure you want to place a bid of $" + this.bid_amt + "?")) {
@@ -135,6 +154,7 @@ export default {
   },
   created: function () {
     this.login_user = auth.getUsername(this)
+
     //console.log("item iid is" + this.iid);
 
     console.log("logged in user is: " + this.login_user)
