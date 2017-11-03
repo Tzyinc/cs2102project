@@ -159,7 +159,8 @@
       this.$http.get(api_url + this.$route.params.iid)
         .then(response => {
           this.item = response.data;
-          //console.log("this item owner username =" + this.item.owner_username)
+          console.log("this item owner username =" + this.item.owner_username + "minbid is " + this.item.minbid)
+
           if (this.item.owner_username === undefined) {
             this.itemExists = false
           }

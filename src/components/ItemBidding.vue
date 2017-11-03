@@ -118,9 +118,9 @@ export default {
         this.bid_error_msg = 'Please enter up to 2 decimal places'
       }
 
-      else if (this.bid_amt < this.minBid) {
+      else if (parseFloat(this.bid_amt) < parseFloat(this.minBid)) {
         //alert("Please enter an amount higher than the minimum bid.")
-        this.bid_error_msg = 'Please enter an amount higher than the minimum bid'
+        this.bid_error_msg = 'Please enter an amount equal to or higher than the minimum bid'
         //return false
       } else {
         $('#bidModal').modal('show')
