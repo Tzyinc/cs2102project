@@ -7,7 +7,7 @@
 		<div class="searchBar input-group col-10" @keyup.enter="search(searchQuery)">
 		    <input class="form-control" name="query"  v-model="searchQuery" placeholder="Search for items">
 		    <span class="input-group-btn">
-		    	<button class="btn btn-secondary" type="button" v-on:click="search(searchQuery)">Go!</button>
+		    	<button class="btn btn-outline-primary" type="button" v-on:click="search(searchQuery)">Go!</button>
 		    </span>
 		</div>
     </div>
@@ -37,6 +37,7 @@ import CustomPagination from './CustomPagination'
 
 var api_url = api_ep.API_URL + api_ep.ITEMS
 var api_url_search = api_ep.API_URL + api_ep.ITEMS + "?name_like="
+var api_total_items = api_ep.API_URL + api_ep.ITEMCOUNT
 var api_limit = "?limit="
 var api_offset = "&offset="
 var api_sort = "&sort="
@@ -62,9 +63,9 @@ export default {
       url: '/',
       pageParam: 'page',
       current: 1,
-      count: 6,
+      count: 5,
       total: 10,
-      limit: 10,
+      limit: 2,
       offset: 0,
       sort: 'oldest'
     }
@@ -84,12 +85,24 @@ export default {
       this.loadItems()
     },
     loadItems(){
+      this.getTotalItems()
       this.offset = (this.current - 1) * this.limit
       console.log("getting items of limit :"+this.limit + ", offset: " + this.offset)
-      console.log(api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort)
-      this.$http.get(api_url)
+      var api_load = api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort
+      console.log(api_load)
+      this.$http.get(api_load)
       .then(response => {
         this.items = response.data;
+      });
+    },
+    getTotalItems(){
+      this.$http.get(api_total_items)
+      .then(response => {
+        var totalItem = parseInt(response.data.count)
+        this.total = totalItem/this.limit
+        if(totalItem % this.limit > 0){
+          this.total = this.total + 1
+        }
       });
     }
   } ,

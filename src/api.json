@@ -3,6 +3,7 @@
   "USER": "api/user",
   "ITEM": "api/item",
   "ITEMS": "api/items",
+  "ITEMCOUNT": "api/itemCount",
   "IMAGE": "api/img",
   "UIMAGE": "api/uimg",
   "LOGIN": "api/login",
