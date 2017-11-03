@@ -41,7 +41,7 @@
        </button>
      </div>
      <div class="modal-body">
-       Are you sure you want to choose {{bidder_username}}'s bid of ${{price}} as the winning bid?
+       Are you sure you want to choose <b>{{bidder_username}}</b>'s bid of <b>${{price}}</b> as the winning bid?
      </div>
      <div class="modal-footer">
        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
