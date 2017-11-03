@@ -30,7 +30,7 @@ const createItemQuery =
   'startDate      TIMESTAMP,' +
   'endDate        TIMESTAMP,' +
   'PRIMARY KEY (iid),' +
-  'FOREIGN KEY (owner_username) REFERENCES app_user(username)' +
+  'FOREIGN KEY (owner_username) REFERENCES app_user(username) ON DELETE CASCADE' +
   ');'
 
 const createBiddingQuery =
@@ -40,8 +40,8 @@ const createBiddingQuery =
   'price               NUMERIC       NOT NULL,' +
   'time           TIMESTAMP,' +
   'PRIMARY KEY (bidder_username, iid),' +
-  'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
-  'FOREIGN KEY (bidder_username) REFERENCES app_user(username)' +
+  'FOREIGN KEY (iid) REFERENCES app_item(iid) ON DELETE CASCADE,' +
+  'FOREIGN KEY (bidder_username) REFERENCES app_user(username) ON DELETE CASCADE' +
   ');'
 
 const createLoanQuery =
@@ -50,8 +50,8 @@ const createLoanQuery =
   'iid                   INTEGER,' +
   'price                 NUMERIC       NOT NULL,' +
   'PRIMARY KEY (borrower_username, iid),' +
-  'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
-  'FOREIGN KEY (borrower_username) REFERENCES app_user(username)' +
+  'FOREIGN KEY (iid) REFERENCES app_item(iid) ON DELETE CASCADE,' +
+  'FOREIGN KEY (borrower_username) REFERENCES app_user(username) ON DELETE CASCADE' +
   ');'
 
 const createNotiQuery =
@@ -63,8 +63,8 @@ const createNotiQuery =
   'type           TEXT            NOT NULL,' +
   'isRead         BOOLEAN         NOT NULL,' +
   'PRIMARY KEY (nid),' +
-  'FOREIGN KEY (iid) REFERENCES app_item(iid),' +
-  'FOREIGN KEY (username) REFERENCES app_user(username)' +
+  'FOREIGN KEY (iid) REFERENCES app_item(iid) ON DELETE CASCADE,' +
+  'FOREIGN KEY (username) REFERENCES app_user(username) ON DELETE CASCADE' +
   ');'
 
 const createTagRelationQuery =
@@ -72,7 +72,7 @@ const createTagRelationQuery =
   '(tag      TEXT,' +
   'iid     INTEGER,' +
   'PRIMARY KEY (tag, iid),' +
-  'FOREIGN KEY (iid) REFERENCES app_item(iid)' +
+  'FOREIGN KEY (iid) REFERENCES app_item(iid) ON DELETE CASCADE' +
   ');'
 
 const createTagCountQuery =
