@@ -3,7 +3,7 @@
     <div class="item-picture-title card-header"><i class="fa fa-picture-o" aria-hidden="true"></i> Image</div>
     <div class="item-image card-body"><img :src="imagesrc"/></div>
     <div class="card-body">
-      <div class="item-picture-name"><i class="fa fa-gift" aria-hidden="true"></i> <b>Name:</b> {{name}}</div>
+      <div class="item-picture-name"><i class="fa fa-gift" aria-hidden="true"></i> <b>Name</b><br/> {{name}}</div>
     </div>
   </div>
 </template>
