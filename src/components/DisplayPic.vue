@@ -4,7 +4,7 @@
 		<img :src="defaultPic" />
 	</div>
 	<div class="row editBtn" v-show="editPermission">
-	<label class="btn btn-info">
+	<label class="btn btn-primary">
 		<input type="file" id="displayimageinput" @change="onFileChange">
 		<i class="fa fa-camera" aria-hidden="true"></i>
 	</label>
