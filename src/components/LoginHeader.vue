@@ -11,6 +11,7 @@
                     <li ><router-link to="/Register" class="nav-link" id="navBtn">Sign Up</router-link></li>
                 </template>
                 <template v-else>
+                    <li v-show="isAdmin"><router-link to="/admin" class="nav-link" id="navBtn">Admin Console</router-link></li>
                     <li><router-link to="/myListing" class="nav-link" id="navBtn">Lent</router-link></li>
                     <li><router-link to="/myLoan" class="nav-link" id="navBtn">Borrowed</router-link></li>
                     <li><router-link :to="profile_link" class="nav-link" id="navBtn">{{display_name}}</router-link></li>
@@ -59,6 +60,7 @@ export default {
     data () {
         return {
             logged_in: auth.isLoggedIn(this),
+            isAdmin: auth.isUserAdmin(this),
             profile_link: "/user/" + auth.getUsername(this),
             display_name: auth.getUsername(this),
             notifications: [],
@@ -75,6 +77,7 @@ export default {
         updateLoginStatus() {
             this.logged_in = auth.isLoggedIn(this)
             this.display_name = auth.getUsername(this)
+            this.isAdmin = auth.isUserAdmin(this)
             this.profile_link = "/user/" + auth.getUsername(this)
             if(this.logged_in) {
                 this.getnoti()
@@ -141,6 +144,8 @@ export default {
   padding-top: 0px;
   padding-bottom: 0px;
   background-color: white;
+  border-bottom: 1px;
+  border-bottom-color: #CCC;
 }
 
 #marginOverwrite {
