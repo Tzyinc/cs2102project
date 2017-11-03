@@ -10,25 +10,25 @@
 	</div>
 	<div class="collapse" id="collaspeContent">
 		<div class="row justify-content-end" id="displayFilter">
-			<div class="list col-sm-4">
+			<div class="list col-sm-5">
 				<div class="row filterTitle justify-content-start"> 
 					<h3>Sort by</h3>
 				</div>
 				<div class="row">
-					<div class="col filterOption">Newest</div>
-					<div class="col filterOption">Oldest</div>
+					<div class="col filterOption" v-on:click="sortChange('latest', $event)">Newest</div>
+					<div class="col filterOption" v-on:click="sortChange('earliest', $event)">Oldest</div>
 
 				</div>
 				<div class="row">
-					<div class="col filterOption">Name (A to Z)</div>
-					<div class="col filterOption">Name (Z to A)</div>
+					<div class="col filterOption" v-on:click="sortChange('atoz', $event)">Name (A to Z)</div>
+					<div class="col filterOption" v-on:click="sortChange('ztoa', $event)">Name (Z to A)</div>
 				</div>
 				<div class="row">
-					<div class="col filterOption">
+					<div class="col filterOption" v-on:click="sortChange('cheap', $event)">
 						Price 
 						<i class="fa fa-long-arrow-up" aria-hidden="true"></i>
 					</div>
-					<div class="col filterOption">
+					<div class="col filterOption" v-on:click="sortChange('expensive', $event)">
 						Price 
 						<i class="fa fa-long-arrow-down" aria-hidden="true"></i>
 					</div>
@@ -42,6 +42,11 @@
 <script>
 export default {
   	name: 'BrowseFilter',
+  	props: {
+      sortChange:{
+        type: Function
+      }
+    },
 	data () {
 		return {
 	    	isOpened: false,
@@ -75,7 +80,7 @@ export default {
 	margin-bottom: 10px;
 }
 #displayFilter{
-	padding-bottom :5px;
+	padding-bottom :10px;
 	/*transition: all 0.5s;*/
 	border-bottom: 1px solid;
 	border-color: rgba(0, 0, 0, 0.15);

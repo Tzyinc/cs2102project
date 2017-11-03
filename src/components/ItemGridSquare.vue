@@ -69,6 +69,7 @@ img {
 	padding-bottom: 5px;
 	width:90%;
 	text-align:left;
+	font-weight: bold;
 	/*background-color: green;*/
 
 }

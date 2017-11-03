@@ -156,6 +156,9 @@ export default {
   created: function () {
     /*Change here to get items by logged in user*/
     this.owner_username = auth.getUsername(this);
+    if (!auth.isLoggedIn(this)){
+    	this.$router.push({name: "BrowseItem"})
+    }
   }
 }
 </script>
