@@ -100,6 +100,12 @@ router
     userController.updateUserImg
   )
 router
+  .route('/user')
+  .post(
+    passport.authenticate('jwt', { session: false }),
+    userController.deleteUser
+  )
+router
   .route('/item')
   .put(
     passport.authenticate('jwt', { session: false }),
