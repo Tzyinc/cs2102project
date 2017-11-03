@@ -86,14 +86,14 @@ export default {
     },
 
     isTwoDecimal(num) {
-      console.log("num is " + num)
+      //console.log("num is " + num)
       var dotPos = num.search('\\.')
-      console.log("dotpos is " + dotPos)
+      //console.log("dotpos is " + dotPos)
       if (dotPos === 0 || dotPos === -1) {
         return true
       } else {
         var str = num.substring(dotPos + 1)
-        console.log("str is [" + str + "], length is "+str.length)
+        //console.log("str is [" + str + "], length is "+str.length)
         if (str.length > 2 || str.length === 0) {
           return false
         } else {
