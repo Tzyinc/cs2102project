@@ -59,14 +59,14 @@
         <div class="row">
             <div class="displayPic"><displaypic :oldImage="loadedProfilePic" :editPermission="isSelf" @changed="loadImage"></displaypic></div>
         </div>
-        <div>
+        <!--<div>
             <div class="rating">
                 <div class="input-group">
                     <span class="input-group-addon" style="background-color:#BBB">Rating</span>
                     <span class="input-group-addon" style="background-color:#EEE">{{rating}}</span>
                 </div>
               </div>
-        </div>
+        </div>-->
         <div v-show="isSelf">
             <div class ="pwChange">
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#passwordChangeModal">
@@ -218,6 +218,7 @@ export default {
                     if(userInfo.imagesrc == '' || userInfo.imagesrc == null) {
                         this.loadedProfilePic = '';    
                     } else {
+                        console.log("loaded")
                         this.loadedProfilePic = api_url_uimage + userInfo.imagesrc;
                     }
                     

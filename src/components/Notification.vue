@@ -61,7 +61,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 
 .notification {
     width:300px;
