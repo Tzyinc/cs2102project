@@ -101,7 +101,7 @@ router
   )
 router
   .route('/user')
-  .post(
+  .delete(
     passport.authenticate('jwt', { session: false }),
     userController.deleteUser
   )
