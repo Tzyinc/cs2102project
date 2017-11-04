@@ -34,7 +34,7 @@
 		<div class="formRow">
 			<label for="minbid">Minimum Price: </label>
 			<p class="control has-icon has-icon-right">
-				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2|min_value:0'" :class="{'input': true,'is-danger': errors.has('price')}">
+				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2|between:0,1000000'" :class="{'input': true,'is-danger': errors.has('price')}">
 				<i v-show="errors.has('price')" class="fa fa-warning"></i>
 				<span class="help text-danger" v-show="errors.has('price')">{{ errors.first('price') }}</span>
 			</p>
@@ -103,7 +103,8 @@ export default {
 	    enddate   : tomorrow,
 	    status   : true,
 	    empty : '',
-	    errorDate : 'End date must be after Start Date.'
+	    errorDate : 'End date must be after Start Date.',
+	    max_value: 1000000.00
     }
   },
   methods: {
