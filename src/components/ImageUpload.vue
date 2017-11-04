@@ -7,7 +7,8 @@
 	</div>
 	<div v-else class="displayImage">
 		<img :src="image" />
-		<button class="btn btn-info"@click="removeImage">Remove image</button>
+		<button class="btn btn-danger btn-sm"@click="removeImage"><i class="fa fa-trash" aria-hidden="true"></i>
+</button>
 	</div>
 </div>
 </template>
