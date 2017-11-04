@@ -16,7 +16,7 @@
     </div>
     <itemgrid :items = "items"></itemgrid>
     <br/>
-    <customPagination 
+    <customPagination v-if="!isSearch"
     :url = "url" 
     :pageParam = "pageParam"
     :counts = "count"
@@ -36,11 +36,12 @@ import BrowseFilter from './Filter'
 import CustomPagination from './CustomPagination'
 
 var api_url = api_ep.API_URL + api_ep.ITEMS
-var api_url_search = api_ep.API_URL + api_ep.ITEMS + "?name_like="
 var api_total_items = api_ep.API_URL + api_ep.ITEMCOUNT
+var api_search = "?name_like="
 var api_limit = "?limit="
 var api_offset = "&offset="
 var api_sort = "&sort="
+var api_url_search = api_ep.API_URL + api_ep.ITEMS + api_search
 export default {
   name: 'BrowseItem',
   components: {
@@ -65,9 +66,11 @@ export default {
       current: 1,
       count: 5,
       total: 10,
-      limit: 3,
+      limit: 0,
+      actualLimit: 4,
       offset: 0,
-      sort: 'latest'
+      sort: 'latest',
+      isSearch: false
     }
   },
   methods: {
@@ -75,7 +78,10 @@ export default {
 	    this.$http.get(api_url_search + query)
 	      .then(response => {
 	        this.items = response.data;
-	        console.log("Searching for : " + query);
+	        //console.log("Searching for : " + query);
+          console.log("received number of items : " + this.items.length);
+          this.limit = this.items.length
+          this.isSearch = true
 	      });
   	},
     pageChange(d, e){
@@ -85,18 +91,26 @@ export default {
       this.loadItems()
     },
     loadItems(){
+      //Remove searched query and back to normal
+      this.searchQuery = ""
+      this.limit = this.actualLimit
+      this.isSearch = false
+
       this.getTotalItems()
       this.offset = (this.current - 1) * this.limit
       console.log("getting items of limit :"+this.limit + ", offset: " + this.offset)
-      var api_load = api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort
-      //console.log(api_load)
+      var api_load = api_url + api_limit + this.limit+api_offset+this.offset+api_sort+this.sort+api_search+this.searchQuery
+      console.log(api_load)
       this.$http.get(api_load)
       .then(response => {
         this.items = response.data;
       });
     },
     getTotalItems(){
-      this.$http.get(api_total_items)
+      this.searchQuery = ""
+      var api = api_total_items+api_search+this.searchQuery
+      console.log(api)
+      this.$http.get(api)
       .then(response => {
         var totalItem = parseInt(response.data.count)
         this.total = totalItem/this.limit
@@ -110,6 +124,9 @@ export default {
       this.sort = d
       this.current = 1
       this.loadItems()
+    },
+    setPagination(limit, visible){
+
     }
   } ,
   created: function () {
