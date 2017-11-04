@@ -40,6 +40,7 @@ export default {
   /*background-color: #efefef;*/
   vertical-align: top;
   height: 350px auto;
+  max-height: 350px;
 }
 .item-desc-title {
   font-weight:bold;
@@ -52,7 +53,7 @@ export default {
 }
 
 .item-desc-tags {
-  height: 10px;
+  height: 10px auto;
   padding-left: 10px;
 }
 </style>
