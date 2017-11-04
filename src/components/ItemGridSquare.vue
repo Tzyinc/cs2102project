@@ -17,7 +17,6 @@ export default {
   props: ['iid','name', 'owner', 'price', 'image'],
   data () {
     return {
-    	$checkedname : ''
     }
   },
   methods: {

@@ -23,36 +23,37 @@ export default {
   	},
 	methods: {
 		onFileChange(e) {
-			var files = e.target.files || e.dataTransfer.files;
+			var files = e.target.files || e.dataTransfer.files
 			console.log("on change file: ", files)
 			if (!files.length)
 				return;
-			this.createImage(files[0]);
+			this.createImage(files[0])
 			
 			
 		},
 		createImage(file) {
 			var image = new Image();
-		  	var reader = new FileReader();
-		  	var vm = this;
+		  	var reader = new FileReader()
+		  	var vm = this
 
 			reader.onload = (e) => {
-			    vm.image = e.target.result;
+			    vm.image = e.target.result
 			    
-			    var value = {name:file.name, image:this.image};
-			    console.log("loaded image :" + value.name);
-			    this.$emit('changed', value);
+			    var value = {name:file.name, image:this.image}
+			    console.log("loaded image :" + value.name)
+			    this.$emit('changed', value)
 			};
 		  	reader.readAsDataURL(file);
 		},
 		removeImage: function (e) {
-		  	this.image = '';
-		  	return false;
+			e.preventDefault()
+		  	this.image = ''
+		  	return false
 		},
   		retrieveImageUrl(source){
 	  		if(source != ''){
-	  			this.image = source;
-		    	console.log(this.image);
+	  			this.image = source
+		    	console.log(this.image)
 	  		}
 
 	    }
