@@ -91,6 +91,7 @@ export default {
 
         //Get noti is triggered from auth.js, after login is confirmed
         getnoti () {
+            console.log("Getting noti")
             this.$http.get(api_url_noti+api_noti_owner+auth.getUsername(this))
             .then(response => {
                 this.notifications = response.data;
@@ -108,6 +109,13 @@ export default {
                 this.notification_count--;
             }
         }
+    },
+    created: function () {
+        this.getnoti();
+
+        setInterval(function () {
+            this.getnoti(); 
+        }.bind(this), 5000); 
     }
 }
 </script>
