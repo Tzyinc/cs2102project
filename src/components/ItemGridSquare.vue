@@ -4,7 +4,7 @@
 		<img class="" :src="image">
 	</div>
 	<div class='info'>
-		<div id='name'>{{name}}</div>
+		<div id='name'>{{name.length < 18 ? name : name.substring(0,18) + "..."}}</div>
 		<div class="alert-light" id='owner'>{{owner}}</div>
 		<div id='price'>${{price}}</div>
 	</div>
@@ -17,13 +17,22 @@ export default {
   props: ['iid','name', 'owner', 'price', 'image'],
   data () {
     return {
+    	$checkedname : ''
     }
   },
   methods: {
   	load (iid){
   		this.$router.push({ name: 'DetailedItem', params: { iid: iid }})
   	}
-  } 
+  } ,
+  created: function () {
+  	/*
+  	var max = 18
+    this.$checkedname = this.name
+    if(this.name > max){
+    	//this.$checkedname = this.name.substring(0,max) + "..."
+    }*/
+  }
 }
 </script>
 
