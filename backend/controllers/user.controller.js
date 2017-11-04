@@ -37,6 +37,11 @@ const removeUserImgSrcPS = new dbcon.PS(
   "UPDATE app_user SET imagesrc = ''" + 'WHERE username = $1'
 )
 
+const deleteUserPS = new dbcon.PS(
+  'deleteUser',
+  'DELETE FROM app_user WHERE username = $1'
+)
+
 // takes in unique username and (hashed) password and stores in database.
 function createUser(req, res) {
   var userDetails = req.body.data
@@ -136,11 +141,27 @@ function updatePassword(req, res) {
     })
 }
 
+function deleteUser(req, res) {
+  var userDetails = req.body.data
+  if (userDetails.username != null) {
+    dbcon.db
+      .none(deleteUserPS, [userDetails.username])
+      .then(result => {
+        res.json({ success: true })
+      })
+      .catch(error => {
+        console.error(error)
+        res.json(error)
+      })
+  }
+}
+
 module.exports = {
   createUser: createUser,
   getUserDetails: getUserDetails,
   getAllUsernames: getAllUsernames,
   getUsernamePw: getUsernamePw,
   updateUserImg: updateUserImg,
-  updatePassword: updatePassword
+  updatePassword: updatePassword,
+  deleteUser: deleteUser
 }

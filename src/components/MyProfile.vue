@@ -218,7 +218,6 @@ export default {
                     if(userInfo.imagesrc == '' || userInfo.imagesrc == null) {
                         this.loadedProfilePic = '';    
                     } else {
-                        console.log("loaded")
                         this.loadedProfilePic = api_url_uimage + userInfo.imagesrc;
                     }
                     
