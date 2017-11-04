@@ -69,7 +69,7 @@ const getItemByUserPS = new dbcon.PS(
 
 const getItemByNamePS = new dbcon.PS(
   'getItemByName',
-  'SELECT * FROM app_item WHERE name LIKE $1'
+  'SELECT * FROM app_item WHERE name ILIKE $1'
 )
 
 const getItemPS = new dbcon.PS(
