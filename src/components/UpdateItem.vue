@@ -33,7 +33,7 @@
 		<div class="formRow">
 			<label for="minbid">Minimum Price: </label>
 			<p class="control has-icon has-icon-right">
-				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2|min_value:0'" :class="{'input': true,'is-danger': errors.has('price')}">
+				<input class="minbid form-control" v-model="minBid" number placeholder="1.50" name="price"  v-validate="'required|decimal:2|between:0,1000000'" :class="{'input': true,'is-danger': errors.has('price')}">
 				<i v-show="errors.has('price')" class="fa fa-warning"></i>
 				<span class="help text-danger" v-show="errors.has('price')">{{ errors.first('price') }}</span>
 			</p>		
@@ -133,7 +133,11 @@ export default {
 	     	success: function(response){
 		        console.log('submit update')
 		        if(response.hasOwnProperty('success')){
-					context.submitTag(formData)
+		        	if(context.tags != null){
+						context.submitTag(formData)
+					}
+					alert("Successfully updated item:\n" + formData.name)
+		        	context.$router.push('/myListing')
 				} else{
 					alert("Failed to submit.\nPlease try again.")
 				}
@@ -149,10 +153,9 @@ export default {
 	     	headers: auth.getAuthHeader(this),
 	     	data: {data: formData}, //Data as js object
 	     	success: function(response){
-		        console.log('submit update')
+		        console.log('submit tag')
 		        if(response.hasOwnProperty('success')){
-		        	alert("Successfully updated item:\n" + formData.name)
-		        	context.$router.push('/myListing')
+
 				} else{
 					alert("Failed to submit.\nPlease try again.")
 				}

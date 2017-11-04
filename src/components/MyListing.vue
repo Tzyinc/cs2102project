@@ -13,7 +13,7 @@
   </div>
   -->
   <div class="createButton">
-    <button type="button" class="btn btn-info" v-on:click="go_to_create()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create New Listing</button>
+    <button type="button" class="btn btn-primary" v-on:click="go_to_create()"><i class="fa fa-plus-circle" aria-hidden="true"></i> Create New Listing</button>
   </div>
 
   <br/>

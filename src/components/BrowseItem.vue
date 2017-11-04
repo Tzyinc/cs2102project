@@ -12,7 +12,7 @@
 		</div>
     </div>
     <div class="row justify-content-center">
-    	<browseFilter></browseFilter>
+    	<browseFilter  :sortChange = "sortChange"></browseFilter>
     </div>
     <itemgrid :items = "items"></itemgrid>
     <br/>
@@ -65,9 +65,9 @@ export default {
       current: 1,
       count: 5,
       total: 10,
-      limit: 2,
+      limit: 3,
       offset: 0,
-      sort: 'oldest'
+      sort: 'latest'
     }
   },
   methods: {
@@ -89,7 +89,7 @@ export default {
       this.offset = (this.current - 1) * this.limit
       console.log("getting items of limit :"+this.limit + ", offset: " + this.offset)
       var api_load = api_url+api_limit+this.limit+api_offset+this.offset+api_sort+this.sort
-      console.log(api_load)
+      //console.log(api_load)
       this.$http.get(api_load)
       .then(response => {
         this.items = response.data;
@@ -104,6 +104,12 @@ export default {
           this.total = this.total + 1
         }
       });
+    },
+    sortChange(d, e){
+      e.preventDefault()
+      this.sort = d
+      this.current = 1
+      this.loadItems()
     }
   } ,
   created: function () {
