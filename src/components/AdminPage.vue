@@ -9,17 +9,15 @@
         <!--class container is to get the Users word to center, because of bootstrap-->
         <div class="row userHeader"><div class="container">Users</div></div>
         <div class="row users">
-            <div v-if="users.length === 0" class="container">
+            <div v-if="users.length === 0" class="container" style="padding-left:0px; padding-right:0px;">
                 There are no users in the system
             </div>
-            <div v-else>
-                <div v-for = "user in users" >
-                    <notification
-                        :iid = "notification.iid"
-                        :notiType = "notification.type"
-                        :isRead = "notification.isread"
-                        :nid = "notification.nid"
-                        :name = "notification.name"></notification>
+            <div v-else class="container" style="padding-right:0px; padding-left:0px;">
+                <div v-for = "(user,index) in users" >
+                    <deleteUser
+                        :uid = "user.username"
+                        :profilePic = "user.imagesrc"
+                        v-on:delete-row="deleteThisRow(index)"></deleteUser>
                 </div>
             </div>
         </div>
@@ -28,20 +26,36 @@
 
 <script>
 import auth from '../auth/auth'
+import DeleteUser from './DeleteUser'
+import api_ep from '../api.json'
+var api_url_user = api_ep.API_URL + api_ep.USER;
 
 export default {
     name: 'AdminPage',
-
+    components: {
+        'deleteUser' : DeleteUser
+    },
     data() {
         return {
             users: [],
         }
     },
+    methods: {
+        deleteThisRow (index) {
+            this.users.splice(this.users.indexOf(index), 1)
+        },
+    },
 
     created: function () {
         if(!auth.isUserAdmin(this)) {
             this.$router.push('/')
-        } 
+        }
+
+        this.$http.get(api_url_user)
+        .then(response => {
+            this.users = response.data;
+            
+        }); 
     }
 
 }

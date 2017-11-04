@@ -8,6 +8,7 @@
   "UIMAGE": "api/uimg",
   "LOGIN": "api/login",
   "PASSWORD": "api/password",
+  "DELETE": "api/delete",
   "NOTIFICATION": "api/noti",
   "TAGS": "api/tags",
   "BIDS": "api/bids",
