@@ -99,7 +99,7 @@ export default {
       this.getTotalItems()
       this.offset = (this.current - 1) * this.limit
       console.log("getting items of limit :"+this.limit + ", offset: " + this.offset)
-      var api_load = api_url + api_limit + this.limit+api_offset+this.offset+api_sort+this.sort+api_search+this.searchQuery
+      var api_load = api_url + api_limit + this.limit+api_offset+this.offset+api_sort+this.sort
       console.log(api_load)
       this.$http.get(api_load)
       .then(response => {
