@@ -10,14 +10,14 @@ const createItemPS = new dbcon.PS(
 
 const updateItemPS = new dbcon.PS(
   'updateItem',
-  'UPDATE app_item SET owner_username = $1, name = $2, imagesrc = $3, minbid = $4, timeListed = $5, status = $6, location = $7, description = $8, startdate = $9, enddate = $10 ' +
-    'WHERE iid = $11'
+  'UPDATE app_item SET owner_username = $1, name = $2, imagesrc = $3, minbid = $4, status = $5, location = $6, description = $7, startdate = $8, enddate = $9 ' +
+    'WHERE iid = $10'
 )
 
 const updateItemNoImgPS = new dbcon.PS(
   'updateItemNoImg',
-  'UPDATE app_item SET owner_username = $1, name = $2, minbid = $3, timeListed = $4, status = $5, location = $6, description = $7, startdate = $8, enddate = $9 ' +
-    'WHERE iid = $10'
+  'UPDATE app_item SET owner_username = $1, name = $2, minbid = $3,  status = $4, location = $5, description = $6, startdate = $7, enddate = $8 ' +
+    'WHERE iid = $9'
 )
 
 const getItemsPS = new dbcon.PS('getItems', 'SELECT * FROM app_item ')
@@ -133,7 +133,6 @@ function updateItem(req, res) {
       itemDetails.name,
       'error.png',
       itemDetails.minBid,
-      itemDetails.timeListed,
       itemDetails.status,
       itemDetails.location,
       itemDetails.description,
@@ -159,7 +158,6 @@ function updateItem(req, res) {
       itemDetails.owner_username,
       itemDetails.name,
       itemDetails.minBid,
-      itemDetails.timeListed,
       itemDetails.status,
       itemDetails.location,
       itemDetails.description,
