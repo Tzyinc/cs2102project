@@ -67,7 +67,7 @@ export default {
       count: 5,
       total: 10,
       limit: 0,
-      actualLimit: 4,
+      actualLimit: 12,
       offset: 0,
       sort: 'latest',
       isSearch: false
