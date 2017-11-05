@@ -1,0 +1,285 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.5
+-- Dumped by pg_dump version 9.6.5
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: app_bidding; Type: TABLE; Schema: public; Owner: cs2102
+--
+
+CREATE TABLE app_bidding (
+    bidder_username text NOT NULL,
+    iid integer NOT NULL,
+    price numeric NOT NULL,
+    "time" timestamp without time zone
+);
+
+
+ALTER TABLE app_bidding OWNER TO cs2102;
+
+--
+-- Name: app_item; Type: TABLE; Schema: public; Owner: cs2102
+--
+
+CREATE TABLE app_item (
+    iid integer NOT NULL,
+    owner_username text NOT NULL,
+    name text NOT NULL,
+    imagesrc text NOT NULL,
+    description text,
+    minbid numeric NOT NULL,
+    timelisted timestamp without time zone NOT NULL,
+    status boolean NOT NULL,
+    location text NOT NULL,
+    startdate timestamp without time zone,
+    enddate timestamp without time zone
+);
+
+
+ALTER TABLE app_item OWNER TO cs2102;
+
+--
+-- Name: app_item_iid_seq; Type: SEQUENCE; Schema: public; Owner: cs2102
+--
+
+CREATE SEQUENCE app_item_iid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE app_item_iid_seq OWNER TO cs2102;
+
+--
+-- Name: app_item_iid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: cs2102
+--
+
+ALTER SEQUENCE app_item_iid_seq OWNED BY app_item.iid;
+
+
+--
+-- Name: app_loan; Type: TABLE; Schema: public; Owner: cs2102
+--
+
+CREATE TABLE app_loan (
+    borrower_username text NOT NULL,
+    iid integer NOT NULL,
+    price numeric NOT NULL
+);
+
+
+ALTER TABLE app_loan OWNER TO cs2102;
+
+--
+-- Name: app_notification; Type: TABLE; Schema: public; Owner: cs2102
+--
+
+CREATE TABLE app_notification (
+    nid integer NOT NULL,
+    username text NOT NULL,
+    iid integer NOT NULL,
+    timecreated timestamp without time zone NOT NULL,
+    type text NOT NULL,
+    isread boolean NOT NULL
+);
+
+
+ALTER TABLE app_notification OWNER TO cs2102;
+
+--
+-- Name: app_notification_nid_seq; Type: SEQUENCE; Schema: public; Owner: cs2102
+--
+
+CREATE SEQUENCE app_notification_nid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE app_notification_nid_seq OWNER TO cs2102;
+
+--
+-- Name: app_notification_nid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: cs2102
+--
+
+ALTER SEQUENCE app_notification_nid_seq OWNED BY app_notification.nid;
+
+
+--
+-- Name: app_tag_relation; Type: TABLE; Schema: public; Owner: cs2102
+--
+
+CREATE TABLE app_tag_relation (
+    tag text NOT NULL,
+    iid integer NOT NULL
+);
+
+
+ALTER TABLE app_tag_relation OWNER TO cs2102;
+
+--
+-- Name: app_user; Type: TABLE; Schema: public; Owner: cs2102
+--
+
+CREATE TABLE app_user (
+    username text NOT NULL,
+    imagesrc text,
+    password text NOT NULL,
+    isadmin boolean DEFAULT false NOT NULL,
+    userrating numeric DEFAULT 0 NOT NULL
+);
+
+
+ALTER TABLE app_user OWNER TO cs2102;
+
+--
+-- Name: app_item iid; Type: DEFAULT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_item ALTER COLUMN iid SET DEFAULT nextval('app_item_iid_seq'::regclass);
+
+
+--
+-- Name: app_notification nid; Type: DEFAULT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_notification ALTER COLUMN nid SET DEFAULT nextval('app_notification_nid_seq'::regclass);
+
+
+--
+-- Name: app_bidding app_bidding_pkey; Type: CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_bidding
+    ADD CONSTRAINT app_bidding_pkey PRIMARY KEY (bidder_username, iid);
+
+
+--
+-- Name: app_item app_item_pkey; Type: CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_item
+    ADD CONSTRAINT app_item_pkey PRIMARY KEY (iid);
+
+
+--
+-- Name: app_loan app_loan_pkey; Type: CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_loan
+    ADD CONSTRAINT app_loan_pkey PRIMARY KEY (borrower_username, iid);
+
+
+--
+-- Name: app_notification app_notification_pkey; Type: CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_notification
+    ADD CONSTRAINT app_notification_pkey PRIMARY KEY (nid);
+
+
+--
+-- Name: app_tag_relation app_tag_relation_pkey; Type: CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_tag_relation
+    ADD CONSTRAINT app_tag_relation_pkey PRIMARY KEY (tag, iid);
+
+
+--
+-- Name: app_user app_user_pkey; Type: CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_user
+    ADD CONSTRAINT app_user_pkey PRIMARY KEY (username);
+
+
+--
+-- Name: app_bidding app_bidding_bidder_username_fkey; Type: FK CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_bidding
+    ADD CONSTRAINT app_bidding_bidder_username_fkey FOREIGN KEY (bidder_username) REFERENCES app_user(username) ON DELETE CASCADE;
+
+
+--
+-- Name: app_bidding app_bidding_iid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_bidding
+    ADD CONSTRAINT app_bidding_iid_fkey FOREIGN KEY (iid) REFERENCES app_item(iid) ON DELETE CASCADE;
+
+
+--
+-- Name: app_item app_item_owner_username_fkey; Type: FK CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_item
+    ADD CONSTRAINT app_item_owner_username_fkey FOREIGN KEY (owner_username) REFERENCES app_user(username) ON DELETE CASCADE;
+
+
+--
+-- Name: app_loan app_loan_borrower_username_fkey; Type: FK CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_loan
+    ADD CONSTRAINT app_loan_borrower_username_fkey FOREIGN KEY (borrower_username) REFERENCES app_user(username) ON DELETE CASCADE;
+
+
+--
+-- Name: app_loan app_loan_iid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_loan
+    ADD CONSTRAINT app_loan_iid_fkey FOREIGN KEY (iid) REFERENCES app_item(iid) ON DELETE CASCADE;
+
+
+--
+-- Name: app_notification app_notification_iid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_notification
+    ADD CONSTRAINT app_notification_iid_fkey FOREIGN KEY (iid) REFERENCES app_item(iid) ON DELETE CASCADE;
+
+
+--
+-- Name: app_notification app_notification_username_fkey; Type: FK CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_notification
+    ADD CONSTRAINT app_notification_username_fkey FOREIGN KEY (username) REFERENCES app_user(username) ON DELETE CASCADE;
+
+
+--
+-- Name: app_tag_relation app_tag_relation_iid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: cs2102
+--
+
+ALTER TABLE ONLY app_tag_relation
+    ADD CONSTRAINT app_tag_relation_iid_fkey FOREIGN KEY (iid) REFERENCES app_item(iid) ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
