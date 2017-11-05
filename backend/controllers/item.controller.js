@@ -69,7 +69,11 @@ const getItemByUserPS = new dbcon.PS(
 
 const getItemByNamePS = new dbcon.PS(
   'getItemByName',
-  'SELECT * FROM app_item WHERE name ILIKE $1'
+  'SELECT DISTINCT i.iid AS iid, i.owner_username AS owner_username, i.name AS name,' +
+    ' i.imagesrc AS imagesrc, i.description AS description, i.minbid AS minbid,' +
+    ' i.timeListed AS timeListed, i.status AS status, i.location AS location,' +
+    ' i.startdate AS startdate, i.enddate AS enddate FROM app_item i' +
+    ' LEFT OUTER JOIN app_tag_relation t ON t.iid = i.iid WHERE i.name ILIKE $1 OR t.tag ILIKE $1'
 )
 
 const getItemPS = new dbcon.PS(
