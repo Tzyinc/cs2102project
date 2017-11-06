@@ -6,7 +6,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "pretest": "node initDB.js",
-    "test": "node backendServer.js | node build/dev-server.js"
+    "test": "node backendServer.js | node build/dev-server.js",
+    "start": "node backendServer.js | node build/dev-server.js"
   },
   "lint-staged": {
     "*.js": [
