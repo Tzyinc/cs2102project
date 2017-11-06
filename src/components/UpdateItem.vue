@@ -196,7 +196,8 @@ export default {
 	    	this.enddate = item.enddate;
 	    	this.owner_username = item.owner_username;
 	    	this.timeListed = item.timelisted;
-	    	if(auth.getUsername(this) != item.owner_username){
+	    	console.log(auth.isUserAdmin(this))
+	    	if(auth.getUsername(this) != item.owner_username && !auth.isUserAdmin(this)){
 		    	alert("You cannot edit this item.")
 		    	this.$router.push('/myListing')
 		    }
